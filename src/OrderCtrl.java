@@ -14,11 +14,8 @@ public class OrderCtrl {
 	//private static final int STAFF_LINES = 4;
 	private TableSystem tableSystem;
 	
-	public static void main(String[] args) {
-	}
-	
-	public OrderCtrl(TableSystem t) {
-		this.tableSystem = t;
+	public OrderCtrl(TableSystem tableSystem) {
+		this.tableSystem = tableSystem;
 	}
 	
 	private static String orderObjToData(Order order) {
@@ -33,9 +30,9 @@ public class OrderCtrl {
 		lines.add(line);
 		
 		// lines 2, 3 & 4 of data
-		ArrayList<ArrayList<String>> items = order.getAllItemsSepArr();
+		String[][] items = order.getAllItemsSepArr();
 		for(int i=0; i<=2; i++) {
-			line = String.join(DELIMITER, items.get(i));
+			line = String.join(DELIMITER, items[i]);
 			lines.add(line);
 		}
 		
@@ -111,7 +108,6 @@ public class OrderCtrl {
 		}
 	}
 
-	
 	private static void appendOrderData(Order newOrder) throws Exception {
 		String data = orderObjToData(newOrder);
 		try {
@@ -123,8 +119,46 @@ public class OrderCtrl {
 		}
 	}
 	
+	protected static void deleteOrderData(int orderID) throws Exception {
+		String data = "", line;
+		String[] splitLine;
+		int currID;
+		
+		// retrieve data and edit it
+		try {
+			Scanner fr = new Scanner(ORDER_FILE);
+			data += fr.nextLine(); // skip first line
+			while (fr.hasNextLine()) {
+				line = fr.nextLine();
+				splitLine = line.split(DELIMITER);
+				currID = Integer.parseInt(splitLine[0]);
+				if (orderID == currID) {
+					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over target order data
+					break;
+				} 
+				// copy all data before target data
+				data += "\n" + line;
+				for (int i=0; i<ORDER_LINES-1; i++) data += "\n" + fr.nextLine();
+			}
+			while (fr.hasNextLine()) data += "\n" + fr.nextLine(); // copy all data after target data
+			fr.close();
+		} catch (FileNotFoundException e) {
+			throw new Exception("OrderCtrl.deleteOrderData() error: Scanner cannot find order data file \n");
+		} catch (NoSuchElementException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+			throw new Exception("OrderCtrl.deleteOrderData() error: data in order data file is formatted differently from expected\n");
+		}
+		
+		// write data back to file
+		try {
+			FileWriter fw = new FileWriter(ORDER_FILE);
+			fw.write(data);
+			fw.close();
+		} catch (IOException e) {
+			throw new Exception("OrderCtrl.deleteOrderData() error: FileWriter cannot find order data file \n");
+		}
+	}
 	
-	private Order getOrderObject(int orderID) throws Exception {
+	protected static Order getOrderObject(int orderID) throws Exception {
 		Order order = null;
 		int currID, tableID;
 		String staffName;
@@ -165,8 +199,7 @@ public class OrderCtrl {
 	}
 	
 	// TODO decide if needed
-	
-	public boolean validOrderID(int orderID) throws Exception {
+	public static boolean validOrderID(int orderID) throws Exception {
 		boolean valid = false;
 		String[] line;
 		int currID;
@@ -228,12 +261,10 @@ public class OrderCtrl {
 				+ "Table ID: " + order.getTableID() + "\n"
 				+ "Server: " + order.getStaffName() + "\n"
 				+ "Order Items:";
-		ArrayList<ArrayList<String>> items = order.getAllItems();
-		ArrayList<String> item;
-		for (int i=0; i<items.size(); i++) {
-			item = items.get(i);
+		String[][] items = order.getAllItems();
+		for (int i=0; i<items.length; i++) {
 			//				itemNum				 itemName			  itemPrice
-			str += "\n  " + item.get(1) + "  " + item.get(0) + " ($" + item.get(2) + ")";
+			str += "\n  " + items[i][1] + "  " + items[i][0] + " ($" + items[i][2] + ")";
 		}
 		return str;
 	}

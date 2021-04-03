@@ -39,11 +39,12 @@ public class Order {
 	public String getStaffName() {
 		return this.staffName;
 	}
-	public ArrayList<String> getAllItemNames() {
+	public String[] getAllItemNames() {
 		Enumeration<String> itemNamesEnum = this.itemNums.keys();
 		ArrayList<String> itemNamesArrList = new ArrayList<String>();
 		while (itemNamesEnum.hasMoreElements()) itemNamesArrList.add(itemNamesEnum.nextElement());
-		return itemNamesArrList;
+		String[]  itemNamesArr = itemNamesArrList.toArray(new String[itemNamesArrList.size()]);
+		return itemNamesArr;
 	}
 	public Hashtable<String, Integer> getAllItemNums(){
 		return this.itemNums;
@@ -51,39 +52,32 @@ public class Order {
 	public Hashtable<String, Float> getAllItemPrices(){
 		return this.itemPrices;
 	}
-	public ArrayList<ArrayList<String>> getAllItems(){
-		ArrayList<ArrayList<String>> items = new ArrayList<ArrayList<String>>();
-		ArrayList<String> itemNames = getAllItemNames();
-		ArrayList<String> item;
+	public String[][] getAllItems(){
+		String[] itemNames = this.getAllItemNames();
+		String[][] items = new String[itemNames.length][3];
 		String itemName;
-		for (int i=0; i<itemNames.size(); i++) {
-			item = new ArrayList<String>();
-			itemName = itemNames.get(i);
-			item.add(itemName);
-			item.add(String.valueOf(this.itemNums.get(itemName)));
-			item.add(String.valueOf(this.itemPrices.get(itemName)));
-			items.add(item);
+		for (int i=0; i<itemNames.length; i++) {
+			itemName = itemNames[i];
+			items[i][0] = itemName;
+			items[i][1] = String.valueOf(this.itemNums.get(itemName));
+			items[i][2] = String.valueOf(this.itemPrices.get(itemName));
 		}
 		return items;
 	}
-	public ArrayList<ArrayList<String>> getAllItemsSepArr(){
-		ArrayList<ArrayList<String>> items = new ArrayList<ArrayList<String>>();
-		ArrayList<String> itemNames = getAllItemNames();
-		ArrayList<String> itemNums = new ArrayList<String>();
-		ArrayList<String> itemPrices = new ArrayList<String>();
+	public String[][] getAllItemsSepArr(){
+		String[] itemNames = this.getAllItemNames();
+		String[][] items = new String[3][itemNames.length];
 		String itemName;
 		Integer itemNum; 
 		Float itemPrice;
-		for (int i=0; i<itemNames.size(); i++) {
-			itemName = itemNames.get(i);
+		for (int i=0; i<itemNames.length; i++) {
+			itemName = itemNames[i];
 			itemNum = this.itemNums.get(itemName);
-			itemNums.add(String.valueOf(itemNum));
 			itemPrice = this.itemPrices.get(itemName);
-			itemPrices.add(String.valueOf(itemPrice));
+			items[0][i] = itemName;
+			items[1][i] = String.valueOf(itemNum);
+			items[2][i] = String.valueOf(itemPrice);
 		}
-		items.add(itemNames);
-		items.add(itemNums);
-		items.add(itemPrices);
 		return items;
 	}
 	public int getItemNum(String itemName) {

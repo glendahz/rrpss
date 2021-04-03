@@ -158,7 +158,7 @@ public class OrderUI {
 		}
 	}
 	
-	public static int getOrderIDUI(Scanner sc) {
+	protected static int getOrderIDUI(Scanner sc) {
 		boolean run = true;
 		int orderID=-1;
 		
@@ -177,7 +177,7 @@ public class OrderUI {
 			}
 			// check if entry is a valid order ID
 			try {
-				if (ctrl.validOrderID(orderID)) run = false;
+				if (OrderCtrl.validOrderID(orderID)) run = false;
 				else {
 					System.out.println("Error: " + orderID + " is not a valid order ID\n"
 							+ "Please enter a valid order ID!\n");
