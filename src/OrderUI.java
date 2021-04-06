@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class OrderUI {
 	private static OrderCtrl ctrl;
-	private static TableSystem tblSys;
 	
 	public static void main(String[] args) {
 		TableSystem tables = new TableSystem();
@@ -13,8 +12,7 @@ public class OrderUI {
 	}
 	
 	public static void mainUI(Scanner sc, TableSystem tableSystem) {
-		tblSys = tableSystem;
-		ctrl = new OrderCtrl(tblSys);
+		ctrl = new OrderCtrl(tableSystem);
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -116,7 +114,7 @@ public class OrderUI {
 		int orderID = getOrderIDUI(sc);;
 		// print order
 		try {
-			System.out.println(ctrl.orderObjToStr(orderID) + "\n");
+			System.out.println(ctrl.viewOrder(orderID) + "\n");
 		} catch(Exception e) {
 			System.out.println("Error: unable to print order\n" 
 					+ e.getMessage() + "\n");
@@ -177,7 +175,7 @@ public class OrderUI {
 			}
 			// check if entry is a valid order ID
 			try {
-				if (OrderCtrl.validOrderID(orderID)) run = false;
+				if (OrderCtrl.validTableID(orderID)) run = false;
 				else {
 					System.out.println("Error: " + orderID + " is not a valid order ID\n"
 							+ "Please enter a valid order ID!\n");
