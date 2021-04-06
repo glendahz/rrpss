@@ -119,9 +119,36 @@ public class TableCtrl {
 			System.out.println("There is no table with ID " + tableID + "!");
 		}
 	}
+	
+	public void removeTable(int TableID) {
+		int tableID = queryTableID();
+		boolean found = false;
+		for (int i = 0; i < tables.size(); ++i) {
+			Table currTable = tables.get(i);
+			if (currTable.getTableID() == tableID) {
+				System.out.println("Table with ID " + tableID + " removed!");
+				tables.remove(i);
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			System.out.println("There is no table with ID " + tableID + "!");
+		}
+	}
 		
 	public void assignTable() {
 		int tableID = queryTableID();
+		int tableIndex = getTableIndex(tableID);
+		if (tableIndex == -1) {
+			System.out.println("No such table!");
+		} else {
+			System.out.println("Table with ID " + tableID + " set to occupied!");
+			tables.get(tableIndex).setToOccupied();
+		}
+	}
+	
+	public void assignTable(int tableID) {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
@@ -143,8 +170,29 @@ public class TableCtrl {
 		}
 	}
 	
+	public void reserveTable(int tableID) {
+		int tableIndex = getTableIndex(tableID);
+		if (tableIndex == -1) {
+			System.out.println("No such table!");
+		}
+		else {
+			System.out.println("Table with ID " + tableID + " set to reserved!");
+			tables.get(tableIndex).setToReserved();
+		}
+	}
+	
 	public void vacateTable() {
 		int tableID = queryTableID();
+		int tableIndex = getTableIndex(tableID);
+		if (tableIndex == -1) {
+			System.out.println("No such table!");
+		}else {
+			System.out.println("Table with ID " + tableID + " set to vacant!");
+			tables.get(tableIndex).setToVacant();
+		}
+	}
+	
+	public void vacateTable(int tableID) {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");

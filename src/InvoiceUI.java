@@ -5,13 +5,13 @@ public class InvoiceUI {
 	private static InvoiceCtrl ctrl;
 	
 	public static void main(String[] args) {
-		TableSystem tables = new TableSystem();
+		TableCtrl tables = new TableCtrl();
 		tables.addTable(4);
 		tables.addTable(5);
 		mainUI(tables);
 	}
 	
-	public static void mainUI(Scanner sc, TableSystem tableSystem) {
+	public static void mainUI(Scanner sc, TableCtrl tableSystem) {
 		ctrl = new InvoiceCtrl(tableSystem);
 		boolean run=true;
 		int choice;
