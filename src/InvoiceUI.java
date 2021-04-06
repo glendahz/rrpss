@@ -58,7 +58,7 @@ public class InvoiceUI {
 		int orderID = OrderUI.getOrderIDUI(sc);
 		
 		// get payment method
-		String payMthd = getPaymentMethod(sc);
+		String payMthd = getPaymentMethodUI(sc);
 		
 		// create invoice
 		try {
@@ -69,7 +69,7 @@ public class InvoiceUI {
 		}
 	}
 	
-	private static String getPaymentMethod(Scanner sc) {
+	private static String getPaymentMethodUI(Scanner sc) {
 		boolean run = true;
 		int choice;
 		String payMthd="";

@@ -18,6 +18,19 @@ public class OrderCtrl {
 		this.tableSystem = tableSystem;
 	}
 	
+	private static String orderObjToStr(Order order) throws Exception {
+		String str = "Order ID: " + order.getOrderID() + "\n"
+				+ "Table ID: " + order.getTableID() + "\n"
+				+ "Server: " + order.getStaffName() + "\n"
+				+ "Order Items:";
+		String[][] items = order.getAllItemsArr();
+		for (int i=0; i<items.length; i++) {
+			//				itemNum				 itemName			  itemPrice
+			str += "\n  " + items[i][1] + "  " + items[i][0] + " ($" + items[i][2] + ")";
+		}
+		return str;
+	}
+	
 	private static String orderObjToData(Order order) {
 		String line;
 		ArrayList<String> lines = new ArrayList<String>();
@@ -227,7 +240,6 @@ public class OrderCtrl {
 		return valid;
 	}
 	
-	
 	// TODO integrate with MenuCtrl
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
@@ -246,6 +258,16 @@ public class OrderCtrl {
 		} 
 	}
 	
+	public String viewOrder(int orderID) throws Exception {
+		try {
+			Order order = getOrderObject(orderID);
+			return orderObjToStr(order);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+	
 	// TODO integrate with StaffCtrl
 	public void createOrder(int tableID, int employeeID, String[] itemNames, int[] itemNums) throws Exception {
 		//String staffName = StaffCtrl.getStaffName(employeeID);
@@ -254,29 +276,6 @@ public class OrderCtrl {
 		} catch (Exception e) {
 			throw e;
 		}
-	}
-	
-	public String orderObjToStr(Order order) throws Exception {
-		String str = "Order ID: " + order.getOrderID() + "\n"
-				+ "Table ID: " + order.getTableID() + "\n"
-				+ "Server: " + order.getStaffName() + "\n"
-				+ "Order Items:";
-		String[][] items = order.getAllItems();
-		for (int i=0; i<items.length; i++) {
-			//				itemNum				 itemName			  itemPrice
-			str += "\n  " + items[i][1] + "  " + items[i][0] + " ($" + items[i][2] + ")";
-		}
-		return str;
-	}
-	
-	public String orderObjToStr(int orderID) throws Exception {
-		try {
-			Order order = getOrderObject(orderID);
-			return orderObjToStr(order);
-		} catch (Exception e) {
-			throw e;
-		}
-		
 	}
 	
 	// TODO integrate with MenuCtrl

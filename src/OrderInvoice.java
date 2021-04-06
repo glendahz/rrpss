@@ -5,7 +5,7 @@ enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, APLIPAY };
 public class OrderInvoice {
 	private Order order;
 	private PaymentMethod paymentMethod;
-	LocalDateTime timestamp;
+	private LocalDateTime timestamp;
 	
 	OrderInvoice(Order order, PaymentMethod paymentMethod, LocalDateTime timestamp){
 		this.order = order;

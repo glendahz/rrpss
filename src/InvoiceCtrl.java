@@ -69,53 +69,33 @@ public class InvoiceCtrl {
 		return "|" + str + "|";
 	}
 	
-	private static String getBlankStr(boolean bordered) {
+	private static String getBlankStr() {
 		String newStr = " ".repeat(WIDTH);
-		if (bordered) newStr = getBorderedStr(newStr);
+		newStr = getBorderedStr(newStr);
 		return newStr;
 	}
-	
-	private static String getBlankStr() {
-		return getBlankStr(true);
-	}
 		
-	private static String getDividerStr(boolean bordered) {
-		return getCenteredStr("-".repeat(DIVIDER_LEN), bordered);
-	}
-	
 	private static String getDividerStr() {
-		return getDividerStr(true);
-	}
-	
-	private static String getLeftAlignedStr(String str, boolean bordered) {
-		String newStr = String.format("%-"+TEXT_BLOCK_LEN+"s", str);
-		return getCenteredStr(newStr, bordered);
+		return getCenteredStr("-".repeat(DIVIDER_LEN));
 	}
 	
 	private static String getLeftAlignedStr(String str) {
-		return getLeftAlignedStr(str, true);
-	}
-	
-	private static String getRightAlignedStr(String str, boolean bordered) {
-		String newStr = String.format("%"+TEXT_BLOCK_LEN+"s", str);
-		return getCenteredStr(newStr, bordered);
+		String newStr = String.format("%-"+TEXT_BLOCK_LEN+"s", str);
+		return getCenteredStr(newStr);
 	}
 	
 	private static String getRightAlignedStr(String str) {
-		return getRightAlignedStr(str, true);
+		String newStr = String.format("%"+TEXT_BLOCK_LEN+"s", str);
+		return getCenteredStr(newStr);
 	}
 	
-	private static String getCenteredStr(String str, boolean bordered) {
+	private static String getCenteredStr(String str) {
 		int leftLen = (WIDTH - str.length()) / 2;
 		int rightLen = WIDTH - str.length() - leftLen;
 		String newStr = String.format("%"+leftLen+"s%s%"+rightLen+"s", "", str, "");
-		if (bordered) newStr = getBorderedStr(newStr);
+		newStr = getBorderedStr(newStr);
 		return newStr;
 	} 
-	
-	private static String getCenteredStr(String str) {
-		return getCenteredStr(str, true);
-	}
 	
 	private static String getOrderItemStr(String itemName, String itemNum, String itemPrice) {
 		// wrap item name string if needed
@@ -130,8 +110,14 @@ public class InvoiceCtrl {
 		String str = getCenteredStr(numStr + spaceStr + nameStr + spaceStr + priceStr);
 		
 		// add additional lines if needed
-		//formatStr = "%"+(ITEM_NUM_LEN+SPACE_LEN)+"s%-"+ITEM_NAME_LEN+"s%"+(SPACE_LEN+ITEM_PRICE_LEN)+"s";
-		//for(int i=1; i<nameLines.length; i++) str += String.format(formatStr, "", nameLines[i], "");
+		if (nameLines.length > 1) {
+			numStr = String.format("%"+ITEM_NUM_LEN+"s", "");
+			priceStr = String.format("%"+ITEM_PRICE_LEN+"s", "");
+			for(int i=1; i<nameLines.length; i++) {
+				nameStr = String.format("%-"+ITEM_NAME_LEN+"s", nameLines[i]); 
+				str += getCenteredStr(numStr + spaceStr + nameStr + spaceStr + priceStr);
+			} 
+		}
 		
 		return str;
 	}
@@ -161,7 +147,7 @@ public class InvoiceCtrl {
 				+ "\n" + getBlankStr();
 		
 		// add order items
-		String[][] items = order.getAllItems();
+		String[][] items = order.getAllItemsArr();
 		for (int i=0; i<items.length; i++) invoiceStr += "\n" + getOrderItemStr(items[i][0], items[i][1], items[i][2]);
 		invoiceStr += "\n" + getBlankStr() 
 				+ "\n" + getDividerStr();
