@@ -175,7 +175,7 @@ public class OrderUI {
 			}
 			// check if entry is a valid order ID
 			try {
-				if (OrderCtrl.validOrderID(orderID)) run = false;
+				if (OrderCtrl.validTableID(orderID)) run = false;
 				else {
 					System.out.println("Error: " + orderID + " is not a valid order ID\n"
 							+ "Please enter a valid order ID!\n");

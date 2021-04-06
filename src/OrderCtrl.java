@@ -10,19 +10,16 @@ public class OrderCtrl {
 	private static final File ORDER_FILE = new File("data", "order.txt");
 	private static final int ORDER_LINES = 4; // number of lines for each order in the data file
 	private static final String DELIMITER = ",";
-	//private static final File STAFF_FILE = new File("data", "staff.txt");
-	//private static final int STAFF_LINES = 4;
-	private TableSystem tableSystem;
+	private TableCtrl tableCtrl;
 	
-	public OrderCtrl(TableSystem tableSystem) {
-		this.tableSystem = tableSystem;
+	public OrderCtrl(TableCtrl tableCtrl) {
+		this.tableCtrl = tableCtrl;
 	}
 	
 	private static String orderObjToStr(Order order) throws Exception {
-		String str = "Order ID: " + order.getOrderID() + "\n"
-				+ "Table ID: " + order.getTableID() + "\n"
-				+ "Server: " + order.getStaffName() + "\n"
-				+ "Order Items:";
+		String str = "Table ID: " + order.getTableID() + "\n"
+		+ "Server: " + order.getStaffName() + "\n"
+		+ "Order Items:";
 		String[][] items = order.getAllItemsArr();
 		for (int i=0; i<items.length; i++) {
 			//				itemNum				 itemName			  itemPrice
@@ -36,10 +33,9 @@ public class OrderCtrl {
 		ArrayList<String> lines = new ArrayList<String>();
 		
 		// line 1 of data
-		String orderID = String.valueOf(order.getOrderID());
 		String tableID = String.valueOf(order.getTableID());
 		String staffName = order.getStaffName();
-		line = String.join(DELIMITER, orderID, tableID, staffName);
+		line = String.join(DELIMITER, tableID, staffName); 
 		lines.add(line);
 		
 		// lines 2, 3 & 4 of data
@@ -53,35 +49,8 @@ public class OrderCtrl {
 		String data = String.join("\n", lines);
 		return data;
 	}
-
-	private static int createOrderID() throws Exception {
-		int orderID = -1;
-		try {
-			// read from file
-			Scanner fr = new Scanner(ORDER_FILE);
-			try {
-				orderID = fr.nextInt();
-				fr.nextLine();
-				String data = String.valueOf(orderID + 1) + "\n";
-				while(fr.hasNextLine()) data += fr.nextLine() + "\n";
-				fr.close();
-				// write to file
-				FileWriter fw = new FileWriter(ORDER_FILE);
-				fw.write(data);
-				fw.close();
-			}catch(NoSuchElementException e){
-				fr.close();
-				throw new Exception("OrderCtrl.createOrderID() error: data in order data file is formatted differently from expected\n");				
-			}catch (IOException e) {
-				throw new Exception("OrderCtrl.createOrderID() error: FileWriter cannot find order data file\n");
-			}
-		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.createOrderID() error: Scanner cannot find order data file \n");
-		} 
-		return orderID;
-	}
 	
-	private static void editOrderData(int orderID, Order newOrder) throws Exception {
+	private static void editOrderData(int tableID, Order newOrder) throws Exception {
 		String data = "", line;
 		String[] splitLine;
 		int currID;
@@ -89,12 +58,11 @@ public class OrderCtrl {
 		// retrieve data and edit it
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
-			data += fr.nextLine(); // skip first line
 			while (fr.hasNextLine()) {
 				line = fr.nextLine();
 				splitLine = line.split(DELIMITER);
 				currID = Integer.parseInt(splitLine[0]);
-				if (orderID == currID) {
+				if (tableID == currID) {
 					data += "\n" + orderObjToData(newOrder);
 					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over target order data
 					break;
@@ -132,7 +100,7 @@ public class OrderCtrl {
 		}
 	}
 	
-	protected static void deleteOrderData(int orderID) throws Exception {
+	protected static void deleteOrderData(int tableID) throws Exception {
 		String data = "", line;
 		String[] splitLine;
 		int currID;
@@ -140,12 +108,11 @@ public class OrderCtrl {
 		// retrieve data and edit it
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
-			data += fr.nextLine(); // skip first line
 			while (fr.hasNextLine()) {
 				line = fr.nextLine();
 				splitLine = line.split(DELIMITER);
 				currID = Integer.parseInt(splitLine[0]);
-				if (orderID == currID) {
+				if (tableID == currID) {
 					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over target order data
 					break;
 				} 
@@ -171,22 +138,20 @@ public class OrderCtrl {
 		}
 	}
 	
-	protected static Order getOrderObject(int orderID) throws Exception {
+	protected static Order getOrderObject(int tableID) throws Exception {
 		Order order = null;
-		int currID, tableID;
+		int currID;
 		String staffName;
 		String[] line, itemNames, itemNums, itemPrices;
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
-			fr.nextLine(); // skips first line
 			while (fr.hasNextLine()) {
 				try {
 					line = fr.nextLine().split(DELIMITER);
 					currID = Integer.parseInt(line[0]);
-					if (orderID == currID) {
-						tableID = Integer.parseInt(line[1]);
-						staffName = line[2];
-						order = new Order(orderID, tableID, staffName);
+					if (tableID == currID) {
+						staffName = line[1];
+						order = new Order(tableID, staffName);
 						// add items to order
 						itemNames = fr.nextLine().split(DELIMITER);
 						itemNums = fr.nextLine().split(DELIMITER);
@@ -211,19 +176,18 @@ public class OrderCtrl {
 		return order;
 	}
 	
-	// TODO decide if needed
-	public static boolean validOrderID(int orderID) throws Exception {
+	// TODO
+	public static boolean validTableID(int tableID) throws Exception {
 		boolean valid = false;
 		String[] line;
 		int currID;
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
-			fr.nextLine(); // skips first line
 			while (fr.hasNextLine()) {
 				try {
 					line = fr.nextLine().split(DELIMITER);
 					currID = Integer.parseInt(line[0]);
-					if (orderID == currID) {
+					if (tableID == currID) {
 						valid = true;
 						break;
 					}
@@ -241,17 +205,17 @@ public class OrderCtrl {
 	}
 	
 	// TODO integrate with MenuCtrl
-	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
+	// TODO integrate with TableCtrl
+	public boolean createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
-			int orderID = createOrderID();
 			float[] itemPrices = new float[itemNames.length];
 			for (int i=0; i<itemNames.length; i++) itemPrices[i] = 4; //itemPrices[i] = MenuCtrl.getPrice(itemNames[i]);
-			Order order = new Order(orderID, tableID, staffName, itemNames, itemNums, itemPrices);
+			Order order = new Order(tableID, staffName, itemNames, itemNums, itemPrices);
 			// write data to file
 			appendOrderData(order);
 			// change table status
-			tableSystem.assignTable(tableID);
+			tableCtrl.assignTable(tableID);
 		} catch (Exception e) {
 			throw new Exception("OrderCtrl.createOrder() error:\n"
 					+ "\t" + e.getMessage());
@@ -304,49 +268,4 @@ public class OrderCtrl {
 		return true;
 	}
 
-	
-	/*public boolean validEmployeeID(int employeeID) throws Exception {
-		boolean valid = false;
-		try {
-			Scanner fr = new Scanner(STAFF_FILE);
-			while (fr.hasNextLine()) {
-				try {
-					if (employeeID == fr.nextInt()) {
-						valid = true;
-						break;
-					}
-					for (int i=0; i<STAFF_LINES; i++) fr.nextLine(); // skip over all other data in each staff object
-				}catch(NoSuchElementException e) {
-					fr.close();
-					throw new Exception("OrderCtrl.validEmployeeID() error: data in staff data file is formatted differently from expected");
-				}
-			}
-			fr.close();
-		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.validEmployeeID() error: Scanner cannot find staff data file");
-		}
-		return valid;
-	}
-	
-	private static Staff getStaffObject(int employeeID) throws Exception {
-		Staff staff = null;
-		try {
-			Scanner fr = new Scanner(STAFF_FILE);
-			for(int i=0; i<employeeID*STAFF_LINES; i++) fr.nextLine(); // skip data before target staff data
-			fr.nextLine(); // skip the employee ID since it is already passed into the function
-			try {
-				String name = fr.nextLine(); 
-				Gender gender = Gender.valueOf(fr.nextLine());
-				JobTitle jobTitle = JobTitle.valueOf(fr.nextLine());
-				staff = new Staff(employeeID, name, gender, jobTitle);
-			} catch (IllegalArgumentException e) {
-				fr.close();
-				throw new Exception("OrderCtrl.getStaffObject() error: data in staff data file was not formatted as expected");
-			}
-			fr.close();
-		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.getStaffObject() error: Scanner cannot find staff data file");
-		} catch (NoSuchElementException e) {}
-		return staff;
-	}*/
 }

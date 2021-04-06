@@ -3,13 +3,11 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class Order {
-	private int orderID;
 	private int tableID;
 	private String staffName;
 	private Hashtable<String, Float[]> items = new Hashtable<String, Float[]>();
 	
-	public Order(int orderID, int tableID, String staffName, String[] itemNames, int[] itemNums, float[] itemPrices) {
-		this.orderID = orderID;
+	public Order(int tableID, String staffName, String[] itemNames, int[] itemNums, float[] itemPrices) {
 		this.tableID = tableID;
 		this.staffName = staffName;
 		Float[] itemInfo = new Float[2];
@@ -26,14 +24,11 @@ public class Order {
 		}
 	}
 	
-	public Order(int orderID, int tableID, String staffName) {
-		this(orderID, tableID, staffName, null, null, null);
+	public Order(int tableID, String staffName) {
+		this(tableID, staffName, null, null, null);
 	}
 	
 	// getter functions
-	public int getOrderID() {
-		return this.orderID;
-	}
 	public int getTableID() {
 		return this.tableID;
 	}
@@ -48,6 +43,15 @@ public class Order {
 		return itemNamesArr;
 	}
 	public String[][] getAllItemsArr(){
+		/*
+		 * Example Array:
+		 * [
+		 * 	[name1, num1, price1],
+		 * 	[name2, num2, price2],
+		 * 	[name3, num3, price3]
+		 * ]
+		 */
+		
 		String[] itemNames = this.getAllItemNames();
 		String[][] items = new String[itemNames.length][3];
 		String itemName;
@@ -64,6 +68,15 @@ public class Order {
 		return items;
 	}
 	public String[][] getAllItemsSepArr(){
+		/*
+		 * Example Array:
+		 * [
+		 * 	[name1, name2, name3],
+		 * 	[num1, num2, num3],
+		 * 	[price1, price2, price3]
+		 * ]
+		 */
+		
 		String[] itemNames = this.getAllItemNames();
 		String[][] items = new String[3][itemNames.length];
 		String itemName;
@@ -90,9 +103,6 @@ public class Order {
 	}
 	
 	// setter functions
-	public void setOrderID(int orderID) {
-		this.orderID = orderID;
-	}
 	public void setTableID(int tableID) {
 		this.tableID = tableID;
 	}
