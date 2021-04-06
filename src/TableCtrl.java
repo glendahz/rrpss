@@ -66,7 +66,7 @@ public class TableCtrl {
 		return tableID;
 	}
 	
-	private TableStatus getTableStatus(int tableID) {
+	public TableStatus getTableStatus(int tableID) {
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
 			if (currTable.getTableID() == tableID) {
