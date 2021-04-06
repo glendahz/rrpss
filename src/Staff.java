@@ -1,4 +1,4 @@
-enum Gender { Male, Female }
+enum Gender { MALE, FEMALE }
 enum JobTitle { WAITER, MANAGER}
 
 public class Staff {
@@ -33,7 +33,7 @@ public class Staff {
 	
 	// To implement with order
 	public void getOrder() {
-		System.out.println(this.name + " got order from customer");
+		System.out.println(this.name + " got order from customer"); // Maybe want include tableID?
 	}
 	
 }

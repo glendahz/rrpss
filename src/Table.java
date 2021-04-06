@@ -4,14 +4,12 @@ public class Table {
 	
 	private int size;
 	private TableStatus status = TableStatus.VACANT; // Set to empty when initializing
+	private int tableID;
 	
 	public Table(int size) {
 		this.size = size;
-	}
-	
-	public Table(int size, TableStatus status) {
-		this.size = size;
-		this.status = status;
+		this.tableID = TableCtrl.currTableID;
+		TableCtrl.currTableID++;
 	}
 	
 	public int getSize() {
@@ -20,6 +18,10 @@ public class Table {
 	
 	public TableStatus getStatus() {
 		return this.status;
+	}
+	
+	public int getTableID() {
+		return this.tableID;
 	}
 	
 	public void setToOccupied() {
@@ -35,3 +37,4 @@ public class Table {
 	}
 	
 }
+

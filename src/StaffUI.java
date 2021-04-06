@@ -3,6 +3,8 @@ import java.util.InputMismatchException;
 
 public class StaffUI {
 	
+	static Scanner sc = new Scanner(System.in);
+	
 	static int choice = 0;
 	
 	public static void main(String[] args) {
@@ -28,7 +30,6 @@ public class StaffUI {
 	public static void UserInput() {
 		
 		boolean validInput = false;
-		Scanner sc = new Scanner(System.in);
 		
 		System.out.print("Please enter your choice from 1 to 4: ");
 		while (!validInput) {
@@ -43,7 +44,6 @@ public class StaffUI {
 			}
 		}
 		
-		sc.close();
 		return ;
 	}
 	
