@@ -13,9 +13,12 @@ public class OrderCtrl {
 	private static TableCtrl tableCtrl;
 	private static StaffCtrl staffCtrl;
 	
-	public OrderCtrl(TableCtrl tCtrl, StaffCtrl sCtrl) {
-		tableCtrl = tCtrl;
-		staffCtrl = sCtrl;
+	public void setTableCtrl(TableCtrl ctrl) {
+		tableCtrl = ctrl;
+	}
+	
+	public void setStaffCtrl(StaffCtrl ctrl) {
+		staffCtrl = ctrl;
 	}
 	
 	private static String orderObjToStr(Order order) throws Exception {
