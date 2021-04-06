@@ -5,14 +5,18 @@ public class OrderUI {
 	private static OrderCtrl ctrl;
 	
 	public static void main(String[] args) {
-		TableSystem tables = new TableSystem();
+		TableCtrl tables = new TableCtrl();
 		tables.addTable(4);
 		tables.addTable(5);
+		setCtrl(new OrderCtrl(tables))
 		mainUI(tables);
 	}
 	
-	public static void mainUI(Scanner sc, TableSystem tableSystem) {
-		ctrl = new OrderCtrl(tableSystem);
+	public void setCtrl(OrderCtrl ctrl) {
+		this.ctrl = ctrl;
+	}
+	
+	public static void mainUI(Scanner sc) {
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -59,9 +63,9 @@ public class OrderUI {
 		}
 	}
 	
-	public static void mainUI(TableSystem tableSystem) {
+	public static void mainUI() {
 		Scanner sc = new Scanner(System.in);
-		mainUI(sc, tableSystem);
+		mainUI(sc);
 		sc.close();
 	}
 	
@@ -111,10 +115,10 @@ public class OrderUI {
 	}
 	
 	private static void viewOrderUI(Scanner sc) {
-		int orderID = getOrderIDUI(sc);;
+		int tableID = getTableIDUI(sc);;
 		// print order
 		try {
-			System.out.println(ctrl.viewOrder(orderID) + "\n");
+			System.out.println(ctrl.viewOrder(tableID) + "\n");
 		} catch(Exception e) {
 			System.out.println("Error: unable to print order\n" 
 					+ e.getMessage() + "\n");
@@ -122,12 +126,12 @@ public class OrderUI {
 	}
 	
 	private static void addOrderItemUI(Scanner sc) {
-		int orderID = getOrderIDUI(sc);
+		int tableID = getTableIDUI(sc);
 		String itemName = getOrderItemNameUI(sc);
 		int itemNum = getOrderItemNumUI(sc, itemName);
 		try {
-			ctrl.addOrderItem(orderID, itemName, itemNum);
-			System.out.println(itemName + " (x" + itemNum + ") successfully added to order " + orderID + "!\n");
+			ctrl.addOrderItem(tableID, itemName, itemNum);
+			System.out.println(itemName + " (x" + itemNum + ") successfully added to order " + tableID + "!\n");
 		} catch (Exception e) {
 			System.out.println("Error: unable to add order item\n"
 					+ e.getMessage() + "\n");
@@ -136,7 +140,7 @@ public class OrderUI {
 	
 	private static void removeOrderItemUI(Scanner sc) {
 		boolean run = true;
-		int orderID = getOrderIDUI(sc);
+		int orderID = getTableIDUI(sc);
 		String itemName;
 		while(run) {
 			try {
@@ -156,39 +160,36 @@ public class OrderUI {
 		}
 	}
 	
-	protected static int getOrderIDUI(Scanner sc) {
+	// TODO valid table ID check (TableSystem)
+	// TODO reserved table status check (TableSystem)
+	private static int getTableIDUI(Scanner sc) {
 		boolean run = true;
-		int orderID=-1;
-		
-		// get order ID
-		while (run) {
-			System.out.println("Enter order ID: ");
+		int tableID = -1;
+		while(run) {
+			System.out.println("Enter table ID: ");
 			// check if entry is an integer
 			try {
-				orderID = sc.nextInt();
+				tableID = sc.nextInt();
 				sc.nextLine(); // flush System.in
 				System.out.println();
+				run = false; // TODO delete when checks are implemented
 			} catch(NoSuchElementException e) {
-				System.out.println("Error: entry was not a valid order ID\n"
+				System.out.println("Error: entry was not a valid table ID\n"
 						+ "Please enter an integer!\n");
+				sc.nextLine(); // flush System.in
 				continue;
 			}
-			// check if entry is a valid order ID
-			try {
-				if (OrderCtrl.validTableID(orderID)) run = false;
-				else {
-					System.out.println("Error: " + orderID + " is not a valid order ID\n"
-							+ "Please enter a valid order ID!\n");
-				}
-			} catch (Exception e) {
-				System.out.println("Error: unable to determine if order ID is valid\n" 
-						+ e.getMessage() + "\n");
-			}
+			/* check if table is reserved
+			if (TableSystem.getTableStatus(tableID) == TableStatus.RESERVED) run = false;
+			else {
+				System.out.println("Error: table " + tableID + " is not reserved\n"
+						+ "Only reserved tables can make orders!\n");
+			}*/
 		}
-		
-		return orderID;
+		return tableID;
 	}
 
+	
 	// TODO: valid order item check (MenuCtrl)
 	private static String getOrderItemNameUI(Scanner sc) {
 		boolean run = true;
@@ -226,35 +227,6 @@ public class OrderUI {
 			}
 		}
 		return num;
-	}
-
-	// TODO valid table ID check (TableSystem)
-	// TODO reserved table status check (TableSystem)
-	private static int getTableIDUI(Scanner sc) {
-		boolean run = true;
-		int tableID = -1;
-		while(run) {
-			System.out.println("Enter table ID: ");
-			// check if entry is an integer
-			try {
-				tableID = sc.nextInt();
-				sc.nextLine(); // flush System.in
-				System.out.println();
-				run = false; // TODO delete when checks are implemented
-			} catch(NoSuchElementException e) {
-				System.out.println("Error: entry was not a valid table ID\n"
-						+ "Please enter an integer!\n");
-				sc.nextLine(); // flush System.in
-				continue;
-			}
-			/* check if table is reserved
-			if (TableSystem.getTableStatus(tableID) == TableStatus.RESERVED) run = false;
-			else {
-				System.out.println("Error: table " + tableID + " is not reserved\n"
-						+ "Only reserved tables can make orders!\n");
-			}*/
-		}
-		return tableID;
 	}
 
 	// TODO valid employee ID check (StaffCtrl)

@@ -243,24 +243,24 @@ public class OrderCtrl {
 	}
 	
 	// TODO integrate with MenuCtrl
-	public void addOrderItem(int orderID, String newItemName, int newItemNum) throws Exception {
+	public void addOrderItem(int tableID, String newItemName, int newItemNum) throws Exception {
 		try {
-			Order order = getOrderObject(orderID);
+			Order order = getOrderObject(tableID);
 			float newItemPrice = 10; //float newItemPrice = MenuCtr.getPrice(itemName); 
 			order.addItem(newItemName, newItemNum, newItemPrice);
-			editOrderData(orderID, order);
+			editOrderData(tableID, order);
 		} catch (Exception e) {
 			throw new Exception("OrderCtr.addOrderItem() error:\n\t"
 					+ e.getMessage());
 		}
 	}
 	
-	public boolean removeOrderItem(int orderID, String itemName) throws Exception {
+	public boolean removeOrderItem(int tableID, String itemName) throws Exception {
 		try {
-			Order order = getOrderObject(orderID);
+			Order order = getOrderObject(tableID);
 			if (!order.containsItem(itemName)) return false;
 			order.removeItem(itemName);
-			editOrderData(orderID, order);
+			editOrderData(tableID, order);
 		} catch (Exception e) {
 			throw new Exception("OrderCtr.removeOrderItem() error:\n\t"
 					+ e.getMessage());
