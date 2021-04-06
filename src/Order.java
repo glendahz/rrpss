@@ -46,9 +46,9 @@ public class Order {
 		/*
 		 * Example Array:
 		 * [
-		 * 	[name1, num1, price1],
-		 * 	[name2, num2, price2],
-		 * 	[name3, num3, price3]
+		 * 	[num1, name1, price1],
+		 * 	[num2, name2, price2],
+		 * 	[num3, name3, price3]
 		 * ]
 		 */
 		
@@ -61,34 +61,9 @@ public class Order {
 			itemName = itemNames[i];
 			itemNum = this.items.get(itemName)[0].intValue();
 			itemPrice = this.items.get(itemName)[1];
-			items[i][0] = itemName;
-			items[i][1] = String.valueOf(itemNum);
+			items[i][0] = String.valueOf(itemNum);
+			items[i][1] = itemName;
 			items[i][2] = String.valueOf(itemPrice);
-		}
-		return items;
-	}
-	public String[][] getAllItemsSepArr(){
-		/*
-		 * Example Array:
-		 * [
-		 * 	[name1, name2, name3],
-		 * 	[num1, num2, num3],
-		 * 	[price1, price2, price3]
-		 * ]
-		 */
-		
-		String[] itemNames = this.getAllItemNames();
-		String[][] items = new String[3][itemNames.length];
-		String itemName;
-		int itemNum; 
-		Float itemPrice;
-		for (int i=0; i<itemNames.length; i++) {
-			itemName = itemNames[i];
-			itemNum = this.items.get(itemName)[0].intValue();
-			itemPrice = this.items.get(itemName)[1];
-			items[0][i] = itemName;
-			items[1][i] = String.valueOf(itemNum);
-			items[2][i] = String.valueOf(itemPrice);
 		}
 		return items;
 	}
@@ -118,7 +93,7 @@ public class Order {
 		itemInfo[1] = Float.valueOf(itemPrice);
 		this.items.put(itemName, itemInfo);
 	}
-	public void addItem(String itemName, String itemNum, String itemPrice) {
+	public void addItem(String itemNum, String itemName, String itemPrice) {
 		addItem(itemName, Integer.parseInt(itemNum), Float.parseFloat(itemPrice));
 	}
 	public void updateItemNum(String itemName, int itemNum) {

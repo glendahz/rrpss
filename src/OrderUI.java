@@ -2,13 +2,13 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class OrderUI {
-	private static OrderCtrl ctrl;
+	private static OrderCtrl orderCtrl;
 
-	public void setCtrl(OrderCtrl c) {
-		ctrl = c;
+	public void setOrderCtrl(OrderCtrl ctrl) {
+		orderCtrl = ctrl;
 	}
 	
-	public void mainUI(Scanner sc) {
+	public void displayOptions(Scanner sc) {
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -55,9 +55,9 @@ public class OrderUI {
 		}
 	}
 	
-	public void mainUI() {
+	public void displayOptions() {
 		Scanner sc = new Scanner(System.in);
-		mainUI(sc);
+		displayOptions(sc);
 		sc.close();
 	}
 	
@@ -97,7 +97,7 @@ public class OrderUI {
 		
 		// write new order to data file
 		try {
-			ctrl.createOrder(tableID, staffName, itemNames, itemNums);
+			orderCtrl.createOrder(tableID, staffName, itemNames, itemNums);
 			System.out.println("Order successfully created!\n");
 		} catch (Exception e) {
 			System.out.println("Error: order could not be created\n"
@@ -110,7 +110,7 @@ public class OrderUI {
 		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);;
 		// print order
 		try {
-			System.out.println(ctrl.viewOrder(tableID) + "\n");
+			System.out.println(orderCtrl.viewOrder(tableID) + "\n");
 		} catch(Exception e) {
 			System.out.println("Error: unable to print order\n" 
 					+ e.getMessage() + "\n");
@@ -122,7 +122,7 @@ public class OrderUI {
 		String itemName = getOrderItemNameUI(sc);
 		int itemNum = getOrderItemNumUI(sc, itemName);
 		try {
-			ctrl.addOrderItem(tableID, itemName, itemNum);
+			orderCtrl.addOrderItem(tableID, itemName, itemNum);
 			System.out.println(itemName + " (x" + itemNum + ") successfully added to order " + tableID + "!\n");
 		} catch (Exception e) {
 			System.out.println("Error: unable to add order item\n"
@@ -137,7 +137,7 @@ public class OrderUI {
 		while(run) {
 			try {
 				itemName = getOrderItemNameUI(sc);
-				if (ctrl.removeOrderItem(orderID, itemName)) {
+				if (orderCtrl.removeOrderItem(orderID, itemName)) {
 					System.out.println(itemName + " successfully removed from order " + orderID + "!\n");
 					run = false;
 				}
@@ -154,7 +154,7 @@ public class OrderUI {
 	
 	// TODO valid table ID check (TableSystem)
 	// TODO reserved table status check (TableSystem)
-	private static int getTableIDUI(Scanner sc, TableStatus status) {
+	protected static int getTableIDUI(Scanner sc, TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
 		while(run) {
@@ -170,7 +170,7 @@ public class OrderUI {
 				sc.nextLine(); // flush System.in
 				continue;
 			}
-			if (ctrl.validTableID(tableID, status)) run = false;
+			if (orderCtrl.validTableID(tableID, status)) run = false;
 			else System.out.println("Error: entry was not a valid table ID\n");
 		}
 		return tableID;
@@ -233,7 +233,7 @@ public class OrderUI {
 				sc.nextLine(); // flush System.in
 				continue;
 			}
-			staffName = ctrl.validEmployeeID(employeeID);
+			staffName = orderCtrl.validEmployeeID(employeeID);
 			if (staffName == null) {
 				System.out.println("TEstError: entry was not a valid employee ID\n");
 			}
