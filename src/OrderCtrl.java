@@ -11,9 +11,11 @@ public class OrderCtrl {
 	private static final int ORDER_LINES = 4; // number of lines for each order in the data file
 	private static final String DELIMITER = ",";
 	private TableCtrl tableCtrl;
+	private StaffCtrl staffCtrl;
 	
-	public OrderCtrl(TableCtrl tableCtrl) {
+	public OrderCtrl(TableCtrl tableCtrl, StaffCtrl staffCtrl) {
 		this.tableCtrl = tableCtrl;
+		this.staffCtrl = staffCtrl;
 	}
 	
 	private static String orderObjToStr(Order order) throws Exception {
@@ -178,35 +180,12 @@ public class OrderCtrl {
 	
 	// TODO
 	public static boolean validTableID(int tableID) throws Exception {
-		boolean valid = false;
-		String[] line;
-		int currID;
-		try {
-			Scanner fr = new Scanner(ORDER_FILE);
-			while (fr.hasNextLine()) {
-				try {
-					line = fr.nextLine().split(DELIMITER);
-					currID = Integer.parseInt(line[0]);
-					if (tableID == currID) {
-						valid = true;
-						break;
-					}
-					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over all other data in each staff object
-				}catch(NoSuchElementException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
-					fr.close();
-					throw new Exception("OrderCtrl.validOrderID() error: data in order data file is formatted differently from expected");
-				}
-			}
-			fr.close();
-		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.validOrderID() error: Scanner cannot find order data file");
-		}
-		return valid;
+		return true;
 	}
 	
 	// TODO integrate with MenuCtrl
 	// TODO integrate with TableCtrl
-	public boolean createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
+	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
 			float[] itemPrices = new float[itemNames.length];

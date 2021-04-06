@@ -17,7 +17,7 @@ public class InvoiceCtrl {
 	private final static int ITEM_PRICE_LEN = 8;
 	private final static int ITEM_NAME_LEN = TEXT_BLOCK_LEN - ITEM_NUM_LEN - ITEM_PRICE_LEN - (2 * SPACE_LEN);
 	
-	private TableSystem tableSystem;
+	private TableCtrl tableSystem;
 	
 	public static void main(String[] args) {
 		try {
@@ -32,7 +32,7 @@ public class InvoiceCtrl {
 		
 	}
 	
-	public InvoiceCtrl(TableSystem tableSystem) {
+	public InvoiceCtrl(TableCtrl tableSystem) {
 		this.tableSystem = tableSystem;
 	}
 	
