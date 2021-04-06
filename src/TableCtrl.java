@@ -66,6 +66,16 @@ public class TableCtrl {
 		return tableID;
 	}
 	
+	public TableStatus getTableStatus(int tableID) {
+		for (int i = 0; i < tables.size(); ++i) {
+			Table currTable = tables.get(i);
+			if (currTable.getTableID() == tableID) {
+				return currTable.getStatus();
+			}
+		}
+		return null;
+	}
+	
 	public void getAvailableTables() {
 		int size = querySize();
 		ArrayList<Integer> availableTables = new ArrayList<Integer>();

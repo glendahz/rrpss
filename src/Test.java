@@ -1,22 +1,18 @@
 public class Test {
 
 	public static void main(String[] args) {
-
-//		TableSystem tables = new TableSystem();
-//		tables.addTable(4);
-//		tables.assignTable(3);
-//		tables.getAvailableTables(4);
-//		tables.reserveTable(5);
-//		tables.getAvailableTables(4);
-//		tables.addTable(5);
-//		tables.getAvailableTables(4);
-		
-//		StaffUI staffUI = new StaffUI();
-//		staffUI.main(args);
-		
-//		TableUI tableUI = new TableUI();
-//		tableUI.main(args);
-		
+		TableCtrl tables = new TableCtrl();
+		tables.addTable(4);
+		tables.addTable(5);
+		tables.addTable(6);
+		tables.assignTable(1);
+		tables.assignTable(2);
+		tables.reserveTable(3);
+		StaffCtrl staffs = new StaffCtrl();
+		staffs.addStaff();
+		OrderUI ui = new OrderUI();
+		ui.setCtrl(new OrderCtrl(tables, staffs));
+		ui.mainUI();
 	}
 
 }

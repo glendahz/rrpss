@@ -48,7 +48,7 @@ public class InvoiceUI {
 		}
 	}
 	
-	public static void mainUI(TableSystem tableSystem) {
+	public static void mainUI(TableCtrl tableSystem) {
 		Scanner sc = new Scanner(System.in);
 		mainUI(sc, tableSystem);
 		sc.close();

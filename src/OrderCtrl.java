@@ -10,12 +10,12 @@ public class OrderCtrl {
 	private static final File ORDER_FILE = new File("data", "order.txt");
 	private static final int ORDER_LINES = 4; // number of lines for each order in the data file
 	private static final String DELIMITER = ",";
-	private TableCtrl tableCtrl;
-	private StaffCtrl staffCtrl;
+	private static TableCtrl tableCtrl;
+	private static StaffCtrl staffCtrl;
 	
-	public OrderCtrl(TableCtrl tableCtrl, StaffCtrl staffCtrl) {
-		this.tableCtrl = tableCtrl;
-		this.staffCtrl = staffCtrl;
+	public OrderCtrl(TableCtrl tCtrl, StaffCtrl sCtrl) {
+		tableCtrl = tCtrl;
+		staffCtrl = sCtrl;
 	}
 	
 	private static String orderObjToStr(Order order) throws Exception {
@@ -65,15 +65,15 @@ public class OrderCtrl {
 				splitLine = line.split(DELIMITER);
 				currID = Integer.parseInt(splitLine[0]);
 				if (tableID == currID) {
-					data += "\n" + orderObjToData(newOrder);
+					data += orderObjToData(newOrder) + "\n";
 					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over target order data
 					break;
 				} 
 				// copy all data before target data
-				data += "\n" + line;
-				for (int i=0; i<ORDER_LINES-1; i++) data += "\n" + fr.nextLine();
+				data += line + "\n";
+				for (int i=0; i<ORDER_LINES-1; i++) data += fr.nextLine() + "\n";
 			}
-			while (fr.hasNextLine()) data += "\n" + fr.nextLine(); // copy all data after target data
+			while (fr.hasNextLine()) data += fr.nextLine() + "\n"; // copy all data after target data
 			fr.close();
 		} catch (FileNotFoundException e) {
 			throw new Exception("OrderCtrl.editOrderData() error: Scanner cannot find order data file \n");
@@ -178,13 +178,27 @@ public class OrderCtrl {
 		return order;
 	}
 	
-	// TODO
-	public static boolean validTableID(int tableID) throws Exception {
-		return true;
+	public boolean validTableID(int tableID, TableStatus status){
+		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
+		if (status == null) {
+			if (currStatus != null) return true;
+			else return false;
+		}
+		else {
+			if (currStatus == status) return true;
+			else return false;
+		}
+	}
+	
+	public boolean validTableID(int tableID) {
+		return validTableID(tableID, null);
+	}
+	
+	public String validEmployeeID(int employeeID) {
+		return staffCtrl.getStaffName(employeeID);
 	}
 	
 	// TODO integrate with MenuCtrl
-	// TODO integrate with TableCtrl
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
@@ -209,16 +223,6 @@ public class OrderCtrl {
 			throw e;
 		}
 		
-	}
-	
-	// TODO integrate with StaffCtrl
-	public void createOrder(int tableID, int employeeID, String[] itemNames, int[] itemNums) throws Exception {
-		//String staffName = StaffCtrl.getStaffName(employeeID);
-		try {
-			createOrder(tableID, "Ben", itemNames, itemNums);
-		} catch (Exception e) {
-			throw e;
-		}
 	}
 	
 	// TODO integrate with MenuCtrl

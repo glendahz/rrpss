@@ -87,7 +87,6 @@ public class StaffCtrl {
 	
 	public void removeStaff() {
 		
-		
 		boolean validInput = false;
 		int employeeID = -1;
 		System.out.print("Enter employee ID of employee to be removed: ");
@@ -110,6 +109,16 @@ public class StaffCtrl {
 				staffList.remove(i);
 			}
 		}		
+	}
+	
+	public String getStaffName(int employeeID) {
+		for (int i = 0; i < staffList.size(); ++i) {
+			Staff currStaff = staffList.get(i);
+			if (currStaff.getEmployeeID() == employeeID) {
+				return currStaff.getName();
+			}
+		}
+		return null;
 	}
 	
 }

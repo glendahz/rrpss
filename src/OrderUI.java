@@ -3,20 +3,12 @@ import java.util.Scanner;
 
 public class OrderUI {
 	private static OrderCtrl ctrl;
-	
-	public static void main(String[] args) {
-		TableCtrl tables = new TableCtrl();
-		tables.addTable(4);
-		tables.addTable(5);
-		setCtrl(new OrderCtrl(tables))
-		mainUI(tables);
+
+	public void setCtrl(OrderCtrl c) {
+		ctrl = c;
 	}
 	
-	public void setCtrl(OrderCtrl ctrl) {
-		this.ctrl = ctrl;
-	}
-	
-	public static void mainUI(Scanner sc) {
+	public void mainUI(Scanner sc) {
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -63,7 +55,7 @@ public class OrderUI {
 		}
 	}
 	
-	public static void mainUI() {
+	public void mainUI() {
 		Scanner sc = new Scanner(System.in);
 		mainUI(sc);
 		sc.close();
@@ -71,8 +63,8 @@ public class OrderUI {
 	
 	private static void createOrderUI(Scanner sc) {
 		// get table ID & employee ID
-		int tableID = getTableIDUI(sc);
-		int employeeID = getEmployeeIDUI(sc);
+		int tableID = getTableIDUI(sc, TableStatus.RESERVED);
+		String staffName = getEmployeeIDUI(sc);
 		
 		// get order items
 		boolean run = true;
@@ -105,8 +97,8 @@ public class OrderUI {
 		
 		// write new order to data file
 		try {
-			ctrl.createOrder(tableID, employeeID, itemNames, itemNums);
-			System.out.println("Order successfully created!");
+			ctrl.createOrder(tableID, staffName, itemNames, itemNums);
+			System.out.println("Order successfully created!\n");
 		} catch (Exception e) {
 			System.out.println("Error: order could not be created\n"
 					+ e.getMessage() + "\n");
@@ -115,7 +107,7 @@ public class OrderUI {
 	}
 	
 	private static void viewOrderUI(Scanner sc) {
-		int tableID = getTableIDUI(sc);;
+		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);;
 		// print order
 		try {
 			System.out.println(ctrl.viewOrder(tableID) + "\n");
@@ -126,7 +118,7 @@ public class OrderUI {
 	}
 	
 	private static void addOrderItemUI(Scanner sc) {
-		int tableID = getTableIDUI(sc);
+		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
 		String itemName = getOrderItemNameUI(sc);
 		int itemNum = getOrderItemNumUI(sc, itemName);
 		try {
@@ -140,7 +132,7 @@ public class OrderUI {
 	
 	private static void removeOrderItemUI(Scanner sc) {
 		boolean run = true;
-		int orderID = getTableIDUI(sc);
+		int orderID = getTableIDUI(sc, TableStatus.OCCUPIED);
 		String itemName;
 		while(run) {
 			try {
@@ -162,7 +154,7 @@ public class OrderUI {
 	
 	// TODO valid table ID check (TableSystem)
 	// TODO reserved table status check (TableSystem)
-	private static int getTableIDUI(Scanner sc) {
+	private static int getTableIDUI(Scanner sc, TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
 		while(run) {
@@ -172,19 +164,14 @@ public class OrderUI {
 				tableID = sc.nextInt();
 				sc.nextLine(); // flush System.in
 				System.out.println();
-				run = false; // TODO delete when checks are implemented
 			} catch(NoSuchElementException e) {
 				System.out.println("Error: entry was not a valid table ID\n"
 						+ "Please enter an integer!\n");
 				sc.nextLine(); // flush System.in
 				continue;
 			}
-			/* check if table is reserved
-			if (TableSystem.getTableStatus(tableID) == TableStatus.RESERVED) run = false;
-			else {
-				System.out.println("Error: table " + tableID + " is not reserved\n"
-						+ "Only reserved tables can make orders!\n");
-			}*/
+			if (ctrl.validTableID(tableID, status)) run = false;
+			else System.out.println("Error: entry was not a valid table ID\n");
 		}
 		return tableID;
 	}
@@ -230,33 +217,30 @@ public class OrderUI {
 	}
 
 	// TODO valid employee ID check (StaffCtrl)
-	private static int getEmployeeIDUI(Scanner sc) {
+	private static String getEmployeeIDUI(Scanner sc) {
 		boolean run = true;
-		int employeeID = -1;
+		int employeeID;
+		String staffName="";
 		while(run) {
 			System.out.println("Enter employee ID: ");
 			try {
 				employeeID = sc.nextInt();
 				sc.nextLine(); // flush System.in
 				System.out.println();
-				run = false; // TODO delete when checks are implemented
 			} catch(NoSuchElementException e) {
 				System.out.println("Error: entry was not a valid employee ID\n"
 						+ "Please enter an integer!\n");
 				sc.nextLine(); // flush System.in
 				continue;
 			}
-			/*try {
-				if (OrderCtrl.validEmployeeID(employeeID)) run = false;
-				else {
-					System.out.println("Error: " + employeeID + " is not a valid employee ID\n"
-							+ "Please enter a valid employee ID!\n");
-				}
-			} catch (Exception e) {
-				System.out.println("Error: unable to determine if employee ID is valid\n" 
-						+ e.getMessage() + "\n");
-			}*/
+			staffName = ctrl.validEmployeeID(employeeID);
+			if (staffName == null) {
+				System.out.println("TEstError: entry was not a valid employee ID\n");
+			}
+			else {
+				run = false;
+			}
 		}
-		return employeeID;
+		return staffName;
 	}
 }
