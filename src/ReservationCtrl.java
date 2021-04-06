@@ -22,7 +22,7 @@ public class ReservationCtrl {
         }
         System.out.println("Please enter date (MMdd):");
         int fdate = sc.nextInt();
-        LocalDate date = LocalDate.of(2021,Month[(int) Math.floor(fdate/100)],fdate%100);
+        LocalDate date = LocalDate.of(2021,Month.of((int)fdate/100),fdate%100);
         System.out.println("Please enter arrival time(hhmm): ");
         int ftime = sc.nextInt();
         LocalTime arrTime = LocalTime.of((int)Math.floor(ftime/100), ftime%100);
