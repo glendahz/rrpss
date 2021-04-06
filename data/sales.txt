@@ -1,0 +1,6 @@
+datetime,price,items
+2021-03-31T08:00:00,64,1-chicken,2-coffee,1-pasta
+2021-03-31T10:00:00,25,1-steak
+2021-03-31T12:30:00,52.30,3-sandwich
+2021-04-01T11:20:00,12.70,6-sushi
+2021-04-02T13:53:00,5.50,1-fried chicken
