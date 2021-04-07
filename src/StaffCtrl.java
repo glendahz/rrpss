@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -5,9 +10,10 @@ import java.util.Scanner;
 
 public class StaffCtrl {
 	
+	private static final String DELIMITER = ",";
+	
 	static int currEmpNum = 1;
 	static private ArrayList<Staff> staffList = new ArrayList<Staff>();
-	
 	static Scanner sc = new Scanner(System.in);
 	
 	public void viewStaffList() {
@@ -21,6 +27,10 @@ public class StaffCtrl {
 			}
 		}
 	}		
+	
+	public void addStaff(int employeeID, String name, Gender gender, JobTitle jobTitle) {
+		staffList.add(new Staff(name, gender, employeeID, jobTitle));
+	}
 	
 	public void addStaff() {
 		
@@ -119,6 +129,64 @@ public class StaffCtrl {
 			}
 		}
 		return null;
+	}
+	
+	public void writeData(String fileName) {
+		try {
+			PrintWriter writer = new PrintWriter(fileName);
+			for (int i = 0; i < staffList.size(); ++i) {
+				Staff currStaff = staffList.get(i);
+				Integer employeeID = currStaff.getEmployeeID();
+				String name = currStaff.getName();
+				String gender = currStaff.getGender().toString();
+				String jobTitle = currStaff.getJobTitle().toString();
+				writer.write(String.join(DELIMITER, new String[] {employeeID.toString(), name, gender, jobTitle}));
+				writer.write("\n");
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+			e.printStackTrace();
+		}
+	}
+	
+	public void readData(String fileName) {
+		String line;
+		staffList.clear(); // Empty tables arraylist
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			while ((line = reader.readLine()) != null) {
+				String[] items = line.split(DELIMITER);
+				int employeeID = Integer.parseInt(items[0]);
+				String name = items[1];
+				Gender gender = genderFromString(items[2]);
+				JobTitle jobTitle = jobTitleFromString(items[3]);
+				addStaff(employeeID, name, gender, jobTitle);
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Input mistmatch!");
+			e.printStackTrace();
+		}
+	}
+	
+	private Gender genderFromString(String currGender) {
+		if (currGender.equals("MALE")) {
+			return Gender.MALE;
+		} else {
+			return Gender.FEMALE;
+		}
+	}
+	
+	private JobTitle jobTitleFromString(String jobTitle) {
+		if (jobTitle.equals("WAITER")) {
+			return JobTitle.WAITER;
+		} else {
+			return JobTitle.MANAGER;
+		}
 	}
 	
 }

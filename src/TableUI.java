@@ -4,46 +4,51 @@ import java.util.Scanner;
 public class TableUI {
 	
 	static Scanner sc = new Scanner(System.in);
-	static int choice = 0;
-	static TableCtrl ctrl = new TableCtrl();
+	private int choice = 0;
+	private TableCtrl ctrl;
 	
-	public static void main(String[] args) {
-		
-		while (choice != 7) {
+	public void getTableController(TableCtrl ctrl) {
+		this.ctrl = ctrl;
+	}
+	
+	public void displayOptions() {
+		while (choice != 11) {
 			Options();
 			UserInput();
 			MethodSelection(choice);
 		}
+	}
+	
+	public void Options() {
+		
+		System.out.println("-----------Tables-----------");
+		System.out.println("Create Multiple Tables : 1");
+		System.out.println("Get Available Tables : 2");
+		System.out.println("Get All Tables : 3");
+		System.out.println("Add Table : 4");
+		System.out.println("Remove Table : 5");
+		System.out.println("Assign Table : 6");
+		System.out.println("Reserve Table : 7");
+		System.out.println("Vacate Table : 8");
+		System.out.println("Get All Tables : 9");
+		System.out.println("Get Table Status : 10");
+		System.out.println("Exit : 11");
 		
 	}
 	
-	public static void Options() {
-		
-		System.out.println("-----Tables-----");
-		System.out.println("Get Available Tables : 1");
-		System.out.println("Add Table : 2");
-		System.out.println("Remove Table : 3");
-		System.out.println("Assign Table : 4");
-		System.out.println("Reserve Table : 5");
-		System.out.println("Vacate Table : 6");
-		System.out.println("Get All Tables : 7");
-		System.out.println("Exit : 8");
-		
-	}
-	
-	public static void UserInput() {
+	public void UserInput() {
 		
 		boolean validInput = false;
 		
-		System.out.print("Please enter your choice from 1 to 8: ");
+		System.out.print("Please enter your choice from 1 to 11: ");
 		while (!validInput) {
 			try {
 				choice = sc.nextInt();
-				if (1 <= choice && choice <= 8) {
+				if (1 <= choice && choice <= 11) {
 					validInput = true;
 				}
 			} catch(InputMismatchException e) {
-				System.out.print("Please enter a number from 1 to 8: ");
+				System.out.print("Please enter a number from 1 to 11: ");
 				choice = sc.nextInt();
 			}
 		}
@@ -51,39 +56,43 @@ public class TableUI {
 		return ;
 	}
 	
-	public static void MethodSelection(int methodIndex) {
+	public void MethodSelection(int methodIndex) {
 		
 		switch(methodIndex) {
 		
-			case 1:
+			case 2:
 				ctrl.getAvailableTables();
 				break;
 			
-			case 2:
+			case 4:
 				ctrl.addTable();
 				break;
 				
-			case 3:
+			case 5:
 				ctrl.removeTable();
 				break;
 			
-			case 4:
+			case 6:
 				ctrl.assignTable();
 				break;
 			
-			case 5:
+			case 7:
 				ctrl.reserveTable();
 				break;
 			
-			case 6:
+			case 8:
 				ctrl.vacateTable();
 				break;
 				
-			case 7:
+			case 9:
 				ctrl.getAllTables();
 				break;
 				
-			case 8:
+			case 10:
+				ctrl.getTableStatus();
+				break;
+				
+			case 11:
 				System.out.println("Menu Exited");
 				break;	
 			

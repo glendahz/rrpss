@@ -1,16 +1,23 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TableCtrl {
 	
-	static int currTableID = 1;	
+	private static final String DELIMITER = ",";
 	
 	static Scanner sc = new Scanner(System.in);
-	
 	private ArrayList<Table> tables = new ArrayList<Table>();
+	static int currTableID = 1;		
 	
-	public TableCtrl() {
+	public TableCtrl() {}
+	
+	public void createMultipleTables() {
 		int size = 0;
 		int numTable = 0;
 		while (true) {
@@ -26,54 +33,6 @@ public class TableCtrl {
 				}
 			}
 		}
-	}
-	
-	private int querySize() {
-		boolean validInput = false;
-		int size = -1;
-		System.out.print("Enter size of table to query: ");
-		while (!validInput) {
-			try {
-				size = sc.nextInt();
-				if (size > 0) {
-					validInput = true;
-				}
-			} catch(InputMismatchException e) {
-				System.out.print("Please enter a size: ");
-				size = sc.nextInt();
-			}
-		}
-		
-		return size;		
-	}
-	
-	private int queryTableID() {
-		boolean validInput = false;
-		int tableID = -1;
-		System.out.print("Enter table ID: ");
-		while (!validInput) {
-			try {
-				tableID = sc.nextInt();
-				if (tableID > 0 && tableID < currTableID) {
-					validInput = true;
-				}
-			} catch(InputMismatchException e) {
-				System.out.print("Please enter a valid tableID: ");
-				tableID = sc.nextInt();
-			}
-		}
-		
-		return tableID;
-	}
-	
-	public TableStatus getTableStatus(int tableID) {
-		for (int i = 0; i < tables.size(); ++i) {
-			Table currTable = tables.get(i);
-			if (currTable.getTableID() == tableID) {
-				return currTable.getStatus();
-			}
-		}
-		return null;
 	}
 	
 	public void getAvailableTables() {
@@ -107,6 +66,10 @@ public class TableCtrl {
 	public void addTable() {
 		int size = querySize();
 		tables.add(new Table(size));
+	}
+	
+	public void addTable(int tableID, int size, TableStatus tableStatus) {
+		tables.add(new Table(tableID, size, tableStatus));
 	}
 	
 	public void addTable(int size) {
@@ -196,7 +159,7 @@ public class TableCtrl {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		}else {
+		} else {
 			System.out.println("Table with ID " + tableID + " set to vacant!");
 			tables.get(tableIndex).setToVacant();
 		}
@@ -206,13 +169,34 @@ public class TableCtrl {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		}else {
+		} else {
 			System.out.println("Table with ID " + tableID + " set to vacant!");
 			tables.get(tableIndex).setToVacant();
 		}
 	}
 	
-	public int getTableIndex(int tableID) {
+	public TableStatus getTableStatus() {
+		int tableID = queryTableID();
+		for (int i = 0; i < tables.size(); ++i) {
+			Table currTable = tables.get(i);
+			if (currTable.getTableID() == tableID) {
+				return currTable.getStatus();
+			}
+		}
+		return null;
+	}
+	
+	public TableStatus getTableStatus(int tableID) {
+		for (int i = 0; i < tables.size(); ++i) {
+			Table currTable = tables.get(i);
+			if (currTable.getTableID() == tableID) {
+				return currTable.getStatus();
+			}
+		}
+		return null;
+	}
+	
+	private int getTableIndex(int tableID) {
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
 			if (currTable.getTableID() == tableID) {
@@ -220,6 +204,94 @@ public class TableCtrl {
 			}
 		}
 		return -1;
+	}
+	
+	private int querySize() {
+		boolean validInput = false;
+		int size = -1;
+		System.out.print("Enter size of table to query: ");
+		while (!validInput) {
+			try {
+				size = sc.nextInt();
+				if (size > 0) {
+					validInput = true;
+				}
+			} catch(InputMismatchException e) {
+				System.out.print("Please enter a size: ");
+				size = sc.nextInt();
+			}
+		}
+		
+		return size;		
+	}
+	
+	private int queryTableID() {
+		boolean validInput = false;
+		int tableID = -1;
+		System.out.print("Enter table ID: ");
+		while (!validInput) {
+			try {
+				tableID = sc.nextInt();
+				if (tableID > 0 && tableID < currTableID) {
+					validInput = true;
+				}
+			} catch(InputMismatchException e) {
+				System.out.print("Please enter a valid tableID: ");
+				tableID = sc.nextInt();
+			}
+		}
+		
+		return tableID;
+	}
+	
+	public void writeData(String fileName) {
+		try {
+			PrintWriter writer = new PrintWriter(fileName);
+			for (int i = 0; i < tables.size(); ++i) {
+				Table currTable = tables.get(i);
+				Integer tableID = currTable.getTableID();
+				Integer tableSize = currTable.getSize();
+				String tableStatus = currTable.getStatus().toString();
+				writer.write(String.join(DELIMITER, new String[] {tableID.toString(), tableSize.toString(), tableStatus}));
+				writer.write("\n");
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+			e.printStackTrace();
+		}
+	}
+	
+	public void readData(String fileName) {
+		String line;
+		tables.clear(); // Empty tables arraylist
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			while ((line = reader.readLine()) != null) {
+				String[] items = line.split(DELIMITER);
+				int tableID = Integer.parseInt(items[0]);
+				int tableSize = Integer.parseInt(items[1]);
+				TableStatus tableStatus = tableStatusFromString(items[2]);
+				addTable(tableID, tableSize, tableStatus);
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Input mistmatch!");
+			e.printStackTrace();
+		}
+	}
+	
+	private TableStatus tableStatusFromString(String currStatus) {
+		if (currStatus.equals("RESERVED")) {
+			return TableStatus.RESERVED;
+		} else if (currStatus.equals("OCCUPIED")) {
+			return TableStatus.OCCUPIED;
+		} else {
+			return TableStatus.VACANT;
+		}
 	}
 	
 }
