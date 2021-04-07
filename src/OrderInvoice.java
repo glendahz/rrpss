@@ -4,6 +4,7 @@ enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, APLIPAY };
 
 public class OrderInvoice {
 	private Order order;
+	private float totalPrice;
 	private PaymentMethod paymentMethod;
 	private LocalDateTime timestamp;
 	
@@ -11,16 +12,18 @@ public class OrderInvoice {
 		this.order = order;
 		this.paymentMethod = paymentMethod;
 		this.timestamp = timestamp;
+		
+		// get total price
+		this.totalPrice = 0;
+		String[] itemNames = this.order.getAllItemNames();
+		for (int i=0; i<itemNames.length; i++) {
+			this.totalPrice += this.order.getItemPrice(itemNames[i]) * this.order.getItemNum(itemNames[i]);
+		}
+		this.totalPrice = (float) (Math.round(this.totalPrice * 100.0) / 100.0); // rounds off total price to 2 d.p.
 	}
 	OrderInvoice(Order order, String paymentMethod, LocalDateTime timestamp){
 		this(order, PaymentMethod.valueOf(paymentMethod), timestamp);
 	}
-	
-	private static float roundOff(float num, int dp) {
-		float temp = (float) Math.pow(10.0, dp);
-		return Math.round(num * temp) / temp; 
-	}
-	
 	
 	// getters
 	public Order getOrder() {
@@ -33,12 +36,7 @@ public class OrderInvoice {
 		return this.timestamp;
 	}
 	public float getTotalPrice() {
-		float totalPrice = 0;
-		String[] itemNames = this.order.getAllItemNames();
-		for (int i=0; i<itemNames.length; i++) {
-			totalPrice += this.order.getItemPrice(itemNames[i]) * this.order.getItemNum(itemNames[i]);
-		}
-		return roundOff(totalPrice, 2);
+		return this.totalPrice;
 	}
 	public float[] getTaxDetails(float gst, float serviceCharge) {
 		float total = getTotalPrice();
