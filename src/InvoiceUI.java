@@ -34,7 +34,7 @@ public class InvoiceUI {
 				break;
 			case 2:
 				run=false;
-				System.out.println("Exiting invoice management...\n");
+				System.out.println("Returning to main menu...\n");
 				break;
 			default:
 				System.out.println("Error: '" + choice + "' is not a valid choice\n"

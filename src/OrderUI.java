@@ -157,8 +157,6 @@ public class OrderUI {
 		}
 	}
 	
-	// TODO valid table ID check (TableSystem)
-	// TODO reserved table status check (TableSystem)
 	protected static int getTableIDUI(Scanner sc, TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
@@ -222,7 +220,6 @@ public class OrderUI {
 		return num;
 	}
 
-	// TODO valid employee ID check (StaffCtrl)
 	private static String getEmployeeIDUI(Scanner sc) {
 		boolean run = true;
 		int employeeID;

@@ -231,8 +231,13 @@ public class OrderCtrl {
 	public void addOrderItem(int tableID, String newItemName, int newItemNum) throws Exception {
 		try {
 			Order order = getOrderObject(tableID);
-			float newItemPrice = 10; //float newItemPrice = MenuCtr.getPrice(itemName); 
-			order.addItem(newItemName, newItemNum, newItemPrice);
+			if (order.containsItem(newItemName)) {
+				newItemNum += order.getItemNum(newItemName);
+				order.updateItemNum(newItemName, newItemNum);
+			} else {
+				float newItemPrice = 10;
+				order.addItem(newItemName, newItemNum, newItemPrice);
+			}
 			editOrderData(tableID, order);
 		} catch (Exception e) {
 			throw new Exception("OrderCtr.addOrderItem() error:\n\t"
