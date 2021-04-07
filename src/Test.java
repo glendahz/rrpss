@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Test {
 
 	public static void main(String[] args) {
-		
 		Scanner sc = new Scanner(System.in);
 		
 		TableCtrl tableCtrl = new TableCtrl();
@@ -31,7 +30,6 @@ public class Test {
 		invoiceUI.displayOptions(sc);
 		
 		sc.close();
-		
 	}
 
 }
