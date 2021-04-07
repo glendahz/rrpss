@@ -24,6 +24,11 @@ public class OrderInvoice {
 	OrderInvoice(Order order, String paymentMethod, LocalDateTime timestamp){
 		this(order, PaymentMethod.valueOf(paymentMethod), timestamp);
 	}
+	OrderInvoice(Order order, LocalDateTime timestamp, float totalPrice){
+		this.order = order;
+		this.timestamp = timestamp;
+		this.totalPrice = totalPrice;
+	}
 	
 	// getters
 	public Order getOrder() {
