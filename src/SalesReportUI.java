@@ -116,7 +116,7 @@ public class SalesReportUI extends UI{
 			for(String[] item : orders) {
 				orderStr = orderStr.concat(String.format("%sx %s, ", item[1], item[0])); // Concat with NumberxName (e.g. 1xChicken)
 			}
-			System.out.format(leftAlignFormat, ts.format(dtf), invoice.getTotal(), orderStr);
+			System.out.format(leftAlignFormat, ts.format(dtf), invoice.getTotalPrice(), orderStr);
 		});
 		
 		
