@@ -33,6 +33,8 @@ public class OrderCtrl {
 		lines.add("Server: " + order.getStaffName());
 		lines.add("Order Items:");
 		String[][] items = order.getAllItemsArr();
+		
+		
 		for (int i=0; i<items.length; i++) {
 			//				 itemNum			  itemName				itemPrice
 			lines.add("  " + items[i][0] + "  " + items[i][1] + " ($" + items[i][2] + ")");
@@ -51,7 +53,7 @@ public class OrderCtrl {
 		// add items
 		String itemData;
 		String[][] items = order.getAllItemsArr();
-		for(int i=0; i<=2; i++) {
+		for(int i=0; i<items.length; i++) {
 			//			 					  	  itemNum	   itemName		itemPrice
 			itemData = String.join(SUB_DELIMITER, items[i][0], items[i][1], items[i][2]);
 			fields.add(itemData);
@@ -201,10 +203,12 @@ public class OrderCtrl {
 		try {
 			// create order object
 			float[] itemPrices = new float[itemNames.length];
-			for (int i=0; i<itemNames.length; i++) itemPrices[i] = 4; //itemPrices[i] = MenuCtrl.getPrice(itemNames[i]);
+			for (int i=0; i<itemNames.length; i++) itemPrices[i] = 4;			
 			Order order = new Order(tableID, staffName, itemNames, itemNums, itemPrices);
+			
 			// write data to file
 			appendOrderData(order);
+			
 			// change table status
 			tableCtrl.assignTable(tableID);
 		} catch (Exception e) {

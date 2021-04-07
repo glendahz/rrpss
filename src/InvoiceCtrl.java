@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class InvoiceCtrl {
-	private static final File SALEREPORT_FILE = new File("data", "Salereport.txt");
+	private static final File SALES_FILE = new File("data", "sales.txt");
 	private final static float GST = 0.07f;
 	private final static float SERVICE_CHARGE = 0.1f;
 	private final static String RESTAURANT_NAME = "OODP Restaurant";
@@ -52,7 +52,7 @@ public class InvoiceCtrl {
 	private static void writeInvoiceData(OrderInvoice invoice) throws Exception {
 		String data = "\n" + invoiceObjToData(invoice);
 		try {
-			FileWriter fwa = new FileWriter(SALEREPORT_FILE, true);
+			FileWriter fwa = new FileWriter(SALES_FILE, true);
 			fwa.write(data);
 			fwa.close();
 		} catch (IOException e) {
@@ -98,7 +98,7 @@ public class InvoiceCtrl {
 		return newStr;
 	} 
 	
-	private static String getOrderItemStr(String itemName, String itemNum, String itemPrice) {
+	private static String getOrderItemStr(String itemNum, String itemName, String itemPrice) {
 		// wrap item name string if needed
 		String[] nameLines = wrapStr(itemName, ITEM_NAME_LEN).split("\n");
 		

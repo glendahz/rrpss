@@ -79,15 +79,20 @@ public class OrderUI {
 				noOfItems = sc.nextInt();
 				sc.nextLine(); // flush System.in
 				System.out.println();
+				if (noOfItems > 0) run = false;
+				else {
+					System.out.println("Error: '" + noOfItems + "' is not valid\n"
+						+ "Please enter a positive integer!\n");
+					continue;
+				}
 			} catch(NoSuchElementException e) {
-				System.out.println("Error: entry was not valid\n"
+				System.out.println("\nError: entry was not valid\n"
 						+ "Please enter an integer!\n");
 				sc.nextLine(); // flush System.in
 				continue;
 			}
 			itemNames = new String[noOfItems];
 			itemNums = new int[noOfItems];
-			run = false;
 			for (int i=0; i<noOfItems; i++) {
 				itemName = getOrderItemNameUI(sc);
 				itemNames[i] = itemName;
@@ -165,7 +170,7 @@ public class OrderUI {
 				sc.nextLine(); // flush System.in
 				System.out.println();
 			} catch(NoSuchElementException e) {
-				System.out.println("Error: entry was not a valid table ID\n"
+				System.out.println("\nError: entry was not a valid table ID\n"
 						+ "Please enter an integer!\n");
 				sc.nextLine(); // flush System.in
 				continue;
@@ -209,8 +214,9 @@ public class OrderUI {
 							+ "Please enter a positive integer!\n");
 				}
 			} catch (NoSuchElementException e) {
-				System.out.println("Error: entry was not valid\n"
+				System.out.println("\nError: entry was not valid\n"
 						+ "Please enter an integer!\n");
+				sc.nextLine();
 			}
 		}
 		return num;
@@ -228,14 +234,14 @@ public class OrderUI {
 				sc.nextLine(); // flush System.in
 				System.out.println();
 			} catch(NoSuchElementException e) {
-				System.out.println("Error: entry was not a valid employee ID\n"
+				System.out.println("\nError: entry was not a valid employee ID\n"
 						+ "Please enter an integer!\n");
 				sc.nextLine(); // flush System.in
 				continue;
 			}
 			staffName = orderCtrl.validEmployeeID(employeeID);
 			if (staffName == null) {
-				System.out.println("TEstError: entry was not a valid employee ID\n");
+				System.out.println("Error: entry was not a valid employee ID\n");
 			}
 			else {
 				run = false;

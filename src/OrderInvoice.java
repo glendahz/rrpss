@@ -16,6 +16,12 @@ public class OrderInvoice {
 		this(order, PaymentMethod.valueOf(paymentMethod), timestamp);
 	}
 	
+	private static float roundOff(float num, int dp) {
+		float temp = (float) Math.pow(10.0, dp);
+		return Math.round(num * temp) / temp; 
+	}
+	
+	
 	// getters
 	public Order getOrder() {
 		return this.order;
@@ -32,7 +38,7 @@ public class OrderInvoice {
 		for (int i=0; i<itemNames.length; i++) {
 			totalPrice += this.order.getItemPrice(itemNames[i]) * this.order.getItemNum(itemNames[i]);
 		}
-		return totalPrice;
+		return roundOff(totalPrice, 2);
 	}
 	public float[] getTaxDetails(float gst, float serviceCharge) {
 		float total = getTotalPrice();

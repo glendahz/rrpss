@@ -1,21 +1,24 @@
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 
 public class Order {
 	private int tableID;
 	private String staffName;
-	private Hashtable<String, Float[]> items = new Hashtable<String, Float[]>();
+	private Map<String, Float[]> items = new HashMap<String, Float[]>();
 	
 	public Order(int tableID, String staffName, String[] itemNames, int[] itemNums, float[] itemPrices) {
 		this.tableID = tableID;
 		this.staffName = staffName;
-		Float[] itemInfo = new Float[2];
+		Float[] itemInfo;
+
 		if (itemNames != null) {
 			if (itemNames.length != itemNums.length ) throw new IllegalArgumentException("Order() error: item names array and item numbers arrays must be the same length");
 			else if (itemNames.length != itemPrices.length) throw new IllegalArgumentException("Order() error: item names array and item prices arrays must be the same length");
 			else {
 				for (int i=0; i<itemNames.length; i++) {
+					itemInfo = new Float[2];
 					itemInfo[0] = Float.valueOf(itemNums[i]);
 					itemInfo[1] = Float.valueOf(itemPrices[i]);
 					this.items.put(itemNames[i], itemInfo);
@@ -36,10 +39,10 @@ public class Order {
 		return this.staffName;
 	}
 	public String[] getAllItemNames() {
-		Enumeration<String> itemNamesEnum = this.items.keys();
-		ArrayList<String> itemNamesArrList = new ArrayList<String>();
-		while (itemNamesEnum.hasMoreElements()) itemNamesArrList.add(itemNamesEnum.nextElement());
-		String[]  itemNamesArr = itemNamesArrList.toArray(new String[itemNamesArrList.size()]);
+		Set<String> itemNamesSet = this.items.keySet();
+		String[] itemNamesArr = new String[itemNamesSet.size()];
+		int i=0;
+		for (String name: itemNamesSet) itemNamesArr[i++] = name;
 		return itemNamesArr;
 	}
 	public String[][] getAllItemsArr(){
@@ -59,12 +62,13 @@ public class Order {
 		Float itemPrice;
 		for (int i=0; i<itemNames.length; i++) {
 			itemName = itemNames[i];
-			itemNum = this.items.get(itemName)[0].intValue();
-			itemPrice = this.items.get(itemName)[1];
+			itemNum = this.getItemNum(itemName);			
+			itemPrice = this.getItemPrice(itemName);
 			items[i][0] = String.valueOf(itemNum);
 			items[i][1] = itemName;
 			items[i][2] = String.valueOf(itemPrice);
 		}
+		
 		return items;
 	}
 	public int getItemNum(String itemName) {
