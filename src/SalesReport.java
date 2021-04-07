@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class SalesReport {
 	private String type;
 	private LocalDate startDate;
@@ -16,7 +15,6 @@ public class SalesReport {
 			this.type = type;
 		else
 			throw new Exception("SalesReport: Invalid type");
-		
 	}
 	
 	public String getType() {

@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -6,9 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class SalesReportUI {
+public class SalesReportUI extends UI{
 	
-	SalesReportUI(SalesReport model) {
+	private SalesReport model;
+	private SalesReportController controller;
+	
+	SalesReportUI() {
+		this.model = new SalesReport();
+	}
+	
+	@Override
+	public void displayOptions() {
 		System.out.print("=================SalesReport=================\n"
 				+ "1) Print sales by day\n"
 				+ "2) Print sales by month\n"
@@ -60,15 +69,21 @@ public class SalesReportUI {
 		}
 		
 		try {
-			model.setType(sessionType);
-			model.setStartDate(date);
+			this.model.setType(sessionType);
+			this.model.setStartDate(date);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
 		sc.close();
+		
+		controller.printReport(this.model, this);
 	}
 	
+	public void setController(SalesReportController controller) {
+		this.controller = controller;
+	}
+		
 	public void printByMonth(HashMap<Integer, Float> dailyTotals, float total) {
 		String leftAlignFormat = "| %-7s | %9.2f |%n";
 		
@@ -88,19 +103,26 @@ public class SalesReportUI {
 	public void printByDay(List<OrderInvoice> invoices, float total) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		
-		String leftAlignFormat = "| %-8s | %8.2f | %20s |%n";
+		String leftAlignFormat = "| %-8s | %8.2f | %56s |%n";
 		
-		System.out.format("+----------+----------+----------------------+%n");
-		System.out.format("| Time     | Price($) | Orders               |%n");
-		System.out.format("+----------+----------+----------------------+%n");
+		System.out.format("+----------+----------+----------------------------------------------------------+%n");
+		System.out.format("| Time     | Price($) | Orders                                                   |%n");
+		System.out.format("+----------+----------+----------------------------------------------------------+%n");
 		
 		invoices.forEach(invoice -> {
-			System.out.format(leftAlignFormat, invoice.datetime.format(dtf), invoice.price, String.join(",", invoice.items));
+			LocalDateTime ts = invoice.getTimestamp();
+			String[][] orders = invoice.getOrder().getAllItemsArr();
+			String orderStr = "";
+			for(String[] item : orders) {
+				orderStr = orderStr.concat(String.format("%sx %s, ", item[1], item[0])); // Concat with NumberxName (e.g. 1xChicken)
+			}
+			System.out.format(leftAlignFormat, ts.format(dtf), invoice.getTotal(), orderStr);
 		});
 		
 		
-		System.out.format("+----------+----------+----------+-----------+%n");
-		System.out.format("| Total                          | %9.2f |%n", total);
-		System.out.format("+--------------------------------+-----------+%n");
+		System.out.format("+----------+----------+----------------------------------------------+-----------+%n");
+		System.out.format("| Total                                                              | %9.2f |%n", total);
+		System.out.format("+--------------------------------------------------------------------+-----------+%n");
 	}
+
 }
