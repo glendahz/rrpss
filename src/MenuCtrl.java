@@ -20,8 +20,51 @@ public class MenuCtrl {
 	static MenuItem[] menuitem = new MenuItem[100];
  	static SetPackage[] setpackage = new SetPackage[100];
 
-//	static SetPackage setpackagelist = new <MenuItem>();
-	// ADD for set menu object also //
+ 	///
+	public static boolean checkItemName(String NameCheck) {
+		updateMenuItem();
+		for(int i = 0; i< counter; i++) {
+//			System.out.print(menuitem[i].getName());
+			if(menuitem[i] != null) {
+				if(menuitem[i].getName().equals(NameCheck)) {
+					
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static double getItemPrice(String NameOfItem) {
+		updateMenuItem();
+		for(int i = 0; i< counter; i++) {
+			if(menuitem[i].getName().equals(NameOfItem)) {
+				
+				return menuitem[i].getPrice();
+			}
+		}
+		System.out.print("price not found.. returned 0");
+		return 0;
+	}
+	
+	public static boolean checkSetItemIndex(int IndexOfSet) {
+		updateMenuItem();
+		for(int i = 0; i< setIndexCounter; i++) {
+//			System.out.print(menuitem[i].getName());
+			if(setpackage[i] != null) {
+				if(setpackage[i].getIndex() == IndexOfSet) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static double getSetItemPrice(int IndexOfSet) {
+		updateMenuItem();
+		return setpackage[IndexOfSet].getPrice();
+	}
+ 	///
 	
 	public MenuItem[] createMenuItem(){
 		// This function will Create item object
@@ -47,12 +90,9 @@ public class MenuCtrl {
 		
 		
 		
-//		initiateItem(ItemType,ItemName,ItemDesc,ItemPrice);
-		
 		menuitem[counter] = new MenuItem(ItemType, ItemName, ItemDesc, ItemPrice);
 		counter += 1;
 		System.out.print("\nMenu item was created\n");
-//		menuitem[1] = new MenuItem("Food", "ass", "weed", 420.00);
 		convertMenuData();
 		return menuitem;
 	}
@@ -158,8 +198,6 @@ public class MenuCtrl {
 		for(int j = 0;j<counter;j++ ) {
 			if(menuitem[j] != null) {
 				if(menuitem[j].getName().equals(toDelete)) {
-//					System.out.print("found");
-//					counter -= 1;
 					menuitem[j] = null;
 				}
 			}
@@ -176,9 +214,7 @@ public class MenuCtrl {
 		for(int j = 0;j<100;j++ ) {
 			if(setpackage[j] != null) {
 				if(setpackage[j].getIndex() == toDelete) {
-//					System.out.print("found");
 					setpackage[j] = null;
-//					setIndexCounter -= 1;
 					
 				}
 			}
@@ -211,7 +247,6 @@ public class MenuCtrl {
 		}
 		System.out.println("\n --- Current Set Menu --- ");
 		for(int j = 0; j<setIndexCounter; j++) {
-//			System.out.print(setcounter);
 			if(setpackage[j] != null) {
 				System.out.print(setindex + ") ");
 				setindex += 1;
@@ -243,10 +278,7 @@ public class MenuCtrl {
 		      myReader.nextLine(); 
 		      while (myReader.hasNextLine()) {
 		          String data = myReader.nextLine();
-//		          System.out.println(data);
-//		          String[] arrOfStr = str.split("@", 2);
 		          String[] arrLinedata = data.split(",", 5);
-//		          System.out.println(arrLinedata[1]);
 		          menuitem[counter] = new MenuItem(arrLinedata[1], arrLinedata[2], arrLinedata[3], Double.parseDouble(arrLinedata[4]));
 		          counter += 1;
 		      }
@@ -293,10 +325,8 @@ public class MenuCtrl {
 		
 		int index = 1;
 		try {
-		      FileWriter myWriter = new FileWriter("C://Users//kraji//Desktop//Codes//Java cx2002//Menu.txt");
+		      FileWriter myWriter = new FileWriter("../Data/Menu.txt");
 		      myWriter.write("--- Saved Menu --- \n");
-//		      myWriter.write("Files in Java might be tricky, but it is fun enough!");
-//		      myWriter.write("\n fuck this shit...");
 		      
 				for(int i = 0;i<counter;i++ ) {
 					if(menuitem[i] != null) {
@@ -328,9 +358,7 @@ public class MenuCtrl {
 		
 		int index = 1;
 		try {
-		      FileWriter myWriter = new FileWriter("C://Users//kraji//Desktop//Codes//Java cx2002//SetMenu.txt");
-//		      myWriter.write("Files in Java might be tricky, but it is fun enough!");
-//		      myWriter.write("\n fuck this shit...");
+		      FileWriter myWriter = new FileWriter("../Data/SetMenu.txt");
 		      
 				for(int i = 0;i<setIndexCounter;i++ ) {
 					if(setpackage[i] != null) {
@@ -357,28 +385,6 @@ public class MenuCtrl {
 		
 	}
 	
-	public static boolean checkItemName(String NameCheck) {
-		for(int i = 0; i< counter; i++) {
-//			System.out.print(menuitem[i].getName());
-			if(menuitem[i] != null) {
-				if(menuitem[i].getName().equals(NameCheck)) {
-					
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public static double getItemPrice(String NameOfItem) {
-		for(int i = 0; i< counter; i++) {
-			if(menuitem[i].getName().equals(NameOfItem)) {
-				
-				return menuitem[i].getPrice();
-			}
-		}
-		System.out.print("price not found.. returned 0");
-		return 0;
-	}
+
 	
 }
