@@ -60,7 +60,7 @@ public class MenuUI {
 		System.out.println("Create Set Menu Item : 3");
 		System.out.println("Remove Menu Item : 4");
 		System.out.println("Remove Set Menu Item : 5");
-		System.out.println("update Menu Iem : 6");
+		System.out.println("update Menu Item : 6");
 		System.out.println("Convert Menu Data : 7");
 		System.out.println("Exit : 8\n");
 		
