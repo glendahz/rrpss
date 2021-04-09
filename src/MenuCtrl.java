@@ -68,7 +68,14 @@ public class MenuCtrl {
 	
 	public static double getSetItemPrice(int IndexOfSet) {
 		updateMenuItem();
-		return setpackage[IndexOfSet].getPrice();
+		for(int i = 0; i< setIndexCounter; i++) {
+			if(setpackage[i] != null) {
+				if(setpackage[i].getIndex() == IndexOfSet) {
+					return setpackage[i].getPrice();
+				}
+			}
+		}
+		return 0;
 	}
  	///
 	
