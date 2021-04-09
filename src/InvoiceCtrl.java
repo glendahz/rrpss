@@ -182,13 +182,11 @@ public class InvoiceCtrl {
 		String invoiceStr = "";
 		try {
 			Order order = OrderCtrl.getOrderObject(tableID);
-			OrderInvoice invoice = new OrderInvoice(order, PaymentMethod.valueOf(payMthd), LocalDateTime.now());
+			OrderInvoice invoice = new OrderInvoice(order, payMthd, LocalDateTime.now());
 			invoiceStr = getInvoiceStr(invoice);
 			tableCtrl.vacateTable(order.getTableID());
 			writeInvoiceData(invoice);
 			OrderCtrl.deleteOrderData(tableID);
-		} catch (IllegalArgumentException e) { 
-			throw new Exception("InvoiceCtrl.createInvoice() error: invalid PaymentMethod string");
 		} catch (Exception e) {
 			throw new Exception("InvoiceCtrl.createInvoice() error:\n"
 					+ "\t" + e.getMessage());

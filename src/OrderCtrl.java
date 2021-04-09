@@ -182,7 +182,6 @@ public class OrderCtrl {
 		if (currStatus == status) return true;
 		else return false;
 	}
-
 	
 	public String validEmployeeID(int employeeID) {
 		return staffCtrl.getStaffName(employeeID);
@@ -197,10 +196,10 @@ public class OrderCtrl {
 		if (itemName.matches("[Ss]et( )?([Pp]ackage)?( )?\\d+")) {
 			itemName = itemName.replaceAll("\\D", ""); // strips non-digit characters from name
 			itemIndex = Integer.parseInt(itemName);
-			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
+			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
 		} else if(itemName.matches("\\d+")) {
 			itemIndex = Integer.parseInt(itemName);
-			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
+			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
 		}
 		// check if item is a valid menu item
 		else {
@@ -219,8 +218,8 @@ public class OrderCtrl {
 			int itemIndex;
 			for (int i=0; i<itemNames.length; i++) {
 				itemName = itemNames[i];
-				if (itemName.matches("Set Package \\d+")) {
-					itemName = itemName.replace("Set Package ", "");
+				if (itemName.matches("Set package \\d+")) {
+					itemName = itemName.replace("Set package ", "");
 					itemIndex = Integer.parseInt(itemName);
 					itemPrices[i] = (float) menuCtrl.getSetItemPrice(itemIndex);			
 				} else itemPrices[i] = (float) menuCtrl.getItemPrice(itemName);
@@ -238,9 +237,9 @@ public class OrderCtrl {
 		} 
 	}
 	
-	public String viewOrder(int orderID) throws Exception {
+	public String viewOrder(int tableID) throws Exception {
 		try {
-			Order order = getOrderObject(orderID);
+			Order order = getOrderObject(tableID);
 			return orderObjToStr(order);
 		} catch (Exception e) {
 			throw e;
@@ -256,8 +255,8 @@ public class OrderCtrl {
 				order.updateItemNum(newItemName, newItemNum);
 			} else { // order item does not exist in order, add new order item
 				float newItemPrice;
-				if (newItemName.matches("Set Package \\d+")) {
-					newItemName = newItemName.replace("Set Package ", "");
+				if (newItemName.matches("Set package \\d+")) {
+					newItemName = newItemName.replace("Set package ", "");
 					int newItemIndex = Integer.parseInt(newItemName);
 					newItemPrice = (float) menuCtrl.getSetItemPrice(newItemIndex);		
 				} else newItemPrice = (float) menuCtrl.getItemPrice(newItemName);

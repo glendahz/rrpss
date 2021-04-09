@@ -14,12 +14,7 @@ public class OrderInvoice {
 		this.timestamp = timestamp;
 		
 		// get total price
-		this.totalPrice = 0;
-		String[] itemNames = this.order.getAllItemNames();
-		for (int i=0; i<itemNames.length; i++) {
-			this.totalPrice += this.order.getItemPrice(itemNames[i]) * this.order.getItemNum(itemNames[i]);
-		}
-		this.totalPrice = (float) (Math.round(this.totalPrice * 100.0) / 100.0); // rounds off total price to 2 d.p.
+		this.totalPrice = this.getTotalPrice(true);
 	}
 	OrderInvoice(Order order, String paymentMethod, LocalDateTime timestamp){
 		this(order, PaymentMethod.valueOf(paymentMethod), timestamp);
@@ -28,6 +23,7 @@ public class OrderInvoice {
 		this.order = order;
 		this.timestamp = timestamp;
 		this.totalPrice = totalPrice;
+		this.paymentMethod = null;
 	}
 	
 	// getters
@@ -40,11 +36,23 @@ public class OrderInvoice {
 	public LocalDateTime getTimestamp() {
 		return this.timestamp;
 	}
-	public float getTotalPrice() {
+	public float getTotalPrice(boolean calc) {
+		if (calc) {
+			// re-calculate total price
+			this.totalPrice = 0;
+			String[] itemNames = this.order.getAllItemNames();
+			for (int i=0; i<itemNames.length; i++) {
+				this.totalPrice += this.order.getItemPrice(itemNames[i]) * this.order.getItemNum(itemNames[i]);
+			}
+			this.totalPrice = (float) (Math.round(this.totalPrice * 100.0) / 100.0); // rounds off total price to 2 d.p.
+		}
 		return this.totalPrice;
 	}
+	public float getTotalPrice() {
+		return this.getTotalPrice(false);
+	}
 	public float[] getTaxDetails(float gst, float serviceCharge) {
-		float total = getTotalPrice();
+		float total = this.getTotalPrice();
 		float totalTax = 1 + gst + serviceCharge;
 		float subTotal = total / totalTax;
 		float gstTax = subTotal * gst;
@@ -56,6 +64,7 @@ public class OrderInvoice {
 	// setters
 	public void setOrder(Order order) {
 		this.order = order;
+		this.getTotalPrice(true);
 	}
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
