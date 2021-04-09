@@ -195,7 +195,7 @@ public class OrderCtrl {
 		// check if item is a valid set package
 		// if yes, format the name properly
 		if (itemName.matches("[Ss]et( )?([Pp]ackage)?( )?\\d+")) {
-			itemName.replaceAll("\\D", "");
+			itemName = itemName.replaceAll("\\D", ""); // strips non-digit characters from name
 			itemIndex = Integer.parseInt(itemName);
 			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
 		} else if(itemName.matches("\\d+")) {
@@ -203,7 +203,10 @@ public class OrderCtrl {
 			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
 		}
 		// check if item is a valid menu item
-		else if (menuCtrl.checkItemName(itemName)) newName = itemName;
+		else {
+			itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1).toLowerCase(); // capitalizes first letter and converts all other letters to lowercase
+			if (menuCtrl.checkItemName(itemName)) newName = itemName;
+		}
 		
 		return newName;
 	}
@@ -217,7 +220,7 @@ public class OrderCtrl {
 			for (int i=0; i<itemNames.length; i++) {
 				itemName = itemNames[i];
 				if (itemName.matches("Set Package \\d+")) {
-					itemName.replace("Set Package ", "");
+					itemName = itemName.replace("Set Package ", "");
 					itemIndex = Integer.parseInt(itemName);
 					itemPrices[i] = (float) menuCtrl.getSetItemPrice(itemIndex);			
 				} else itemPrices[i] = (float) menuCtrl.getItemPrice(itemName);
@@ -254,7 +257,7 @@ public class OrderCtrl {
 			} else { // order item does not exist in order, add new order item
 				float newItemPrice;
 				if (newItemName.matches("Set Package \\d+")) {
-					newItemName.replace("Set Package ", "");
+					newItemName = newItemName.replace("Set Package ", "");
 					int newItemIndex = Integer.parseInt(newItemName);
 					newItemPrice = (float) menuCtrl.getSetItemPrice(newItemIndex);		
 				} else newItemPrice = (float) menuCtrl.getItemPrice(newItemName);

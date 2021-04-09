@@ -44,10 +44,6 @@ public class MenuCtrl {
 					return menuitem[i].getPrice();
 				}
 			}
-			/*if(menuitem[i].getName().equals(NameOfItem)) {
-				
-				return menuitem[i].getPrice();
-			}*/
 		}
 		System.out.print("price not found.. returned 0");
 		return 0;
