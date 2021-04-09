@@ -38,10 +38,16 @@ public class MenuCtrl {
 	public static double getItemPrice(String NameOfItem) {
 		updateMenuItem();
 		for(int i = 0; i< counter; i++) {
-			if(menuitem[i].getName().equals(NameOfItem)) {
+			if(menuitem[i] != null) {
+				if(menuitem[i].getName().equals(NameOfItem)) {
+				
+					return menuitem[i].getPrice();
+				}
+			}
+			/*if(menuitem[i].getName().equals(NameOfItem)) {
 				
 				return menuitem[i].getPrice();
-			}
+			}*/
 		}
 		System.out.print("price not found.. returned 0");
 		return 0;
@@ -108,7 +114,7 @@ public class MenuCtrl {
 		
 		////
 
-//		      FileWriter myWriter = new FileWriter("C://Users//kraji//Desktop//Codes//Java cx2002//SetMenu.txt", true);
+//		      FileWriter myWriter = new FileWriter("data", "SetMenu.txt", true);
 	      Scanner scan = new Scanner(System.in);
 	      System.out.println("What item would you like to add to set menu?");
 	      System.out.print("Please enter number of items in set menu : ");
@@ -273,7 +279,7 @@ public class MenuCtrl {
 		}
 		
 		try {
-		      File myObj = new File("C://Users//kraji//Desktop//Codes//Java cx2002//Menu.txt");
+		      File myObj = new File("data", "Menu.txt");
 		      Scanner myReader = new Scanner(myObj);
 		      myReader.nextLine(); 
 		      while (myReader.hasNextLine()) {
@@ -298,7 +304,7 @@ public class MenuCtrl {
 		}
 		
 		try {
-		      File myObj = new File("C://Users//kraji//Desktop//Codes//Java cx2002//SetMenu.txt");
+		      File myObj = new File("data", "SetMenu.txt");
 		      Scanner myReader = new Scanner(myObj);
 		      while (myReader.hasNextLine()) {
 		    	  ArrayList<String> setList = new ArrayList<String>();

@@ -26,7 +26,6 @@ public class OrderCtrl {
 		menuCtrl = ctrl;
 	}
 	
-	
 	private static String orderObjToStr(Order order) {
 		ArrayList<String> lines = new ArrayList<String>();
 		lines.add("Table ID: " + order.getTableID());
@@ -180,30 +179,49 @@ public class OrderCtrl {
 	
 	public boolean validTableID(int tableID, TableStatus status){
 		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
-		if (status == null) {
-			if (currStatus != null) return true;
-			else return false;
-		}
-		else {
-			if (currStatus == status) return true;
-			else return false;
-		}
+		if (currStatus == status) return true;
+		else return false;
 	}
-	
-	public boolean validTableID(int tableID) {
-		return validTableID(tableID, null);
-	}
+
 	
 	public String validEmployeeID(int employeeID) {
 		return staffCtrl.getStaffName(employeeID);
 	}
 	
-	// TODO integrate with MenuCtrl
+	public String validOrderItemName(String itemName) {
+		String newName = null;
+		int itemIndex;
+		
+		// check if item is a valid set package
+		// if yes, format the name properly
+		if (itemName.matches("[Ss]et( )?([Pp]ackage)?( )?\\d+")) {
+			itemName.replaceAll("\\D", "");
+			itemIndex = Integer.parseInt(itemName);
+			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
+		} else if(itemName.matches("\\d+")) {
+			itemIndex = Integer.parseInt(itemName);
+			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
+		}
+		// check if item is a valid menu item
+		else if (menuCtrl.checkItemName(itemName)) newName = itemName;
+		
+		return newName;
+	}
+	
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
 			float[] itemPrices = new float[itemNames.length];
-			for (int i=0; i<itemNames.length; i++) itemPrices[i] = 4;			
+			String itemName;
+			int itemIndex;
+			for (int i=0; i<itemNames.length; i++) {
+				itemName = itemNames[i];
+				if (itemName.matches("Set Package \\d+")) {
+					itemName.replace("Set Package ", "");
+					itemIndex = Integer.parseInt(itemName);
+					itemPrices[i] = (float) menuCtrl.getSetItemPrice(itemIndex);			
+				} else itemPrices[i] = (float) menuCtrl.getItemPrice(itemName);
+			}
 			Order order = new Order(tableID, staffName, itemNames, itemNums, itemPrices);
 			
 			// write data to file
@@ -227,16 +245,20 @@ public class OrderCtrl {
 		
 	}
 	
-	// TODO integrate with MenuCtrl
 	public void addOrderItem(int tableID, String newItemName, int newItemNum) throws Exception {
 		try {
 			Order order = getOrderObject(tableID);
-			if (order.containsItem(newItemName)) {
+			if (order.containsItem(newItemName)) { // order item already exists in order, add to existing order item number
 				newItemNum += order.getItemNum(newItemName);
 				order.updateItemNum(newItemName, newItemNum);
-			} else {
-				float newItemPrice = 10;
-				order.addItem(newItemName, newItemNum, newItemPrice);
+			} else { // order item does not exist in order, add new order item
+				float newItemPrice;
+				if (newItemName.matches("Set Package \\d+")) {
+					newItemName.replace("Set Package ", "");
+					int newItemIndex = Integer.parseInt(newItemName);
+					newItemPrice = (float) menuCtrl.getSetItemPrice(newItemIndex);		
+				} else newItemPrice = (float) menuCtrl.getItemPrice(newItemName);
+				order.addItem(newItemNum, newItemName, newItemPrice);
 			}
 			editOrderData(tableID, order);
 		} catch (Exception e) {

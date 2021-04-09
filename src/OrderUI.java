@@ -179,20 +179,22 @@ public class OrderUI {
 		return tableID;
 	}
 
-	
-	// TODO: valid order item check (MenuCtrl)
 	private static String getOrderItemNameUI(Scanner sc) {
 		boolean run = true;
 		String itemName = "";
+		String newName;
 		while (run) {
 			System.out.println("Enter name of order item: ");
 			itemName = sc.nextLine();
 			System.out.println();
-			run = false; // TODO delete when checks are implemented
-			/*if (MenuCtrl.validOrderItemName(itemName)) run = false;
+			newName = orderCtrl.validOrderItemName(itemName);
+			if (newName != null) {
+				itemName = newName;
+				run = false;
+			}
 			else {
 				System.out.println("Error: '" + itemName + "' is not a valid order item name\n");
-			}*/
+			}
 		}
 		return itemName;
 	}

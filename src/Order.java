@@ -91,14 +91,14 @@ public class Order {
 	public void setAllItems(Hashtable<String, Float[]> items) {
 		this.items = items;
 	}
-	public void addItem(String itemName, int itemNum, float itemPrice) {
+	public void addItem(int itemNum, String itemName, float itemPrice) {
 		Float[] itemInfo = new Float[2];
 		itemInfo[0] = Float.valueOf(itemNum);
 		itemInfo[1] = Float.valueOf(itemPrice);
 		this.items.put(itemName, itemInfo);
 	}
 	public void addItem(String itemNum, String itemName, String itemPrice) {
-		addItem(itemName, Integer.parseInt(itemNum), Float.parseFloat(itemPrice));
+		addItem(Integer.parseInt(itemNum), itemName, Float.parseFloat(itemPrice));
 	}
 	public void updateItemNum(String itemName, int itemNum) {
 		Float[] itemInfo = this.items.get(itemName);
