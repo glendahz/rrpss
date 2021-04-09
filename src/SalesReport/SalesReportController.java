@@ -1,3 +1,4 @@
+package SalesReport;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -6,7 +7,11 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class SalesReportController {
+import Order.Order;
+import Order.OrderInvoice;
+import util.Controller;
+
+public class SalesReportController extends Controller {
 	private SalesReport model = null;
 	
 	public void printReport(SalesReport model, SalesReportUI view) {

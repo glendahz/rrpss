@@ -1,16 +1,16 @@
-enum TableStatus { RESERVED, OCCUPIED, VACANT }
+package Table;
 
 public class Table {
 	
-
+	public enum TableStatus { RESERVED, OCCUPIED, VACANT }
 	private int size;
 	private TableStatus status = TableStatus.VACANT; // Set to empty when initializing
 	private int tableID;
 	
 	public Table(int size) {
 		this.size = size;
-		this.tableID = TableCtrl.currTableID;
-		TableCtrl.currTableID++;
+		this.tableID = TableCtrl.maxTableID;
+		TableCtrl.maxTableID++;
 	}
 	
 	public Table(int tableID, int size, TableStatus status) {

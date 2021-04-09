@@ -1,5 +1,4 @@
-import java.text.DecimalFormat;
-
+package Menu;
 
 public class MenuItem
 {

@@ -1,3 +1,4 @@
+package Order;
 import java.time.LocalDateTime;
 
 enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, APLIPAY };
@@ -19,7 +20,7 @@ public class OrderInvoice {
 	OrderInvoice(Order order, String paymentMethod, LocalDateTime timestamp){
 		this(order, PaymentMethod.valueOf(paymentMethod), timestamp);
 	}
-	OrderInvoice(Order order, LocalDateTime timestamp, float totalPrice){
+	public OrderInvoice(Order order, LocalDateTime timestamp, float totalPrice){
 		this.order = order;
 		this.timestamp = timestamp;
 		this.totalPrice = totalPrice;

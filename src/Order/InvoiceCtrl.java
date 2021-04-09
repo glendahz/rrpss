@@ -1,3 +1,4 @@
+package Order;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -5,7 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class InvoiceCtrl {
+import Table.TableCtrl;
+import util.Controller;
+
+public class InvoiceCtrl extends Controller {
 	private static final File SALES_FILE = new File("data", "sales.txt");
 	private final static float GST = 0.07f;
 	private final static float SERVICE_CHARGE = 0.1f;

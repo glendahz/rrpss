@@ -1,3 +1,4 @@
+package Staff;
 enum Gender { MALE, FEMALE }
 enum JobTitle { WAITER, MANAGER}
 

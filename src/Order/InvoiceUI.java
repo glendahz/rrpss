@@ -1,11 +1,17 @@
+package Order;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class InvoiceUI {
+import Table.Table.TableStatus;
+import util.Controller;
+import util.UI;
+
+public class InvoiceUI extends UI {
 	private static InvoiceCtrl invoiceCtrl;
-	
-	public void setInvoiceCtrl(InvoiceCtrl ctrl) {
-		invoiceCtrl = ctrl;
+		
+	@Override
+	public void setController(Controller ctrl) {
+		InvoiceUI.invoiceCtrl = (InvoiceCtrl) ctrl;
 	}
 	
 	public void displayOptions(Scanner sc) {

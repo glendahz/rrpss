@@ -1,14 +1,19 @@
+package Staff;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
-public class StaffUI {
+import util.*;
+
+public class StaffUI extends UI {
 	
 	static Scanner sc = new Scanner(System.in);
 	private int choice = 0;
 	private StaffCtrl ctrl;
 	
-	public void getStaffController(StaffCtrl ctrl) {
-		this.ctrl = ctrl;
+	@Override
+	public void setController(Controller ctrl) {
+		this.ctrl = (StaffCtrl) ctrl;
 	}
 	
 	public void displayOptions() {
@@ -75,5 +80,4 @@ public class StaffUI {
 		}
 		
 	}
-	
 }

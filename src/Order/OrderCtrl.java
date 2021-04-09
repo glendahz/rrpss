@@ -1,3 +1,4 @@
+package Order;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -6,13 +7,18 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class OrderCtrl {
+import Menu.MenuCtrl;
+import Staff.StaffCtrl;
+import Table.Table.TableStatus;
+import Table.TableCtrl;
+import util.Controller;
+
+public class OrderCtrl extends Controller {
 	private static final File ORDER_FILE = new File("data", "order.txt");
 	private static final String DELIMITER = ",";
 	private static final String SUB_DELIMITER = "-";
 	private static TableCtrl tableCtrl;
 	private static StaffCtrl staffCtrl;
-	private static MenuCtrl menuCtrl;
 	
 	public void setTableCtrl(TableCtrl ctrl) {
 		tableCtrl = ctrl;
@@ -21,11 +27,7 @@ public class OrderCtrl {
 	public void setStaffCtrl(StaffCtrl ctrl) {
 		staffCtrl = ctrl;
 	}
-	
-	public void setMenuCtrl(MenuCtrl ctrl) {
-		menuCtrl = ctrl;
-	}
-	
+
 	private static String orderObjToStr(Order order) {
 		ArrayList<String> lines = new ArrayList<String>();
 		lines.add("Table ID: " + order.getTableID());
@@ -196,15 +198,15 @@ public class OrderCtrl {
 		if (itemName.matches("[Ss]et( )?([Pp]ackage)?( )?\\d+")) {
 			itemName = itemName.replaceAll("\\D", ""); // strips non-digit characters from name
 			itemIndex = Integer.parseInt(itemName);
-			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
+			if (MenuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
 		} else if(itemName.matches("\\d+")) {
 			itemIndex = Integer.parseInt(itemName);
-			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
+			if (MenuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
 		}
 		// check if item is a valid menu item
 		else {
 			itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1).toLowerCase(); // capitalizes first letter and converts all other letters to lowercase
-			if (menuCtrl.checkItemName(itemName)) newName = itemName;
+			if (MenuCtrl.checkItemName(itemName)) newName = itemName;
 		}
 		
 		return newName;
@@ -221,8 +223,8 @@ public class OrderCtrl {
 				if (itemName.matches("Set package \\d+")) {
 					itemName = itemName.replace("Set package ", "");
 					itemIndex = Integer.parseInt(itemName);
-					itemPrices[i] = (float) menuCtrl.getSetItemPrice(itemIndex);			
-				} else itemPrices[i] = (float) menuCtrl.getItemPrice(itemName);
+					itemPrices[i] = (float) MenuCtrl.getSetItemPrice(itemIndex);			
+				} else itemPrices[i] = (float) MenuCtrl.getItemPrice(itemName);
 			}
 			Order order = new Order(tableID, staffName, itemNames, itemNums, itemPrices);
 			
@@ -258,8 +260,8 @@ public class OrderCtrl {
 				if (newItemName.matches("Set package \\d+")) {
 					newItemName = newItemName.replace("Set package ", "");
 					int newItemIndex = Integer.parseInt(newItemName);
-					newItemPrice = (float) menuCtrl.getSetItemPrice(newItemIndex);		
-				} else newItemPrice = (float) menuCtrl.getItemPrice(newItemName);
+					newItemPrice = (float) MenuCtrl.getSetItemPrice(newItemIndex);		
+				} else newItemPrice = (float) MenuCtrl.getItemPrice(newItemName);
 				order.addItem(newItemNum, newItemName, newItemPrice);
 			}
 			editOrderData(tableID, order);

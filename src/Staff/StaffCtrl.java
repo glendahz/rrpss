@@ -1,3 +1,4 @@
+package Staff;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,8 +8,9 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import util.Controller;
 
-public class StaffCtrl {
+public class StaffCtrl extends Controller {
 	
 	private static final String DELIMITER = ",";
 	

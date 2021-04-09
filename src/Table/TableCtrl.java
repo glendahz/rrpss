@@ -1,3 +1,4 @@
+package Table;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,13 +8,16 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class TableCtrl {
+import Table.Table.TableStatus;
+import util.Controller;
+
+public class TableCtrl extends Controller {
 	
 	private static final String DELIMITER = ",";
 	
 	static Scanner sc = new Scanner(System.in);
 	private ArrayList<Table> tables = new ArrayList<Table>();
-	static int currTableID = 1;		
+	static int maxTableID = 1; // TODO: SET BY DATABASE		
 	
 	public TableCtrl() {}
 	
@@ -51,7 +55,19 @@ public class TableCtrl {
 		}
 	}
 	
-	public void getAllTables() {
+	// Return table IDs for those with equal or greater size
+	public ArrayList<Integer> getTableIDsBySize(int size) {
+		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
+
+		for(Table t : tables) {
+			if(t.getSize() >= size)
+				sizedTables.add(t.getTableID());
+		}
+		
+		return sizedTables;
+	}
+	
+	public void printAllTables() {
 		ArrayList<Integer> availableTables = new ArrayList<Integer>();
 		for (int i = 0; i < tables.size(); ++i) {
 			availableTables.add((Integer) tables.get(i).getTableID());
@@ -225,14 +241,14 @@ public class TableCtrl {
 		return size;		
 	}
 	
-	private int queryTableID() {
+	public static int queryTableID() {
 		boolean validInput = false;
 		int tableID = -1;
 		System.out.print("Enter table ID: ");
 		while (!validInput) {
 			try {
 				tableID = sc.nextInt();
-				if (tableID > 0 && tableID < currTableID) {
+				if (tableID > 0 && tableID < maxTableID) {
 					validInput = true;
 				}
 			} catch(InputMismatchException e) {

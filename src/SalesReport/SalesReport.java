@@ -1,7 +1,10 @@
+package SalesReport;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import Order.OrderInvoice;
 
 public class SalesReport {
 	private String type;

@@ -1,12 +1,11 @@
-import java.io.BufferedWriter;
+package Menu;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -97,7 +96,7 @@ public class MenuCtrl {
 		    }
 		}
 		
-		
+		scan.close();
 		
 		menuitem[counter] = new MenuItem(ItemType, ItemName, ItemDesc, ItemPrice);
 		counter += 1;
@@ -149,7 +148,7 @@ public class MenuCtrl {
 	    		  else {
 	    			  System.out.print("you entered wrongly again please check the menu before adding set items");
 	    			  viewMenu();
-	    			  MenuUI.main(null);
+//	    			  MenuUI.main(null);
 	    		  }
 	    	  }
 	      }
@@ -163,7 +162,6 @@ public class MenuCtrl {
 			        scan.next();
 			   	}
 	      }
-			String StringPrice = Double.toString(SetPrice);
 //				myWriter.write(StringPrice);
 //				myWriter.write("\n");
 			setcounter += 1;
@@ -174,7 +172,7 @@ public class MenuCtrl {
         setIndexCounter += 1; /// here have a setpackages already
         convertSetMenuData();
 		
-		
+        scan.close();
 	}
 	
 	public static void removeMenuItem() {
@@ -213,6 +211,8 @@ public class MenuCtrl {
 			
 		}
 		convertMenuData();
+		
+		scan.close();
 	}
 	
 	public static void removeSetItem() {
@@ -230,7 +230,7 @@ public class MenuCtrl {
 			
 		}
 		convertSetMenuData();
-		
+		scan.close();
 	}
 	
 	public static void viewMenu() {

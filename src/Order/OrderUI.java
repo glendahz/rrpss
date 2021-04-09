@@ -1,11 +1,16 @@
+package Order;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class OrderUI {
+import Table.Table.TableStatus;
+import util.Controller;
+import util.UI;
+
+public class OrderUI extends UI {
 	private static OrderCtrl orderCtrl;
 
-	public void setOrderCtrl(OrderCtrl ctrl) {
-		orderCtrl = ctrl;
+	public void setController(Controller ctrl) {
+		orderCtrl = (OrderCtrl) ctrl;
 	}
 	
 	public void displayOptions(Scanner sc) {
@@ -63,7 +68,7 @@ public class OrderUI {
 	
 	private static void createOrderUI(Scanner sc) {
 		// get table ID & employee ID
-		int tableID = getTableIDUI(sc, TableStatus.RESERVED);
+		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
 		String staffName = getEmployeeIDUI(sc);
 		
 		// get order items
