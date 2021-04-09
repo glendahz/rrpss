@@ -1,0 +1,10 @@
+id,capacity,status
+1,4,empty
+2,4,empty
+3,4,empty
+5,4,empty
+6,2,empty
+7,2,empty
+8,2,empty
+9,6,empty
+10,6,empty
