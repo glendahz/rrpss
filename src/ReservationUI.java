@@ -5,7 +5,11 @@ public class ReservationUI {
 	
 	static Scanner sc = new Scanner(System.in);
 	static int choice = 0;
-	static ResservationCtrl ctrl = new ReservationCtrl();
+	static ReservationCtrl ctrl = new ReservationCtrl();
+	static Scanner disSc;
+	static int disChoice = 0;
+	static Scanner rmvSc;
+	static int rmvChoice = 0;
 	
 	public static void main(String[] args) {
 		
@@ -19,10 +23,10 @@ public class ReservationUI {
 	
 	public static void Options() {
 		
-		System.out.println("-----Reservation-----");
-		System.out.println("Add Reservation : 1");
-		System.out.println("Remove Reservation : 2");
-		System.out.println("Get All Reservation : 3");
+		System.out.println("\n-----Reservation-----");
+		System.out.println("Make Reservation : 1");
+		System.out.println("Display Reservation : 2");
+		System.out.println("Remove Reservation : 3");
 		System.out.println("Exit : 4");
 		
 	}
@@ -43,8 +47,6 @@ public class ReservationUI {
 				choice = sc.nextInt();
 			}
 		}
-		
-		return ;
 	}
 	
 	public static void MethodSelection(int methodIndex) {
@@ -54,24 +56,115 @@ public class ReservationUI {
 			case 1:
 				ctrl.makeReservation();
 				break;
-			
+
 			case 2:
-				ctrl.removeReservation();
+				disSc = new Scanner(System.in);
+				while(disChoice!=4){
+					disOptions();
+					disUserInput();
+					disMethodSelection(disChoice);
+				}
 				break;
-				
+
 			case 3:
-				ctrl.getAllReservation();
+				rmvSc = new Scanner(System.in);
+				while(rmvChoice!=3){
+					rmvOptions();
+					rmvUserInput();
+					rmvMethodSelection(rmvChoice);
+				}
 				break;
 			
 			case 4:
-				System.out.println("Menu Exited");
-				break;	
-			
-			default:
+				System.out.println("Reservation Exited");
 				break;
 			
 		}
 		
 	}
 	
+	public static void disOptions() {
+		System.out.println("\n-----Display Reservation Options-----");
+		System.out.println("By Contact Number : 1");
+		System.out.println("By Table ID : 2");
+		System.out.println("Display All : 3");
+		System.out.println("Exit : 4");
+	}
+
+	public static void disUserInput(){
+		boolean validInput = false;
+		
+		System.out.print("Please enter your choice from 1 to 4: ");
+		while (!validInput) {
+			try {
+				disChoice = disSc.nextInt();
+				if (1 <= disChoice && disChoice <= 4) {
+					validInput = true;
+				}
+			} catch(InputMismatchException e) {
+				System.out.print("Please enter a number from 1 to 4: ");
+				disChoice = disSc.nextInt();
+			}
+		}
+	}
+
+	public static void disMethodSelection(int methodIndex){
+		switch (methodIndex) {
+			case 1:
+				ctrl.displayByContactNumber();
+				break;
+		
+			case 2:
+				ctrl.displayByTableID();
+				break;
+
+			case 3:
+				ctrl.displayAllReservation();
+				break;
+
+			case 4:
+				System.out.println("Display Options Exited");
+				break;
+		}
+	}
+
+	public static void rmvOptions(){
+		System.out.println("\n-----Remove Reservation Options-----");
+		System.out.println("By Contact Number : 1");
+		System.out.println("By Table ID : 2");
+		System.out.println("Exit : 3");
+	}
+
+	public static void rmvUserInput(){
+		boolean validInput = false;
+		
+		System.out.print("Please enter your choice from 1 to 3: ");
+		while (!validInput) {
+			try {
+				rmvChoice = rmvSc.nextInt();
+				if (1 <= rmvChoice && rmvChoice <= 3) {
+					validInput = true;
+				}
+			} catch(InputMismatchException e) {
+				System.out.print("Please enter a number from 1 to 3: ");
+				rmvChoice = rmvSc.nextInt();
+			}
+		}
+	}
+
+	public static void rmvMethodSelection(int methodIndex){
+		switch (methodIndex) {
+			case 1:
+				ctrl.removeReservationByContact();
+				break;
+			
+			case 2:
+				ctrl.removeReservationByTableID();
+				break;
+
+			case 3:
+				System.out.println("Remove Options Exited");
+				break;
+		}
+	}
 }
