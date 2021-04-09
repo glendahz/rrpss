@@ -106,7 +106,7 @@ public class OrderCtrl {
 		}
 	}
 	
-	protected static void deleteOrderData(int tableID) throws Exception {
+	static void deleteOrderData(int tableID) throws Exception {
 		ArrayList<String> newLines = new ArrayList<String>();
 		String line;
 		String[] splitLine;
