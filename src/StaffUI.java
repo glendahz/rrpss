@@ -4,20 +4,22 @@ import java.util.InputMismatchException;
 public class StaffUI {
 	
 	static Scanner sc = new Scanner(System.in);
+	private int choice = 0;
+	private StaffCtrl ctrl;
 	
-	static int choice = 0;
+	public void getStaffController(StaffCtrl ctrl) {
+		this.ctrl = ctrl;
+	}
 	
-	public static void main(String[] args) {
-		
+	public void displayOptions() {
 		while (choice != 4) {
 			Options();
 			UserInput();
 			MethodSelection(choice);
 		}
-		
 	}
 	
-	public static void Options() {
+	public void Options() {
 		
 		System.out.println("-----Staff-----");
 		System.out.println("View Current Staff : 1");
@@ -27,7 +29,7 @@ public class StaffUI {
 		
 	}
 	
-	public static void UserInput() {
+	public void UserInput() {
 		
 		boolean validInput = false;
 		
@@ -47,9 +49,7 @@ public class StaffUI {
 		return ;
 	}
 	
-	public static void MethodSelection(int methodIndex) {
-		
-		StaffCtrl ctrl = new StaffCtrl();
+	public void MethodSelection(int methodIndex) {
 		
 		switch(methodIndex) {
 		

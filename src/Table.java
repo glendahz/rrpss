@@ -2,6 +2,7 @@ enum TableStatus { RESERVED, OCCUPIED, VACANT }
 
 public class Table {
 	
+
 	private int size;
 	private TableStatus status = TableStatus.VACANT; // Set to empty when initializing
 	private int tableID;
@@ -10,6 +11,12 @@ public class Table {
 		this.size = size;
 		this.tableID = TableCtrl.currTableID;
 		TableCtrl.currTableID++;
+	}
+	
+	public Table(int tableID, int size, TableStatus status) {
+		this.tableID = tableID;
+		this.size = size;
+		this.status = status;
 	}
 	
 	public int getSize() {

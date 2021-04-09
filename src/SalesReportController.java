@@ -7,16 +7,11 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class SalesReportController {
-	private SalesReport model;
-	private SalesReportUI view;
+	private SalesReport model = null;
 	
-	SalesReportController(SalesReport model, SalesReportUI view) {
+	public void printReport(SalesReport model, SalesReportUI view) {
 		this.model = model;
-		this.view = view;
-	}
-	
-	public void printReport() {
-		generateSalesReport("sales.txt");
+		generateSalesReport("data/sales.txt");
 		float total = model.getSessionTotal();
 		
 		if(model.getType() == "DAY")
@@ -74,11 +69,26 @@ public class SalesReportController {
 					if(rowDate.isBefore(date)) {
 						continue;
 					} else if(rowDate.equals(date)) {
-						// Since items are separated by commas
-						String[] items = Arrays.copyOfRange(row, 2, row.length);
 						float price = Float.parseFloat(row[1]);
 						
-						OrderInvoice invoice = new OrderInvoice(rowDateTime, items, price);
+						//TODO: IF CONSTRUCTOR CHANGE, CAN REMOVE
+						String[] items = Arrays.copyOfRange(row, 2, row.length); // Since items are separated by commas
+						String[] itemNames = new String[items.length];
+						int[] itemNums = new int[items.length];
+						
+						float[] itemPrices = new float[items.length]; // TO BE REMOVED
+						
+						for(int i = 0; i < items.length; i++) {
+							String[] temp = items[i].split("-");
+							itemNames[i] = temp[1];
+							itemNums[i] = Integer.parseInt(temp[0]);
+							
+							// TO BE REMOVED
+							itemPrices[i] = 0;
+						}
+
+						Order order = new Order(1, "test", itemNames, itemNums, itemPrices);
+						OrderInvoice invoice = new OrderInvoice(order, rowDateTime, price);
 						
 						total += price;
 						model.addInvoice(invoice);
@@ -92,8 +102,6 @@ public class SalesReportController {
 				e.printStackTrace();
 			}
 		}
-		
-		
 		
 		model.setSessionTotal(total);
 	}

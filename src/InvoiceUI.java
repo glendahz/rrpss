@@ -2,17 +2,13 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class InvoiceUI {
-	private static InvoiceCtrl ctrl;
+	private static InvoiceCtrl invoiceCtrl;
 	
-	public static void main(String[] args) {
-		TableCtrl tables = new TableCtrl();
-		tables.addTable(4);
-		tables.addTable(5);
-		mainUI(tables);
+	public void setInvoiceCtrl(InvoiceCtrl ctrl) {
+		invoiceCtrl = ctrl;
 	}
 	
-	public static void mainUI(Scanner sc, TableCtrl tableSystem) {
-		ctrl = new InvoiceCtrl(tableSystem);
+	public void displayOptions(Scanner sc) {
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -25,7 +21,7 @@ public class InvoiceUI {
 				sc.nextLine(); // flush System.in
 			}catch(NoSuchElementException e) {
 				sc.nextLine(); // flush System.in
-				System.out.println("Error: entry was not a valid choice\n"
+				System.out.println("\nError: entry was not a valid choice\n"
 						+ "Please enter an integer!\n");
 				continue;
 			}
@@ -38,7 +34,7 @@ public class InvoiceUI {
 				break;
 			case 2:
 				run=false;
-				System.out.println("Exiting invoice management...\n");
+				System.out.println("Returning to main menu...\n");
 				break;
 			default:
 				System.out.println("Error: '" + choice + "' is not a valid choice\n"
@@ -48,21 +44,21 @@ public class InvoiceUI {
 		}
 	}
 	
-	public static void mainUI(TableCtrl tableSystem) {
+	public void displayOptions() {
 		Scanner sc = new Scanner(System.in);
-		mainUI(sc, tableSystem);
+		displayOptions(sc);
 		sc.close();
 	}
 
 	private static void printInvoiceUI(Scanner sc) {
-		int orderID = OrderUI.getOrderIDUI(sc);
+		int orderID = OrderUI.getTableIDUI(sc, TableStatus.OCCUPIED);
 		
 		// get payment method
 		String payMthd = getPaymentMethodUI(sc);
 		
 		// create invoice
 		try {
-			System.out.println(ctrl.createInvoice(orderID, payMthd) + "\n");
+			System.out.println(invoiceCtrl.createInvoice(orderID, payMthd) + "\n");
 		} catch (Exception e) {
 			System.out.println("Error: unable to create invoice\n"
 					+ e.getMessage() + "\n");
@@ -80,14 +76,15 @@ public class InvoiceUI {
 					+ "3. NETS\n"
 					+ "4. NETS FlashPay\n"
 					+ "5. DBS Paylah!\n"
-					+ "6. AliPay\n");
+					+ "6. AliPay");
 			// check if entry is an integer
 			try {
 				choice = sc.nextInt();
 				sc.nextLine(); // flush System.in
+				System.out.println();
 			} catch (NoSuchElementException e) {
 				sc.nextLine(); // flush System.in
-				System.out.println("Error: entry was not a valid choice\n"
+				System.out.println("\nError: entry was not a valid choice\n"
 						+ "Please enter an integer!\n");
 				continue;
 			}

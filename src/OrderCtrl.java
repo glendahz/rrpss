@@ -8,10 +8,11 @@ import java.util.Scanner;
 
 public class OrderCtrl {
 	private static final File ORDER_FILE = new File("data", "order.txt");
-	private static final int ORDER_LINES = 4; // number of lines for each order in the data file
 	private static final String DELIMITER = ",";
+	private static final String SUB_DELIMITER = "-";
 	private static TableCtrl tableCtrl;
 	private static StaffCtrl staffCtrl;
+	private static MenuCtrl menuCtrl;
 	
 	public void setTableCtrl(TableCtrl ctrl) {
 		tableCtrl = ctrl;
@@ -21,42 +22,48 @@ public class OrderCtrl {
 		staffCtrl = ctrl;
 	}
 	
-	private static String orderObjToStr(Order order) throws Exception {
-		String str = "Table ID: " + order.getTableID() + "\n"
-		+ "Server: " + order.getStaffName() + "\n"
-		+ "Order Items:";
+	public void setMenuCtrl(MenuCtrl ctrl) {
+		menuCtrl = ctrl;
+	}
+	
+	private static String orderObjToStr(Order order) {
+		ArrayList<String> lines = new ArrayList<String>();
+		lines.add("Table ID: " + order.getTableID());
+		lines.add("Server: " + order.getStaffName());
+		lines.add("Order Items:");
 		String[][] items = order.getAllItemsArr();
+		
+		
 		for (int i=0; i<items.length; i++) {
-			//				itemNum				 itemName			  itemPrice
-			str += "\n  " + items[i][1] + "  " + items[i][0] + " ($" + items[i][2] + ")";
+			//				 itemNum			  itemName				itemPrice
+			lines.add("  " + items[i][0] + "  " + items[i][1] + " ($" + items[i][2] + ")");
 		}
-		return str;
+		return String.join("\n", lines);
 	}
 	
 	private static String orderObjToData(Order order) {
-		String line;
-		ArrayList<String> lines = new ArrayList<String>();
+		ArrayList<String> fields = new ArrayList<String>();
 		
-		// line 1 of data
-		String tableID = String.valueOf(order.getTableID());
-		String staffName = order.getStaffName();
-		line = String.join(DELIMITER, tableID, staffName); 
-		lines.add(line);
+		// add tableID & staffName
+		fields.add(String.valueOf(order.getTableID()));
+		fields.add(order.getStaffName());
+
 		
-		// lines 2, 3 & 4 of data
-		String[][] items = order.getAllItemsSepArr();
-		for(int i=0; i<=2; i++) {
-			line = String.join(DELIMITER, items[i]);
-			lines.add(line);
+		// add items
+		String itemData;
+		String[][] items = order.getAllItemsArr();
+		for(int i=0; i<items.length; i++) {
+			//			 					  	  itemNum	   itemName		itemPrice
+			itemData = String.join(SUB_DELIMITER, items[i][0], items[i][1], items[i][2]);
+			fields.add(itemData);
 		}
 		
-		// data
-		String data = String.join("\n", lines);
-		return data;
+		return String.join(DELIMITER, fields);
 	}
 	
 	private static void editOrderData(int tableID, Order newOrder) throws Exception {
-		String data = "", line;
+		ArrayList<String> newLines = new ArrayList<String>();
+		String line;
 		String[] splitLine;
 		int currID;
 		
@@ -67,16 +74,9 @@ public class OrderCtrl {
 				line = fr.nextLine();
 				splitLine = line.split(DELIMITER);
 				currID = Integer.parseInt(splitLine[0]);
-				if (tableID == currID) {
-					data += orderObjToData(newOrder) + "\n";
-					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over target order data
-					break;
-				} 
-				// copy all data before target data
-				data += line + "\n";
-				for (int i=0; i<ORDER_LINES-1; i++) data += fr.nextLine() + "\n";
+				if (tableID == currID) newLines.add(orderObjToData(newOrder));
+				else newLines.add(line); // copy all data that is not target data
 			}
-			while (fr.hasNextLine()) data += fr.nextLine() + "\n"; // copy all data after target data
 			fr.close();
 		} catch (FileNotFoundException e) {
 			throw new Exception("OrderCtrl.editOrderData() error: Scanner cannot find order data file \n");
@@ -85,6 +85,7 @@ public class OrderCtrl {
 		}
 		
 		// write data back to file
+		String data = String.join("\n", newLines);
 		try {
 			FileWriter fw = new FileWriter(ORDER_FILE);
 			fw.write(data);
@@ -95,7 +96,7 @@ public class OrderCtrl {
 	}
 
 	private static void appendOrderData(Order newOrder) throws Exception {
-		String data = orderObjToData(newOrder);
+		String data = "\n" + orderObjToData(newOrder);
 		try {
 			FileWriter fwa = new FileWriter(ORDER_FILE, true);
 			fwa.write(data);
@@ -106,7 +107,8 @@ public class OrderCtrl {
 	}
 	
 	protected static void deleteOrderData(int tableID) throws Exception {
-		String data = "", line;
+		ArrayList<String> newLines = new ArrayList<String>();
+		String line;
 		String[] splitLine;
 		int currID;
 		
@@ -117,15 +119,9 @@ public class OrderCtrl {
 				line = fr.nextLine();
 				splitLine = line.split(DELIMITER);
 				currID = Integer.parseInt(splitLine[0]);
-				if (tableID == currID) {
-					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip over target order data
-					break;
-				} 
-				// copy all data before target data
-				data += "\n" + line;
-				for (int i=0; i<ORDER_LINES-1; i++) data += "\n" + fr.nextLine();
+				if (tableID == currID) continue;
+				else newLines.add(line); // copy all data that is not target data
 			}
-			while (fr.hasNextLine()) data += "\n" + fr.nextLine(); // copy all data after target data
 			fr.close();
 		} catch (FileNotFoundException e) {
 			throw new Exception("OrderCtrl.deleteOrderData() error: Scanner cannot find order data file \n");
@@ -134,6 +130,7 @@ public class OrderCtrl {
 		}
 		
 		// write data back to file
+		String data = String.join("\n", newLines);
 		try {
 			FileWriter fw = new FileWriter(ORDER_FILE);
 			fw.write(data);
@@ -147,7 +144,7 @@ public class OrderCtrl {
 		Order order = null;
 		int currID;
 		String staffName;
-		String[] line, itemNames, itemNums, itemPrices;
+		String[] line, itemData;
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
 			while (fr.hasNextLine()) {
@@ -158,13 +155,12 @@ public class OrderCtrl {
 						staffName = line[1];
 						order = new Order(tableID, staffName);
 						// add items to order
-						itemNames = fr.nextLine().split(DELIMITER);
-						itemNums = fr.nextLine().split(DELIMITER);
-						itemPrices = fr.nextLine().split(DELIMITER);
-						for(int i=0; i<itemNames.length; i++) order.addItem(itemNames[i], itemNums[i], itemPrices[i]);
+						for(int i=2; i<line.length; i++) {
+							itemData = line[i].split(SUB_DELIMITER);
+							order.addItem(itemData[0], itemData[1], itemData[2]);
+						}
 						break;
 					}
-					for (int i=0; i<ORDER_LINES-1; i++) fr.nextLine(); // skip to next order ID
 				} catch (NoSuchElementException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
 					fr.close();
 					throw new Exception("OrderCtrl.getOrderObject() error: data in order data file is formatted differently from expected");
@@ -183,33 +179,57 @@ public class OrderCtrl {
 	
 	public boolean validTableID(int tableID, TableStatus status){
 		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
-		if (status == null) {
-			if (currStatus != null) return true;
-			else return false;
-		}
-		else {
-			if (currStatus == status) return true;
-			else return false;
-		}
+		if (currStatus == status) return true;
+		else return false;
 	}
-	
-	public boolean validTableID(int tableID) {
-		return validTableID(tableID, null);
-	}
+
 	
 	public String validEmployeeID(int employeeID) {
 		return staffCtrl.getStaffName(employeeID);
 	}
 	
-	// TODO integrate with MenuCtrl
+	public String validOrderItemName(String itemName) {
+		String newName = null;
+		int itemIndex;
+		
+		// check if item is a valid set package
+		// if yes, format the name properly
+		if (itemName.matches("[Ss]et( )?([Pp]ackage)?( )?\\d+")) {
+			itemName = itemName.replaceAll("\\D", ""); // strips non-digit characters from name
+			itemIndex = Integer.parseInt(itemName);
+			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
+		} else if(itemName.matches("\\d+")) {
+			itemIndex = Integer.parseInt(itemName);
+			if (menuCtrl.checkSetItemIndex(itemIndex)) newName = "Set Package " + itemIndex;
+		}
+		// check if item is a valid menu item
+		else {
+			itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1).toLowerCase(); // capitalizes first letter and converts all other letters to lowercase
+			if (menuCtrl.checkItemName(itemName)) newName = itemName;
+		}
+		
+		return newName;
+	}
+	
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
 			float[] itemPrices = new float[itemNames.length];
-			for (int i=0; i<itemNames.length; i++) itemPrices[i] = 4; //itemPrices[i] = MenuCtrl.getPrice(itemNames[i]);
+			String itemName;
+			int itemIndex;
+			for (int i=0; i<itemNames.length; i++) {
+				itemName = itemNames[i];
+				if (itemName.matches("Set Package \\d+")) {
+					itemName = itemName.replace("Set Package ", "");
+					itemIndex = Integer.parseInt(itemName);
+					itemPrices[i] = (float) menuCtrl.getSetItemPrice(itemIndex);			
+				} else itemPrices[i] = (float) menuCtrl.getItemPrice(itemName);
+			}
 			Order order = new Order(tableID, staffName, itemNames, itemNums, itemPrices);
+			
 			// write data to file
 			appendOrderData(order);
+			
 			// change table status
 			tableCtrl.assignTable(tableID);
 		} catch (Exception e) {
@@ -228,12 +248,21 @@ public class OrderCtrl {
 		
 	}
 	
-	// TODO integrate with MenuCtrl
 	public void addOrderItem(int tableID, String newItemName, int newItemNum) throws Exception {
 		try {
 			Order order = getOrderObject(tableID);
-			float newItemPrice = 10; //float newItemPrice = MenuCtr.getPrice(itemName); 
-			order.addItem(newItemName, newItemNum, newItemPrice);
+			if (order.containsItem(newItemName)) { // order item already exists in order, add to existing order item number
+				newItemNum += order.getItemNum(newItemName);
+				order.updateItemNum(newItemName, newItemNum);
+			} else { // order item does not exist in order, add new order item
+				float newItemPrice;
+				if (newItemName.matches("Set Package \\d+")) {
+					newItemName = newItemName.replace("Set Package ", "");
+					int newItemIndex = Integer.parseInt(newItemName);
+					newItemPrice = (float) menuCtrl.getSetItemPrice(newItemIndex);		
+				} else newItemPrice = (float) menuCtrl.getItemPrice(newItemName);
+				order.addItem(newItemNum, newItemName, newItemPrice);
+			}
 			editOrderData(tableID, order);
 		} catch (Exception e) {
 			throw new Exception("OrderCtr.addOrderItem() error:\n\t"
