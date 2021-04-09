@@ -1,12 +1,10 @@
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
 
 public class Order {
 	private int tableID;
 	private String staffName;
-	private Map<String, Float[]> items = new HashMap<String, Float[]>();
+	private HashMap<String, Float[]> items = new HashMap<String, Float[]>();
 	
 	public Order(int tableID, String staffName, String[] itemNames, int[] itemNums, float[] itemPrices) {
 		this.tableID = tableID;
@@ -88,7 +86,7 @@ public class Order {
 	public void setStaffName(String staffName) {
 		this.staffName = staffName;
 	}
-	public void setAllItems(Hashtable<String, Float[]> items) {
+	public void setAllItems(HashMap<String, Float[]> items) {
 		this.items = items;
 	}
 	public void addItem(int itemNum, String itemName, float itemPrice) {
