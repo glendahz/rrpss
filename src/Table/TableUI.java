@@ -19,7 +19,7 @@ public class TableUI extends UI {
 
 	@Override
 	public void displayOptions() {
-		while (choice != 11) {
+		while (choice != 8) {
 			Options();
 			UserInput();
 			MethodSelection(choice);
@@ -29,17 +29,15 @@ public class TableUI extends UI {
 	public void Options() {
 
 		System.out.println("-----------Tables-----------");
-		System.out.println("1) Create Multiple Tables");
-		System.out.println("2) Get Available Tables");
-//		System.out.println("3) Get All Tables");
-		System.out.println("4) Add Table");
-		System.out.println("5) Remove Table");
-		System.out.println("6) Assign Table");
-		System.out.println("7) Reserve Table");
-		System.out.println("8) Vacate Table");
-		System.out.println("9) Get All Tables");
-		System.out.println("10) Get Table Status");
-		System.out.println("11) Exit");
+		System.out.println("Get All Available Tables : 1");
+		System.out.println("Get All Available Tables Bigger Than Size : 2");
+		System.out.println("Get All Tables : 3");
+		System.out.println("Assign Table : 4");
+		System.out.println("Reserve Table : 5");
+		System.out.println("Vacate Table : 6");
+		System.out.println("Get Table Status : 7");
+		System.out.println("Exit : 8");
+
 
 	}
 
@@ -47,15 +45,15 @@ public class TableUI extends UI {
 
 		boolean validInput = false;
 
-		System.out.print("Please enter your choice from 1 to 11: ");
+		System.out.print("Please enter your choice from 1 to 8: ");
 		while (!validInput) {
 			try {
 				choice = sc.nextInt();
-				if (1 <= choice && choice <= 11) {
+				if (1 <= choice && choice <= 8) {
 					validInput = true;
 				}
 			} catch (InputMismatchException e) {
-				System.out.print("Please enter a number from 1 to 11: ");
+				System.out.print("Please enter a number from 1 to 8: ");
 				choice = sc.nextInt();
 			}
 		}
@@ -66,43 +64,36 @@ public class TableUI extends UI {
 	public void MethodSelection(int methodIndex) {
 
 		switch (methodIndex) {
-		case 1:
-			ctrl.createMultipleTables();
-			break;
 
-		case 2:
+		case 1:
 			ctrl.getAvailableTables();
 			break;
 
+		case 2:
+			ctrl.getTableIDsBySize();
+			break;
+			
+		case 3:
+			ctrl.printAllTables();
+			break;
+			
 		case 4:
-			ctrl.addTable();
-			break;
-
-		case 5:
-			ctrl.removeTable();
-			break;
-
-		case 6:
 			ctrl.assignTable();
 			break;
 
-		case 7:
+		case 5:
 			ctrl.reserveTable();
 			break;
 
-		case 8:
+		case 6:
 			ctrl.vacateTable();
 			break;
 
-		case 9:
-			ctrl.printAllTables();
-			break;
-
-		case 10:
+		case 7:
 			ctrl.getTableStatus();
 			break;
 
-		case 11:
+		case 8:
 			System.out.println("Menu Exited");
 			break;
 
