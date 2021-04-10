@@ -11,9 +11,23 @@ import Order.Order;
 import Order.OrderInvoice;
 import util.Controller;
 
+/**
+ * Interfaces between the SalesReportUI and SalesReport model.
+ * @author Wai Yar Aung
+ *
+ */
 public class SalesReportController extends Controller {
+	/**
+	 * Holds the SalesReport currently being shown by the UI.
+	 */
 	private SalesReport model = null;
 	
+	/**
+	 * Fills up the model with sales data from text file.
+	 * Calls respective print function in UI.
+	 * @param model SalesReport to print
+	 * @param view The UI to print in
+	 */
 	public void printReport(SalesReport model, SalesReportUI view) {
 		this.model = model;
 		generateSalesReport("data/Sales.txt");
@@ -27,6 +41,14 @@ public class SalesReportController extends Controller {
 		view.displayOptions();
 	}
 	
+	/**
+	 * Reads the sales.txt data file and adds it to model if the timestamp fits.
+	 * If the type == "MONTH", finds all date for the month chosen.
+	 * If the type == "DAY", finds all timestamp for the date chosen.
+	 * Assumes that the data file is sorted by ascending timestamp.
+	 * Ends early once the next date/month is reached.
+	 * @param path The path for sales.txt data file
+	 */
 	private void generateSalesReport(String path) {
 		float total = 0;
 		String type = model.getType();

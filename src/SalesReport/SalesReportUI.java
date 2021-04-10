@@ -14,10 +14,27 @@ import Order.OrderInvoice;
 import util.Controller;
 import util.UI;
 
+/**
+ * To display data related to Sales Report.
+ * @author Wai Yar Aung
+ *
+ */
 public class SalesReportUI extends UI {
 
+	/**
+	 * The SalesReport model to display
+	 */
 	private SalesReport model;
+	
+	/**
+	 * The SalesReportController to interface with the model.
+	 */
 	private SalesReportController controller;
+	
+	/**
+	 * A System.in scanner to take in user inputs.
+	 * Static since reused and not closed as other parts of the program uses it.
+	 */
 	private static Scanner sc = new Scanner(System.in);
 
 	@Override
@@ -25,6 +42,7 @@ public class SalesReportUI extends UI {
 		this.controller = (SalesReportController) ctrl;
 	}
 
+	@Override
 	public void displayOptions() {
 		System.out.println("=================SalesReport=================");
 		System.out.println("1) Print sales by day");
@@ -94,6 +112,12 @@ public class SalesReportUI extends UI {
 		controller.printReport(this.model, this);
 	}
 
+	/**
+	 * Called when the model's type == "MONTH".
+	 * Prints a daily total for the entire month selected.
+	 * @param dailyTotals This HashMap has the date for key and total for value.
+	 * @param total The session's total
+	 */
 	public void printByMonth(HashMap<Integer, Float> dailyTotals, float total) {
 		String tableFormat = "| %-7s | %9.2f |%n";
 
@@ -112,6 +136,13 @@ public class SalesReportUI extends UI {
 		System.out.println();
 	}
 
+	/**
+	 * Called when the model's type == "DAY".
+	 * Prints the invoices for the entire day.
+	 * Each invoice will have their time, price and orders printed.
+	 * @param invoices The invoices for the day
+	 * @param total The session's total
+	 */
 	public void printByDay(List<OrderInvoice> invoices, float total) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 
