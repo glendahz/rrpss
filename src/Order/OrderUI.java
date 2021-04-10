@@ -185,19 +185,27 @@ public class OrderUI extends UI {
 
 	private static String getOrderItemNameUI(Scanner sc) {
 		boolean run = true;
+		int choice=0;
+		String[] itemNames = orderCtrl.getAllOrderItemNames();
 		String itemName = "";
-		String newName;
 		while (run) {
-			System.out.println("Enter name of order item: ");
-			itemName = sc.nextLine();
-			System.out.println();
-			newName = orderCtrl.validOrderItemName(itemName);
-			if (newName != null) {
-				itemName = newName;
-				run = false;
+			try {
+				System.out.println("Select order item: ");
+				for (int i=0; i<itemNames.length; i++) System.out.println((i+1) + ". " + itemNames[i]);
+				choice = sc.nextInt();
+				sc.nextLine(); // flush System.in
+				System.out.println();
+			} catch(NoSuchElementException e) {
+				System.out.println("\nError: entry was not a valid choice\n"
+						+ "Please enter an integer!\n");
 			}
-			else {
-				System.out.println("Error: '" + itemName + "' is not a valid order item name\n");
+			
+			if (0 < choice & choice <= itemNames.length) {
+				itemName = itemNames[choice-1];
+				run = false;
+			} else {
+				System.out.println("Error: '" + choice + "' was not a valid choice\n"
+						+ "Please enter an integer between 1 and " + itemNames.length + "!\n");
 			}
 		}
 		return itemName;

@@ -189,7 +189,8 @@ public class OrderCtrl extends Controller {
 		return staffCtrl.getStaffName(employeeID);
 	}
 	
-	public String validOrderItemName(String itemName) {
+	
+	/*public String validOrderItemName(String itemName) {
 		String newName = null;
 		int itemIndex;
 		
@@ -210,6 +211,17 @@ public class OrderCtrl extends Controller {
 		}
 		
 		return newName;
+	}*/
+	
+	//TODO integrate with MenuCtrl
+	public String[] getAllOrderItemNames() {
+		String[] menuItemNames = {"Grilled Chicken Chop", "Chicken Cutlet", "Fish & Chip", "Griled Salmon", "Prawns & Scallops", "Ice Lemon Tea", "Coke", "Milk Tea"};
+		String[] setItemNames = {"1", "2"};
+		for (int i=0; i<setItemNames.length; i++) setItemNames[i] = "Set Package " + setItemNames[i];
+		String[] itemNames = new String[menuItemNames.length + setItemNames.length];
+		System.arraycopy(menuItemNames, 0, itemNames, 0, menuItemNames.length);
+		System.arraycopy(setItemNames, 0, itemNames, menuItemNames.length, setItemNames.length);
+		return menuItemNames;
 	}
 	
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
