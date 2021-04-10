@@ -161,7 +161,7 @@ public class OrderUI extends UI {
 		}
 	}
 	
-	protected static int getTableIDUI(Scanner sc, TableStatus status) {
+	static int getTableIDUI(Scanner sc, TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
 		while(run) {

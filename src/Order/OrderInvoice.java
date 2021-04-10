@@ -1,7 +1,7 @@
 package Order;
 import java.time.LocalDateTime;
 
-enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, APLIPAY };
+enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, ALIPAY };
 
 public class OrderInvoice {
 	private Order order;

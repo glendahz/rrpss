@@ -111,7 +111,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	protected static void deleteOrderData(int tableID) throws Exception {
+	static void deleteOrderData(int tableID) throws Exception {
 		ArrayList<String> newLines = new ArrayList<String>();
 		String line;
 		String[] splitLine;
@@ -145,7 +145,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	protected static Order getOrderObject(int tableID) throws Exception {
+	static Order getOrderObject(int tableID) throws Exception {
 		Order order = null;
 		int currID;
 		String staffName;
@@ -226,7 +226,6 @@ public class OrderCtrl extends Controller {
 		return newName;
 	}*/
 	
-	//TODO integrate with MenuCtrl
 	public String[] getAllOrderItemNames() {
 		MenuItem[] menuItems = MenuCtrl.getItemObject();
 		SetPackage[] setItems = MenuCtrl.getSetItemObject();
