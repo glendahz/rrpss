@@ -20,10 +20,6 @@ public class SalesReportUI extends UI {
 	private SalesReportController controller;
 	private static Scanner sc = new Scanner(System.in);
 
-	public SalesReportUI() {
-		this.model = new SalesReport();
-	}
-
 	@Override
 	public void setController(Controller ctrl) {
 		this.controller = (SalesReportController) ctrl;
@@ -88,6 +84,7 @@ public class SalesReportUI extends UI {
 		}
 
 		try {
+			this.model = new SalesReport();
 			this.model.setType(sessionType);
 			this.model.setStartDate(date);
 		} catch (Exception e) {
@@ -129,8 +126,9 @@ public class SalesReportUI extends UI {
 			String[][] orders = invoice.getOrder().getAllItemsArr();
 			String orderStr = "";
 			for (String[] item : orders) {
-				orderStr = orderStr.concat(String.format("%sx %s, ", item[1], item[0])); // Concat with NumberxName
-																							// (e.g. 1xChicken)
+				// Display as Number x Name
+				// (e.g. 1 x Chicken)
+				orderStr = orderStr.concat(String.format("%s x %s, ", item[0], item[1]));
 			}
 			System.out.format(leftAlignFormat, ts.format(dtf), invoice.getTotalPrice(), orderStr);
 		});
