@@ -16,13 +16,15 @@ public class SalesReportController extends Controller {
 	
 	public void printReport(SalesReport model, SalesReportUI view) {
 		this.model = model;
-		generateSalesReport("data/sales.txt");
+		generateSalesReport("data/Sales.txt");
 		float total = model.getSessionTotal();
 		
 		if(model.getType() == "DAY")
 			view.printByDay(model.getInvoices(), total);
 		else
 			view.printByMonth(model.getDailyTotals(), total);
+		
+		view.displayOptions();
 	}
 	
 	private void generateSalesReport(String path) {

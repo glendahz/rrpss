@@ -6,6 +6,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,11 +30,22 @@ public class SalesReportUI extends UI {
 	}
 
 	public void displayOptions() {
-		System.out.print("=================SalesReport=================\n" + "1) Print sales by day\n"
-				+ "2) Print sales by month\n" + "0) Exit\n");
+		System.out.println("=================SalesReport=================");
+		System.out.println("1) Print sales by day");
+		System.out.println("2) Print sales by month");
+		System.out.println("0) Exit\n");
 
-		System.out.print("Input: ");
-		int input = sc.nextInt();
+		int input = 0;
+		while (true) {
+			System.out.print("Choice: ");
+			try {
+				input = sc.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid choice.");
+				sc.next(); // Consume input
+			}
+		}
 
 		while (input < 0 || input > 2) {
 			System.out.println("Invalid option! Try again.");
@@ -42,7 +54,6 @@ public class SalesReportUI extends UI {
 		}
 
 		if (input == 0) {
-			sc.close();
 			return;
 		}
 
@@ -100,7 +111,7 @@ public class SalesReportUI extends UI {
 		System.out.format("+---------------------+%n");
 		System.out.format("| Total   | %9.2f |%n", total);
 		System.out.format("+---------+-----------+%n");
-		
+
 		System.out.println();
 	}
 
@@ -110,7 +121,7 @@ public class SalesReportUI extends UI {
 		String leftAlignFormat = "| %-8s | %8.2f | %56s |%n";
 
 		System.out.format("+----------+----------+----------------------------------------------------------+%n");
-		System.out.format("| Time     | Price($) | Orders                                                   |%n");
+		System.out.format("| Time     | Price($) |                                                   Orders |%n");
 		System.out.format("+----------+----------+----------------------------------------------------------+%n");
 
 		invoices.forEach(invoice -> {
@@ -127,7 +138,7 @@ public class SalesReportUI extends UI {
 		System.out.format("+----------+----------+----------------------------------------------+-----------+%n");
 		System.out.format("| Total                                                              | %9.2f |%n", total);
 		System.out.format("+--------------------------------------------------------------------+-----------+%n");
-		
+
 		System.out.println();
 	}
 }
