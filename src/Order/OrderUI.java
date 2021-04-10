@@ -67,7 +67,7 @@ public class OrderUI extends UI {
 	
 	private static void createOrderUI(Scanner sc) {
 		// get table ID & employee ID
-		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
+		int tableID = getTableIDUI(sc, TableStatus.RESERVED);
 		String staffName = getEmployeeIDUI(sc);
 		
 		// get order items
@@ -196,8 +196,10 @@ public class OrderUI extends UI {
 				sc.nextLine(); // flush System.in
 				System.out.println();
 			} catch(NoSuchElementException e) {
+				sc.nextLine();
 				System.out.println("\nError: entry was not a valid choice\n"
 						+ "Please enter an integer!\n");
+				continue;
 			}
 			
 			if (0 < choice & choice <= itemNames.length) {
