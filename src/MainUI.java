@@ -28,9 +28,10 @@ public class MainUI {
 
 			if (choice < 0 || choice > 9)
 				System.out.println("Invalid Choice!");
-			else if (choice == 8)
+			else if (choice == 8) {
+				System.out.println("Thank you for using RRPSS! Have a great day ahead!");
 				break;
-			else {
+			} else {
 				switch (choice) {
 				case 1:
 					mainController.displayStaffUI();
@@ -58,6 +59,9 @@ public class MainUI {
 
 				case 7:
 					mainController.displaySalesReportUI();
+					break;
+					
+				default:
 					break;
 
 				}

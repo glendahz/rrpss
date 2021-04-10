@@ -18,6 +18,10 @@ public class StaffCtrl extends Controller {
 	static private ArrayList<Staff> staffList = new ArrayList<Staff>();
 	static Scanner sc = new Scanner(System.in);
 	
+	public StaffCtrl() {
+		readData("data/Staff.txt");
+	}
+	
 	public void viewStaffList() {
 		System.out.println("\n========Staff List========");
 		if (staffList.size() == 0) {
@@ -41,6 +45,7 @@ public class StaffCtrl extends Controller {
 	
 	public void addStaff(int employeeID, String name, Gender gender, JobTitle jobTitle) {
 		staffList.add(new Staff(name, gender, employeeID, jobTitle));
+		writeData("data/Staff.txt");
 	}
 	
 	public void addStaff() {
@@ -104,6 +109,7 @@ public class StaffCtrl extends Controller {
 		staffList.add(new Staff(name, gender, currEmpNum, jobTitle));
 		currEmpNum++;
 		
+		writeData("data/Staff.txt");
 	}
 	
 	public void removeStaff() {
@@ -129,7 +135,9 @@ public class StaffCtrl extends Controller {
 				System.out.println("Employee " + currStaff.getName() + " with employee ID " + currStaff.getEmployeeID() + " removed!");
 				staffList.remove(i);
 			}
-		}		
+		}	
+		
+		writeData("data/Staff.txt");
 	}
 	
 	public String getStaffName(int employeeID) {

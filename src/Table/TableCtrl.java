@@ -19,25 +19,27 @@ public class TableCtrl extends Controller {
 	private ArrayList<Table> tables = new ArrayList<Table>();
 	static int maxTableID = 1; // TODO: SET BY DATABASE		
 	
-	public TableCtrl() {}
-	
-	public void createMultipleTables() {
-		int size = 0;
-		int numTable = 0;
-		while (true) {
-			System.out.print("Please enter table size or enter -1 to end table adding: ");
-			size = sc.nextInt();
-			if (size == -1) {
-				break;
-			} else {
-				System.out.print("Please enter number of tables of this size: ");
-				numTable = sc.nextInt();
-				for (int i = 0; i < numTable; ++i) {
-					addTable(size);
-				}
-			}
-		}
+	public TableCtrl() {
+		readData("data/Tables.txt");
 	}
+	
+//	public void createMultipleTables() {
+//		int size = 0;
+//		int numTable = 0;
+//		while (true) {
+//			System.out.print("Please enter table size or enter -1 to end table adding: ");
+//			size = sc.nextInt();
+//			if (size == -1) {
+//				break;
+//			} else {
+//				System.out.print("Please enter number of tables of this size: ");
+//				numTable = sc.nextInt();
+//				for (int i = 0; i < numTable; ++i) {
+//					addTable(size);
+//				}
+//			}
+//		}
+//	}
 	
 	public void getAvailableTables() {
 		int size = querySize();
@@ -67,6 +69,24 @@ public class TableCtrl extends Controller {
 		return sizedTables;
 	}
 	
+	public ArrayList<Integer> getTableIDsBySize() {
+		int size = querySize();
+		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
+
+		for(Table t : tables) {
+			if(t.getSize() >= size)
+				sizedTables.add(t.getTableID());
+		}
+		
+		if (sizedTables.isEmpty()) {
+			System.out.println("There are no available tables of size " + size + "!");
+		} else {
+			System.out.println(sizedTables);
+		}
+		
+		return sizedTables;
+	}
+	
 	public void printAllTables() {
 		ArrayList<Integer> availableTables = new ArrayList<Integer>();
 		for (int i = 0; i < tables.size(); ++i) {
@@ -79,62 +99,68 @@ public class TableCtrl extends Controller {
 		}
 	}
 	
-	public void addTable() {
-		int size = querySize();
-		tables.add(new Table(size));
-	}
+//	public void addTable() {
+//		int size = querySize();
+//		tables.add(new Table(size));
+//	}
 	
-	public void addTable(int tableID, int size, TableStatus tableStatus) {
+	private void addTable(int tableID, int size, TableStatus tableStatus) {
 		tables.add(new Table(tableID, size, tableStatus));
 	}
 	
-	public void addTable(int size) {
-		tables.add(new Table(size));
-	}
+//	public void addTable(int size) {
+//		tables.add(new Table(size));
+//	}
 	
-	public void removeTable() {
-		int tableID = queryTableID();
-		boolean found = false;
-		for (int i = 0; i < tables.size(); ++i) {
-			Table currTable = tables.get(i);
-			if (currTable.getTableID() == tableID) {
-				System.out.println("Table with ID " + tableID + " removed!");
-				tables.remove(i);
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			System.out.println("There is no table with ID " + tableID + "!");
-		}
-	}
+//	public void removeTable() {
+//		int tableID = queryTableID();
+//		boolean found = false;
+//		for (int i = 0; i < tables.size(); ++i) {
+//			Table currTable = tables.get(i);
+//			if (currTable.getTableID() == tableID) {
+//				System.out.println("Table with ID " + tableID + " removed!");
+//				tables.remove(i);
+//				found = true;
+//				break;
+//			}
+//		}
+//		if (!found) {
+//			System.out.println("There is no table with ID " + tableID + "!");
+//		}
+//	}
 	
-	public void removeTable(int TableID) {
-		int tableID = queryTableID();
-		boolean found = false;
-		for (int i = 0; i < tables.size(); ++i) {
-			Table currTable = tables.get(i);
-			if (currTable.getTableID() == tableID) {
-				System.out.println("Table with ID " + tableID + " removed!");
-				tables.remove(i);
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			System.out.println("There is no table with ID " + tableID + "!");
-		}
-	}
+//	public void removeTable(int TableID) {
+//		int tableID = queryTableID();
+//		boolean found = false;
+//		for (int i = 0; i < tables.size(); ++i) {
+//			Table currTable = tables.get(i);
+//			if (currTable.getTableID() == tableID) {
+//				System.out.println("Table with ID " + tableID + " removed!");
+//				tables.remove(i);
+//				found = true;
+//				break;
+//			}
+//		}
+//		if (!found) {
+//			System.out.println("There is no table with ID " + tableID + "!");
+//		}
+//	}
 		
 	public void assignTable() {
+		System.out.println("Here");
 		int tableID = queryTableID();
+		System.out.println("Here2");
 		int tableIndex = getTableIndex(tableID);
+		System.out.println("Here3");
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
 		} else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
+		System.out.println("Here4");
+		writeData("data/Tables.txt");
+		System.out.println("Here5");
 	}
 	
 	public void assignTable(int tableID) {
@@ -145,6 +171,7 @@ public class TableCtrl extends Controller {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
+		writeData("data/Tables.txt");
 	}
 	
 	public void reserveTable() {
@@ -157,6 +184,7 @@ public class TableCtrl extends Controller {
 			System.out.println("Table with ID " + tableID + " set to reserved!");
 			tables.get(tableIndex).setToReserved();
 		}
+		writeData("data/Tables.txt");
 	}
 	
 	public void reserveTable(int tableID) {
@@ -168,6 +196,7 @@ public class TableCtrl extends Controller {
 			System.out.println("Table with ID " + tableID + " set to reserved!");
 			tables.get(tableIndex).setToReserved();
 		}
+		writeData("data/Tables.txt");
 	}
 	
 	public void vacateTable() {
@@ -179,6 +208,7 @@ public class TableCtrl extends Controller {
 			System.out.println("Table with ID " + tableID + " set to vacant!");
 			tables.get(tableIndex).setToVacant();
 		}
+		writeData("data/Tables.txt");
 	}
 	
 	public void vacateTable(int tableID) {
@@ -189,6 +219,7 @@ public class TableCtrl extends Controller {
 			System.out.println("Table with ID " + tableID + " set to vacant!");
 			tables.get(tableIndex).setToVacant();
 		}
+		writeData("data/Tables.txt");
 	}
 	
 	public TableStatus getTableStatus() {
@@ -196,9 +227,11 @@ public class TableCtrl extends Controller {
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
 			if (currTable.getTableID() == tableID) {
+				System.out.println("Table " + tableID + " is " + currTable.getStatus());
 				return currTable.getStatus();
 			}
 		}
+		
 		return null;
 	}
 	
@@ -248,7 +281,7 @@ public class TableCtrl extends Controller {
 		while (!validInput) {
 			try {
 				tableID = sc.nextInt();
-				if (tableID > 0 && tableID < maxTableID) {
+				if (tableID > 0 && tableID < 31) {		// Possibly use maxTableID
 					validInput = true;
 				}
 			} catch(InputMismatchException e) {
