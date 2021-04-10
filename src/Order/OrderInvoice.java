@@ -1,7 +1,7 @@
 package Order;
 import java.time.LocalDateTime;
 
-enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, ALIPAY };
+enum PaymentMethod { CASH, CREDIT_CARD, NETS, NETS_FLASHPAY, PAYLAH, APLIPAY };
 
 public class OrderInvoice {
 	private Order order;
@@ -9,7 +9,7 @@ public class OrderInvoice {
 	private PaymentMethod paymentMethod;
 	private LocalDateTime timestamp;
 	
-	public OrderInvoice(Order order, PaymentMethod paymentMethod, LocalDateTime timestamp){
+	OrderInvoice(Order order, PaymentMethod paymentMethod, LocalDateTime timestamp){
 		this.order = order;
 		this.paymentMethod = paymentMethod;
 		this.timestamp = timestamp;
@@ -17,7 +17,7 @@ public class OrderInvoice {
 		// get total price
 		this.totalPrice = this.getTotalPrice(true);
 	}
-	public OrderInvoice(Order order, String paymentMethod, LocalDateTime timestamp){
+	OrderInvoice(Order order, String paymentMethod, LocalDateTime timestamp){
 		this(order, PaymentMethod.valueOf(paymentMethod), timestamp);
 	}
 	public OrderInvoice(Order order, LocalDateTime timestamp, float totalPrice){

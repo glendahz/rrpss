@@ -95,14 +95,14 @@ public class SalesReportUI extends UI {
 	}
 
 	public void printByMonth(HashMap<Integer, Float> dailyTotals, float total) {
-		String leftAlignFormat = "| %-7s | %9.2f |%n";
+		String tableFormat = "| %-7s | %9.2f |%n";
 
 		System.out.format("+---------+-----------+%n");
 		System.out.format("| Day     | Amount($) |%n");
 		System.out.format("+---------+-----------+%n");
 
 		dailyTotals.forEach((day, amount) -> {
-			System.out.format(leftAlignFormat, day, amount);
+			System.out.format(tableFormat, day, amount);
 		});
 
 		System.out.format("+---------------------+%n");
@@ -115,7 +115,7 @@ public class SalesReportUI extends UI {
 	public void printByDay(List<OrderInvoice> invoices, float total) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 
-		String leftAlignFormat = "| %-8s | %8.2f | %56s |%n";
+		String tableFormat = "| %-8s | %8.2f | %56s |%n";
 
 		System.out.format("+----------+----------+----------------------------------------------------------+%n");
 		System.out.format("| Time     | Price($) |                                                   Orders |%n");
@@ -130,7 +130,7 @@ public class SalesReportUI extends UI {
 				// (e.g. 1 x Chicken)
 				orderStr = orderStr.concat(String.format("%s x %s, ", item[0], item[1]));
 			}
-			System.out.format(leftAlignFormat, ts.format(dtf), invoice.getTotalPrice(), orderStr);
+			System.out.format(tableFormat, ts.format(dtf), invoice.getTotalPrice(), orderStr);
 		});
 
 		System.out.format("+----------+----------+----------------------------------------------+-----------+%n");

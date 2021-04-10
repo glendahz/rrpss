@@ -25,12 +25,11 @@ public class StaffUI extends UI {
 	}
 	
 	public void Options() {
-		
-		System.out.println("-----Staff-----");
-		System.out.println("View Current Staff : 1");
-		System.out.println("Add Staff : 2");
-		System.out.println("Remove Staff : 3");
-		System.out.println("Exit : 4");
+		System.out.println("\n========Staff========");
+		System.out.println("1. View Current Staff");
+		System.out.println("2. Add Staff");
+		System.out.println("3. Remove Staff");
+		System.out.println("4. Exit\n");
 		
 	}
 	

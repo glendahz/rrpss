@@ -43,6 +43,7 @@ public class MainController {
 		orderCtrl.setTableCtrl(tableCtrl);
 		
 		reservationCtrl.setTableController(tableCtrl);
+		invoiceCtrl.setTableCtrl(tableCtrl);
 	}
 
 	public void displayStaffUI() {

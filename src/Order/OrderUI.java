@@ -8,6 +8,7 @@ import util.UI;
 
 public class OrderUI extends UI {
 	private static OrderCtrl orderCtrl;
+	private static Scanner sc = new Scanner(System.in);
 
 	public void setController(Controller ctrl) {
 		orderCtrl = (OrderCtrl) ctrl;
@@ -29,7 +30,7 @@ public class OrderUI extends UI {
 				sc.nextLine(); // flush System.in
 			}catch(NoSuchElementException e) {
 				sc.nextLine(); // flush System.in
-				System.out.println("\nError: entry was not a valid choice\n"
+				System.out.println("Error: entry was not a valid choice\n"
 						+ "Please enter an integer!\n");
 				continue;
 			}
@@ -61,13 +62,12 @@ public class OrderUI extends UI {
 	}
 	
 	public void displayOptions() {
-		Scanner sc = new Scanner(System.in);
 		displayOptions(sc);
 	}
 	
 	private static void createOrderUI(Scanner sc) {
 		// get table ID & employee ID
-		int tableID = getTableIDUI(sc, TableStatus.RESERVED);
+		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
 		String staffName = getEmployeeIDUI(sc);
 		
 		// get order items
@@ -132,7 +132,7 @@ public class OrderUI extends UI {
 		int itemNum = getOrderItemNumUI(sc, itemName);
 		try {
 			orderCtrl.addOrderItem(tableID, itemName, itemNum);
-			System.out.println(itemName + " (x" + itemNum + ") successfully added to table " + tableID + " order!\n");
+			System.out.println(itemName + " (x" + itemNum + ") successfully added to order " + tableID + "!\n");
 		} catch (Exception e) {
 			System.out.println("Error: unable to add order item\n"
 					+ e.getMessage() + "\n");
@@ -141,18 +141,18 @@ public class OrderUI extends UI {
 	
 	private static void removeOrderItemUI(Scanner sc) {
 		boolean run = true;
-		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
+		int orderID = getTableIDUI(sc, TableStatus.OCCUPIED);
 		String itemName;
 		while(run) {
 			try {
 				itemName = getOrderItemNameUI(sc);
-				if (orderCtrl.removeOrderItem(tableID, itemName)) {
-					System.out.println(itemName + " successfully removed from table " + tableID + " order!\n");
+				if (orderCtrl.removeOrderItem(orderID, itemName)) {
+					System.out.println(itemName + " successfully removed from order " + orderID + "!\n");
 					run = false;
 				}
 				else {
-					System.out.println("Error: " + itemName + " is not in table " + tableID + "order\n" 
-							+ "Please enter an order item that is in order " + tableID + "!\n");
+					System.out.println("Error: " + itemName + " is not in order " + orderID + "\n" 
+							+ "Please enter an order item that is in order " + orderID + "!\n");
 				}
 			} catch (Exception e) {
 				System.out.println("Error: unable to remove order item\n"
@@ -161,7 +161,7 @@ public class OrderUI extends UI {
 		}
 	}
 	
-	static int getTableIDUI(Scanner sc, TableStatus status) {
+	protected static int getTableIDUI(Scanner sc, TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
 		while(run) {

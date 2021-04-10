@@ -19,14 +19,23 @@ public class StaffCtrl extends Controller {
 	static Scanner sc = new Scanner(System.in);
 	
 	public void viewStaffList() {
-		System.out.println("----Staff List----");
+		System.out.println("\n========Staff List========");
 		if (staffList.size() == 0) {
 			System.out.println("No staff in system");
 		} else {
+			String leftAlignFormat = "| %-3d | %-18s | %-6s | %-7s |%n";
+
+			System.out.format("+-----+--------------------+--------+---------+%n");
+			System.out.format("| ID  | Name               | Gender | Title   |%n");
+			System.out.format("+-----+--------------------+--------+---------+%n");
+			
 			for (int i = 0; i < staffList.size(); ++i) {
 				Staff currStaff = staffList.get(i);
-				System.out.println(currStaff.getEmployeeID() + " " + currStaff.getName() + " " + currStaff.getGender() + " " + currStaff.getJobTitle());
+				System.out.printf(leftAlignFormat, currStaff.getEmployeeID(), currStaff.getName(), currStaff.getGender(), currStaff.getJobTitle());
+//				System.out.println(currStaff.getEmployeeID() + " " + currStaff.getName() + " " + currStaff.getGender() + " " + currStaff.getJobTitle());
 			}
+			
+			System.out.format("+-----+--------------------+--------+---------+%n");
 		}
 	}		
 	

@@ -1,2 +1,2 @@
-1,setMenu,setMenu,setMenu,Cheese sticks,2.0
-2,setMenu,Cheese sticks,3.0
+1,Grilled Chicken Chop,Chicken Cutlet,Appetizer,2 Drinks,35.0
+2,Griled Salmon,Prawns & Scallops,Appetizer,2 Drinks,50

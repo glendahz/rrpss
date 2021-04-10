@@ -108,7 +108,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	static void deleteOrderData(int tableID) throws Exception {
+	protected static void deleteOrderData(int tableID) throws Exception {
 		ArrayList<String> newLines = new ArrayList<String>();
 		String line;
 		String[] splitLine;
@@ -142,7 +142,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	static Order getOrderObject(int tableID) throws Exception {
+	protected static Order getOrderObject(int tableID) throws Exception {
 		Order order = null;
 		int currID;
 		String staffName;

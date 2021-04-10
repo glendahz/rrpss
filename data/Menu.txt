@@ -1,3 +1,9 @@
 --- Saved Menu --- 
-1),Main Course,Chicken wings,Chicken wings with dip,5.0
-2),Main Course,Cheese sticks,cheese,3.0
+1),Main Course,Grilled Chicken Chop,Mushroom/Barbecue Sauce,15.0
+2),Main Course,Chicken Cutlet,Cheese Sauce with Corn Cob/Salad,16.0
+3),Main Course,Fish & Chip,Coleslaw/Cajun Fries and Garlic Aioli,20.0
+4),Main Course,Griled Salmon,Spaghetti Aglio Olio,26.0
+5),Main Course,Prawns & Scallops,Spaghetti Aglio Olio/Corn Cob/Salad,24
+6),Drink,Ice Lemon Tea,,5
+7),Drink,Coke,,2
+8),Drink,Milk Tea,,5

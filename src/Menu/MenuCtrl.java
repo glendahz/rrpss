@@ -19,6 +19,7 @@ public class MenuCtrl {
 	static MenuItem[] menuitem = new MenuItem[100];
  	static SetPackage[] setpackage = new SetPackage[100];
 
+ 	private static Scanner scan = new Scanner(System.in);
  	///
 	public static boolean checkItemName(String NameCheck) {
 		updateMenuItem();
@@ -77,7 +78,6 @@ public class MenuCtrl {
 	public MenuItem[] createMenuItem(){
 		// This function will Create item object
 //		updateMenuItem();
-		Scanner scan = new Scanner(System.in);
 		System.out.println("What item would you like to add to the menu?");
 		System.out.print("Please enter Item type : ");
 		String ItemType = scan.nextLine();   
@@ -95,8 +95,6 @@ public class MenuCtrl {
 		        scan.next();
 		    }
 		}
-		
-		scan.close();
 		
 		menuitem[counter] = new MenuItem(ItemType, ItemName, ItemDesc, ItemPrice);
 		counter += 1;
@@ -117,7 +115,6 @@ public class MenuCtrl {
 		////
 
 //		      FileWriter myWriter = new FileWriter("data", "SetMenu.txt", true);
-	      Scanner scan = new Scanner(System.in);
 	      System.out.println("What item would you like to add to set menu?");
 	      System.out.print("Please enter number of items in set menu : ");
 	      int SetSize = scan.nextInt();   
@@ -172,15 +169,11 @@ public class MenuCtrl {
         setIndexCounter += 1; /// here have a setpackages already
         convertSetMenuData();
 		
-        scan.close();
 	}
 	
 	public static void removeMenuItem() {
 		// Delete which one? (4)
-		
-		Scanner scan = new Scanner(System.in);
-		
-		
+	
 		int index = 1;
 		System.out.println("\n --- Reference to current Menu --- ");
 		
@@ -212,11 +205,9 @@ public class MenuCtrl {
 		}
 		convertMenuData();
 		
-		scan.close();
 	}
 	
 	public static void removeSetItem() {
-		Scanner scan = new Scanner(System.in);
 		System.out.print("Please enter Item set Index to DELETE : ");
 		int toDelete = scan.nextInt();
 		
@@ -230,48 +221,42 @@ public class MenuCtrl {
 			
 		}
 		convertSetMenuData();
-		scan.close();
 	}
 	
 	public static void viewMenu() {
 		// just to show menu
 		updateMenuItem();
-		int index = 1;
-		int setindex =1;
-		System.out.println("\n --- Current Menu --- ");
+		System.out.println("\n=========== Menu ===========");
+		
+		String menuFormat = "| %-3d | %-20s | %-39s | %8.2f |%n";
+
+		System.out.format("+-----+----------------------+-----------------------------------------+----------+%n");
+		System.out.format("| ID  | Name                 | Description                             | Price($) |%n");
+		System.out.format("+-----+----------------------+-----------------------------------------+----------+%n");
 		
 		for(int i = 0;i<counter;i++ ) {
 			if(menuitem[i] != null) {
-				System.out.print(index);
-				System.out.print(")  ");
-				System.out.print(menuitem[i].getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
-				System.out.print(" ");
-				System.out.print(menuitem[i].getName());
-				System.out.print(" ");
-				System.out.print(menuitem[i].getPrice());
-				System.out.print(" ");
-				System.out.println(menuitem[i].getDescription());
-				index++;
+				MenuItem item = menuitem[i];
+				System.out.printf(menuFormat, i + 1, item.getName(), item.getDescription(), item.getPrice());
 			}
 		}
-		System.out.println("\n --- Current Set Menu --- ");
+		System.out.format("+-----+----------------------+-----------------------------------------+----------+%n");
+		
+		System.out.println("\n=========== Set Menu ===========");
+		
+		String setFormat = "| %-3d | %-60s | %8.2f |%n";
+
+		System.out.format("+-----+--------------------------------------------------------------+----------+%n");
+		System.out.format("| ID  | Set Package                                                  | Price($) |%n");
+		System.out.format("+-----+--------------------------------------------------------------+----------+%n");
+		
 		for(int j = 0; j<setIndexCounter; j++) {
 			if(setpackage[j] != null) {
-				System.out.print(setindex + ") ");
-				setindex += 1;
-				System.out.print(setpackage[j].getItemType());
-				for(int l = 0; l < setpackage[j].getSetList().size();l++) {
-					System.out.print(" ");
-					System.out.print(setpackage[j].getSetList().get(l));
-				}
-				System.out.print(" ");
-				System.out.print(setpackage[j].getPrice());
-				System.out.print(" \n");
+				SetPackage set = setpackage[j];
+				System.out.printf(setFormat, j + 1, String.join(" + ", set.getSetList()), set.getPrice());
 			}
-			
 		}
-		    
-		
+		System.out.format("+-----+--------------------------------------------------------------+----------+%n");
 	}
 	
 	public static void updateMenuItem() {

@@ -8,6 +8,7 @@ import util.UI;
 
 public class InvoiceUI extends UI {
 	private static InvoiceCtrl invoiceCtrl;
+	private static Scanner sc = new Scanner(System.in);
 		
 	@Override
 	public void setController(Controller ctrl) {
@@ -51,7 +52,6 @@ public class InvoiceUI extends UI {
 	}
 	
 	public void displayOptions() {
-		Scanner sc = new Scanner(System.in);
 		displayOptions(sc);
 	}
 
@@ -59,7 +59,7 @@ public class InvoiceUI extends UI {
 		int orderID = OrderUI.getTableIDUI(sc, TableStatus.OCCUPIED);
 		
 		// get payment method
-		PaymentMethod payMthd = getPaymentMethodUI(sc);
+		String payMthd = getPaymentMethodUI(sc);
 		
 		// create invoice
 		try {
@@ -70,10 +70,10 @@ public class InvoiceUI extends UI {
 		}
 	}
 	
-	private static PaymentMethod getPaymentMethodUI(Scanner sc) {
+	private static String getPaymentMethodUI(Scanner sc) {
 		boolean run = true;
 		int choice;
-		PaymentMethod payMthd = null;
+		String payMthd="";
 		while (run) {
 			System.out.println("Select payment method:\n"
 					+ "1. Cash\n"
@@ -96,26 +96,26 @@ public class InvoiceUI extends UI {
 			// check if entry is a valid choice
 			switch(choice) {
 			case 1:
-				payMthd = PaymentMethod.CASH;
+				payMthd = "CASH";
 				break;
 			case 2:
-				payMthd = PaymentMethod.CREDIT_CARD;
+				payMthd = "CREDIT_CARD";
 				break;
 			case 3:
-				payMthd = PaymentMethod.NETS;
+				payMthd = "NETS";
 				break;
 			case 4:
-				payMthd = PaymentMethod.NETS_FLASHPAY;
+				payMthd = "NETS_FLASHPAY";
 				break;
 			case 5:
-				payMthd = PaymentMethod.PAYLAH;
+				payMthd = "PAYLAH";
 				break;
 			case 6:
-				payMthd = PaymentMethod.ALIPAY;
+				payMthd = "ALIPAY";
 				break;
 			default:
 				System.out.println("Error: '" + choice + "' is not a valid choice\n"
-						+ "Please enter an integer between 1 to 6\n");
+						+ "Please enter an integer between 1 to 2\n");
 				continue;
 			}
 			// break out of loop
