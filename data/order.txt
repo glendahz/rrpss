@@ -1,3 +1,3 @@
-1,Jill,1-crab-30.0,2-milo-10.0
+1,Jill,2-1-2.0,2-milo-10.0,1-crab-30.0
 2,Donald,1-chicken-2,3-fish-7.80
 3,Ben,3-chicken rice-4.0,6-ice tea-10.0,4-nasi lemak-4.0,3-char siew rice-4.0,2-duck rice-4.0,5-porridge-4.0

@@ -142,7 +142,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	protected static Order getOrderObject(int tableID) throws Exception {
+	static Order getOrderObject(int tableID) throws Exception {
 		Order order = null;
 		int currID;
 		String staffName;

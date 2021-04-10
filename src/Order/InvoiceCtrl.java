@@ -180,9 +180,7 @@ public class InvoiceCtrl extends Controller {
 		return String.join("\n", lines);
 	}
 	
-	// TODO change table status
-	// TODO delete order from order file
-	public String createInvoice(int tableID, String payMthd) throws Exception {
+	public String createInvoice(int tableID, PaymentMethod payMthd) throws Exception {
 		String invoiceStr = "";
 		try {
 			Order order = OrderCtrl.getOrderObject(tableID);
