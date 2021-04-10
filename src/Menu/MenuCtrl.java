@@ -21,6 +21,17 @@ public class MenuCtrl {
 
  	private static Scanner scan = new Scanner(System.in);
  	///
+ 	
+ 	public static SetPackage[] getSetItemObject() {
+ 		updateMenuItem();
+		return setpackage;
+ 	}
+ 	
+ 	public static MenuItem[] getItemObject() {
+ 		updateMenuItem();
+		return menuitem;
+ 	}
+ 	
 	public static boolean checkItemName(String NameCheck) {
 		updateMenuItem();
 		for(int i = 0; i< counter; i++) {
