@@ -11,15 +11,29 @@ public class Reservation {
     private String name;
     private int contactNumber;
     private int tableID;
+    private static  int n = 0;//total number of rsv, for rsvID
+    private int rsvID;
 
-    public Reservation(LocalDate date, LocalTime arrTime, int pax,
-    String name, int contactNumber, int tableID){
+    public Reservation(int contactNumber, String name, LocalDate date, LocalTime arrTime, int pax, int tableID){
         this.date = date;
         this.arrTime = arrTime;
         this.pax = pax;
         this.name = name;
         this.contactNumber = contactNumber;
         this.tableID = tableID;
+        n++;
+        this.rsvID = n;
+    }
+
+    //restore rsvID when read from file
+    public Reservation(int contactNumber, String name, LocalDate date, LocalTime arrTime, int pax, int tableID, int rsvID){
+        this.date = date;
+        this.arrTime = arrTime;
+        this.pax = pax;
+        this.name = name;
+        this.contactNumber = contactNumber;
+        this.tableID = tableID;
+        this.rsvID = rsvID;
     }
 
     public LocalDate getDate(){
@@ -47,7 +61,8 @@ public class Reservation {
     }
 
     public void display(){
-        System.out.println("Contact number: "+contactNumber
+        System.out.println("\nReservation ID: " +rsvID
+                            +"\nContact number: "+contactNumber
                             +"\nName: "+name
                             +"\nDate: "+date
                             +"\nArrive time: "+arrTime
@@ -69,4 +84,14 @@ public class Reservation {
         }
         return cl;
     }
+
+    public int getRsvID(){
+        return rsvID;
+    }
+
+    //used for assigning rsvID correctly after read from file (new Reservation() has rsvID=0 otherwise)
+    public static void setTotal(int n){
+        Reservation.n = n;
+    }
+
 }
