@@ -70,7 +70,7 @@ public class TableUI extends UI {
 			break;
 
 		case 2:
-			ctrl.getTableIDsBySize();
+			ctrl.getAvaiTableIDsBySize();
 			break;
 			
 		case 3:
