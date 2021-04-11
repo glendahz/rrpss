@@ -6,15 +6,36 @@ import Table.Table.TableStatus;
 import util.Controller;
 import util.UI;
 
+/**
+ * A boundary class that interfaces with the application user for order related functions.
+ * @author Glenda Hong Zixuan
+ */
 public class OrderUI extends UI {
+	
+	/**
+	 * The control object that mediates between this boundary class and {@code Order} entity objects.
+	 */
 	private static OrderCtrl orderCtrl;
+	
+	/**
+	 * The {@code Scanner} object to take in input from the application user.
+	 */
 	private static Scanner sc = new Scanner(System.in);
 
+	/**
+	 * Sets the control object that mediates between this boundary class and {@code Order} entity objects.
+	 */
+	@Override
 	public void setController(Controller ctrl) {
 		orderCtrl = (OrderCtrl) ctrl;
 	}
 	
-	public void displayOptions(Scanner sc) {
+	/**
+	 * Displays the order related functions that can be performed 
+	 * and gets a choice from the user about which function to perform. 
+	 */
+	@Override
+	public void displayOptions() {
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -38,16 +59,16 @@ public class OrderUI extends UI {
 			
 			switch(choice) {
 			case 1:
-				createOrderUI(sc);
+				createOrderUI();
 				break;
 			case 2:
-				viewOrderUI(sc);
+				viewOrderUI();
 				break;
 			case 3:
-				addOrderItemUI(sc);
+				addOrderItemUI();
 				break;
 			case 4:
-				removeOrderItemUI(sc);
+				removeOrderItemUI();
 				break;
 			case 5:
 				run=false;
@@ -61,14 +82,17 @@ public class OrderUI extends UI {
 		}
 	}
 	
-	public void displayOptions() {
-		displayOptions(sc);
-	}
-	
-	private static void createOrderUI(Scanner sc) {
+	/**
+	 * Gets information needed to create a new order from the user .
+	 * Such information includes the table ID of the order,
+	 * the employee ID of the staff taking the order,
+	 * and the order items to be contained in the order.
+	 * The table ID must correspond to a {@code Table} object that is set to {@code TableStatus.RESERVED}.
+	 */
+	private static void createOrderUI() {
 		// get table ID & employee ID
-		int tableID = getTableIDUI(sc, TableStatus.RESERVED);
-		String staffName = getEmployeeIDUI(sc);
+		int tableID = getTableIDUI(TableStatus.RESERVED);
+		String staffName = getEmployeeIDUI();
 		
 		// get order items
 		boolean run = true;
@@ -98,9 +122,9 @@ public class OrderUI extends UI {
 			itemNames = new String[noOfItems];
 			itemNums = new int[noOfItems];
 			for (int i=0; i<noOfItems; i++) {
-				itemName = getOrderItemNameUI(sc);
+				itemName = getOrderItemNameUI();
 				itemNames[i] = itemName;
-				itemNums[i] = getOrderItemNumUI(sc, itemName);
+				itemNums[i] = getOrderItemNumUI(itemName);
 			}
 		}
 		
@@ -115,8 +139,12 @@ public class OrderUI extends UI {
 		
 	}
 	
-	private static void viewOrderUI(Scanner sc) {
-		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);;
+	/**
+	 * Gets a table ID from the user and displays the corresponding order information.
+	 * The table ID must correspond to a {@code Table} object that is set to {@code TableStatus.OCCUPIED}.
+	 */
+	private static void viewOrderUI() {
+		int tableID = getTableIDUI(TableStatus.OCCUPIED);;
 		// print order
 		try {
 			System.out.println(orderCtrl.viewOrder(tableID) + "\n");
@@ -126,10 +154,15 @@ public class OrderUI extends UI {
 		}		
 	}
 	
-	private static void addOrderItemUI(Scanner sc) {
-		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
-		String itemName = getOrderItemNameUI(sc);
-		int itemNum = getOrderItemNumUI(sc, itemName);
+	/**
+	 * Gets information needed to add an order item to an existing order from the user.
+	 * Such information includes the table ID of the target order and the name and number of the order item.
+	 * The table ID must correspond to a {@code Table} object that is set to {@code TableStatus.OCCUPIED}. 
+	 */
+	private static void addOrderItemUI() {
+		int tableID = getTableIDUI(TableStatus.OCCUPIED);
+		String itemName = getOrderItemNameUI();
+		int itemNum = getOrderItemNumUI(itemName);
 		try {
 			orderCtrl.addOrderItem(tableID, itemName, itemNum);
 			System.out.println(itemName + " (x" + itemNum + ") successfully added to table " + tableID + " order!\n");
@@ -139,13 +172,18 @@ public class OrderUI extends UI {
 		}
 	}
 	
-	private static void removeOrderItemUI(Scanner sc) {
+	/**
+	 * Gets information needed to remove an existing order item from an existing order from the user.
+	 * Such information includes the table ID of the target order and the name of the target order item.
+	 * The table ID must correspond to a {@code Table} object that is set to {@code TableStatus.OCCUPIED}.
+	 */
+	private static void removeOrderItemUI() {
 		boolean run = true;
-		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
+		int tableID = getTableIDUI(TableStatus.OCCUPIED);
 		String itemName;
 		while(run) {
 			try {
-				itemName = getOrderItemNameUI(sc, tableID);
+				itemName = getOrderItemNameUI(tableID);
 				if (orderCtrl.removeOrderItem(tableID, itemName)) {
 					System.out.println(itemName + " successfully removed from table " + tableID + "order!\n");
 					run = false;
@@ -161,7 +199,12 @@ public class OrderUI extends UI {
 		}
 	}
 	
-	static int getTableIDUI(Scanner sc, TableStatus status) {
+	/**
+	 * Gets the table ID of a specific {@code Table} object that is set to a specific {@code TableStatus}.
+	 * @param status	The {@code TableStatus} value that the target {@code Table} object should be set to.
+	 * @return the table ID retrieved from the user.
+	 */
+	static int getTableIDUI(TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
 		while(run) {
@@ -183,7 +226,15 @@ public class OrderUI extends UI {
 		return tableID;
 	}
 
-	private static String getOrderItemNameUI(Scanner sc, int tableID) {
+	/**
+	 * Gets the name of an order item.
+	 * @param tableID	If {@code tableID} is set to {@code -1} 
+	 * 					the {@code getOrderItemNameUI} method will get the name of any order item.
+	 * 					<br>Otherwise, the {@code getOrderItemNameUI} method will get the name of an existing order item
+	 * 					contained in the {@code Order} object corresponding to {@code tableID}.
+	 * @return the name of the order item retrieved from the user.
+	 */
+	private static String getOrderItemNameUI(int tableID) {
 		boolean run = true;
 		int choice=0;
 		String[] itemNames=null;
@@ -223,11 +274,20 @@ public class OrderUI extends UI {
 		return itemName;
 	}
 	
-	private static String getOrderItemNameUI(Scanner sc) {
-		return getOrderItemNameUI(sc, -1);
+	/**
+	 * Gets the name of an order item.
+	 * @return the name of the order item retrieved from the user.
+	 */
+	private static String getOrderItemNameUI() {
+		return getOrderItemNameUI(-1);
 	}
 	
-	private static int getOrderItemNumUI(Scanner sc, String itemName) {
+	/**
+	 * Gets the number of an order item.
+	 * @param itemName	The name of the order item.
+	 * @return the number of the order item retrieved from the user.
+	 */
+	private static int getOrderItemNumUI(String itemName) {
 		boolean run = true;
 		int num = 0;
 		while(run) {
@@ -250,7 +310,11 @@ public class OrderUI extends UI {
 		return num;
 	}
 
-	private static String getEmployeeIDUI(Scanner sc) {
+	/**
+	 * Gets the employee ID of a staff member.
+	 * @return the employee ID of the staff member retrieved from the user.
+	 */
+	private static String getEmployeeIDUI() {
 		boolean run = true;
 		int employeeID;
 		String staffName="";

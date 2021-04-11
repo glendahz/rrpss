@@ -15,22 +15,64 @@ import Table.Table.TableStatus;
 import Table.TableCtrl;
 import util.Controller;
 
+/**
+ * A control class that mediates between {@code Order} entity objects and the {@code OrderUI} boundary object.
+ * This control class reads from and writes to an order data file.
+ * @author Glenda Hong Zixuan
+ */
 public class OrderCtrl extends Controller {
+	
+	/**
+	 * The file which stores order data.
+	 */
 	private static final File ORDER_FILE = new File("data", "order.txt");
+	
+	/**
+	 * The delimiter that separates {@code Order} fields in the order data file.
+	 */
 	private static final String DELIMITER = ",";
+	
+	/**
+	 * The delimiter that separates order item data in the order data file.
+	 */
 	private static final String SUB_DELIMITER = "-";
+	
+	/**
+	 * The string used to format set package names.
+	 */
 	private static final String SET_PREFIX = "Set Package ";
+	
+	/**
+	 * The control class object used to manage {@code Table} objects.
+	 */
 	private static TableCtrl tableCtrl;
+	
+	/**
+	 * The control class object used to manage {@code Staff} objects.
+	 */
 	private static StaffCtrl staffCtrl;
 	
+	/**
+	 * Sets the control class object used to manage {@code Table} objects.
+	 * @param ctrl	The control class object used to manage {@code Table} objects.
+	 */
 	public void setTableCtrl(TableCtrl ctrl) {
 		tableCtrl = ctrl;
 	}
 	
+	/**
+	 * Sets the control class object used to manage {@code Staff} objects.
+	 * @param ctrl	The control class object used to manage {@code Staff} objects.
+	 */
 	public void setStaffCtrl(StaffCtrl ctrl) {
 		staffCtrl = ctrl;
 	}
-
+	
+	/**
+	 * Converts an {@code Order} object fields into a string for printing.
+	 * @param order	The {@code Order} object to be converted to string.
+	 * @return the converted {@code Order} object string.
+	 */
 	private static String orderObjToStr(Order order) {
 		ArrayList<String> lines = new ArrayList<String>();
 		lines.add("Table ID: " + order.getTableID());
@@ -40,12 +82,22 @@ public class OrderCtrl extends Controller {
 		
 		
 		for (int i=0; i<items.length; i++) {
-			//				 itemNum			  itemName				itemPrice
+			/*
+			 * item[i][0] is the item number
+			 * item[i][1] is the item name
+			 * item[i][2] is the item price
+			 */
 			lines.add("  " + items[i][0] + "  " + items[i][1] + " ($" + items[i][2] + ")");
 		}
 		return String.join("\n", lines);
 	}
 	
+	/**
+	 * Converts an {@code Order} object to data to be written into the order data file. The data is formatted like this:
+	 * <br>&emsp;tableID,staffName,itemNum1-itemName1-itemPrice1,itemNum2-itemName2-itemPrice2,...
+	 * @param order	The {@code Order} object to be converted to data.
+	 * @return the converted {@code Order} object data.
+	 */
 	private static String orderObjToData(Order order) {
 		ArrayList<String> fields = new ArrayList<String>();
 		
@@ -66,6 +118,13 @@ public class OrderCtrl extends Controller {
 		return String.join(DELIMITER, fields);
 	}
 	
+	/**
+	 * Edits the the data of a specific order in the order data file.
+	 * @param tableID	The table ID of the order to be edited.
+	 * @param newOrder	The new {@code Order} object to be written into the order data file.
+	 * @throws Exception if the {@code Scanner} object or {@code FileWriter} object cannot find the order data file,
+	 * or if the data in the order data file is formatted differently from expected. 
+	 */
 	private static void editOrderData(int tableID, Order newOrder) throws Exception {
 		ArrayList<String> newLines = new ArrayList<String>();
 		String line;
@@ -85,7 +144,7 @@ public class OrderCtrl extends Controller {
 			}
 			fr.close();
 		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.editOrderData() error: Scanner cannot find order data file \n");
+			throw new Exception("OrderCtrl.editOrderData() error: Scanner object cannot find order data file \n");
 		} catch (NoSuchElementException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
 			throw new Exception("OrderCtrl.editOrderData() error: data in order data file is formatted differently from expected\n");
 		}
@@ -97,10 +156,15 @@ public class OrderCtrl extends Controller {
 			fw.write(data);
 			fw.close();
 		} catch (IOException e) {
-			throw new Exception("OrderCtrl.editOrderData() error: FileWriter cannot find order data file \n");
+			throw new Exception("OrderCtrl.editOrderData() error: FileWriter object cannot find order data file \n");
 		}
 	}
 
+	/**
+	 * Appends data of a specific {@code Order} object to the end of the order data file.
+	 * @param newOrder	The new {@code Order} object to be appended.
+	 * @throws Exception if the {@code FileWriter} object cannot find the order data file.
+	 */
 	private static void appendOrderData(Order newOrder) throws Exception {
 		String data = "\n" + orderObjToData(newOrder);
 		try {
@@ -108,10 +172,16 @@ public class OrderCtrl extends Controller {
 			fwa.write(data);
 			fwa.close();
 		} catch (IOException e) {
-			throw new Exception("OrderCtrl.appendOrder() error: FileWriter could not find order data file");
+			throw new Exception("OrderCtrl.appendOrder() error: FileWriter object could not find order data file");
 		}
 	}
 	
+	/**
+	 * Deletes the data of a specific order in the order data file.
+	 * @param tableID	The table ID of the order to be deleted.
+	 * @throws Exception if the {@code Scanner} object or {@code FileWriter} object cannot find the order data file,
+	 * or if the data in the order data file is formatted differently from expected.
+	 */
 	static void deleteOrderData(int tableID) throws Exception {
 		ArrayList<String> newLines = new ArrayList<String>();
 		String line;
@@ -131,7 +201,7 @@ public class OrderCtrl extends Controller {
 			}
 			fr.close();
 		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.deleteOrderData() error: Scanner cannot find order data file \n");
+			throw new Exception("OrderCtrl.deleteOrderData() error: Scanner object cannot find order data file \n");
 		} catch (NoSuchElementException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
 			throw new Exception("OrderCtrl.deleteOrderData() error: data in order data file is formatted differently from expected\n");
 		}
@@ -143,10 +213,17 @@ public class OrderCtrl extends Controller {
 			fw.write(data);
 			fw.close();
 		} catch (IOException e) {
-			throw new Exception("OrderCtrl.deleteOrderData() error: FileWriter cannot find order data file \n");
+			throw new Exception("OrderCtrl.deleteOrderData() error: FileWriter object cannot find order data file \n");
 		}
 	}
 	
+	/**
+	 * Gets a specific {@code Order} object from the order data file.
+	 * @param tableID	The table ID of the target {@code Order} object.
+	 * @return the target {@code Order} object
+	 * @throws Exception if the {@code Scanner} object cannot find the order data file,
+	 * or if the data in the order data file is formatted differently from expected.
+	 */
 	static Order getOrderObject(int tableID) throws Exception {
 		Order order = null;
 		int currID;
@@ -172,19 +249,20 @@ public class OrderCtrl extends Controller {
 				} catch (NoSuchElementException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
 					fr.close();
 					throw new Exception("OrderCtrl.getOrderObject() error: data in order data file is formatted differently from expected");
-				} catch (IllegalArgumentException e) {
-					fr.close();
-					throw new Exception("OrderCtrl.getOrderObject() error:\n"
-							+ e.getMessage());
 				}
 			}
 			fr.close();
 		} catch (FileNotFoundException e) {
-			throw new Exception("OrderCtrl.getOrderObject() error: FileWriter could not find order data file");
+			throw new Exception("OrderCtrl.getOrderObject() error: Scanner object could not find order data file");
 		}
 		return order;
 	}
 	
+	/**
+	 * Gets the price of a specific order item.
+	 * @param itemName	The name of the target order item.
+	 * @return the price of the target order item.
+	 */
 	private static float getOrderItemPrice(String itemName) {
 		float itemPrice;
 		if (itemName.matches(SET_PREFIX + "\\d+")) {
@@ -195,16 +273,34 @@ public class OrderCtrl extends Controller {
 		return itemPrice;
 	}
 	
+	/**
+	 * Checks whether a table ID is valid 
+	 * and whether the corresponding {@code Table} object is set to a specific {@code TableStatus}
+	 * @param tableID	The table ID to be checked.
+	 * @param status	The {@code TableStatus} value that the {@code Table} object should be set to.
+	 * @return {@code true} if the table ID is valid and the corresponding {@code Table} object is set to {@code status},
+	 * otherwise {@code false}.
+	 */
 	public boolean validTableID(int tableID, TableStatus status){
 		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
 		if (currStatus == status) return true;
 		else return false;
 	}
 	
+	/**
+	 * Checks whether an employee ID is valid.
+	 * @param employeeID	The employee ID to be checked
+	 * @return {@code true} if the employee ID is valid,
+	 * otherwise false.
+	 */
 	public String validEmployeeID(int employeeID) {
 		return staffCtrl.getStaffName(employeeID);
 	}
 	
+	/**
+	 * Gets the names of all order items.
+	 * @return the names of all order items.
+	 */
 	public String[] getAllOrderItemNames() {
 		ArrayList<MenuItem> menuItems = MenuCtrl.getItemObject();
 		ArrayList<SetPackage> setItems = MenuCtrl.getSetItemObject();
@@ -222,6 +318,12 @@ public class OrderCtrl extends Controller {
 		return itemNames;
 	}
 	
+	/**
+	 * Gets the names of order items contained in a specific {@code Order} object.
+	 * @param tableID	The table ID of the target {@code Order} object.
+	 * @return the names of order items contained in the target {@code Order} object.
+	 * @throws Exception if the method ({@code getOrderObject}) called throws an exception.
+	 */
 	public String[] getOrderItemNames(int tableID) throws Exception {
 		String[] itemNames = null;
 		try {
@@ -234,6 +336,16 @@ public class OrderCtrl extends Controller {
 		return itemNames;
 	}
 	
+	/**
+	 * Creates a new {@code Order} object and writes its data into the order data file.
+	 * Once a new order is created, the corresponding {@code Table} object is set to {@code TableStatus.OCCUPIED}. 
+	 * @param tableID	The table ID of the new {@code Order} object.
+	 * @param staffName	The staff name of the new {@code Order} object.
+	 * @param itemNames	The names of the order items to be contained in the new {@code Order} object.
+	 * @param itemNums	The numbers of the order items to be contained in the new {@code Order} object.
+	 * @throws Exception if either of the methods ({@code getOrderItemPrice} and {@code appendOrderData}) 
+	 * called throws an exception.
+	 */
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
@@ -252,6 +364,12 @@ public class OrderCtrl extends Controller {
 		} 
 	}
 	
+	/**
+	 * Returns a specific {@code Order} object as a string to be printed.
+	 * @param tableID	The table ID of the target {@code Order} object.
+	 * @return the target {@code Order} object string.
+	 * @throws Exception if the method ({@code getOrderObject}) called throws an exception.
+	 */
 	public String viewOrder(int tableID) throws Exception {
 		try {
 			Order order = getOrderObject(tableID);
@@ -262,6 +380,13 @@ public class OrderCtrl extends Controller {
 		
 	}
 	
+	/**
+	 * Add an order item to a specific {@code Order} object and writes the data of the new object into the order data file.
+	 * @param tableID		The table ID of the target {@code Order} object.
+	 * @param newItemName	The name of the order item to be added.
+	 * @param newItemNum	The number of the order item to be added.
+	 * @throws Exception if either of the methods ({@code getOrderObject} and {@code editOrderData}) called throws an exception.
+	 */
 	public void addOrderItem(int tableID, String newItemName, int newItemNum) throws Exception {
 		try {
 			Order order = getOrderObject(tableID);
@@ -279,6 +404,16 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Removes a specific order item from a specific {@code Order} object
+	 * and writes the data of the new object into the order data file.
+	 * @param tableID	The table ID of the target {@code Order} object.
+	 * @param itemName	The name of the target order item.
+	 * @return {@code true} if the target order item is removed from the target {@code Order} object
+	 * and the data of the new object is written into the order data file,
+	 * otherwise {@code false}.
+	 * @throws Exception if either of the methods ({@code getOrderObject} and {@code editOrderData}) called throws an exception. 
+	 */
 	public boolean removeOrderItem(int tableID, String itemName) throws Exception {
 		try {
 			Order order = getOrderObject(tableID);

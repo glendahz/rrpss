@@ -6,16 +6,36 @@ import Table.Table.TableStatus;
 import util.Controller;
 import util.UI;
 
+/**
+ * A boundary class that interfaces with the application user for invoice related functions.
+ * @author Glenda Hong Zixuan
+ */
 public class InvoiceUI extends UI {
+	
+	/**
+	 * The control object that mediates between this boundary class and {@code OrderInvoice} entity objects.
+	 */
 	private static InvoiceCtrl invoiceCtrl;
+	
+	/**
+	 * The {@code Scanner} object to take in input from the application user.
+	 */
 	private static Scanner sc = new Scanner(System.in);
-		
+	
+	/**
+	 * Sets the control object that mediates between this boundary class and {@code OrderInvoice} entity objects.
+	 */
 	@Override
 	public void setController(Controller ctrl) {
 		InvoiceUI.invoiceCtrl = (InvoiceCtrl) ctrl;
 	}
 	
-	public void displayOptions(Scanner sc) {
+	/**
+	 * Displays the invoice related functions that can be performed 
+	 * and gets a choice from the user about which function to perform. 
+	 */
+	@Override
+	public void displayOptions() {
 		boolean run=true;
 		int choice;
 		while(run) {
@@ -37,7 +57,7 @@ public class InvoiceUI extends UI {
 
 			switch(choice) {
 			case 1:
-				printInvoiceUI(sc);
+				printInvoiceUI();
 				break;
 			case 2:
 				run=false;
@@ -50,27 +70,31 @@ public class InvoiceUI extends UI {
 			}
 		}
 	}
-	
-	public void displayOptions() {
-		displayOptions(sc);
-	}
 
-	private static void printInvoiceUI(Scanner sc) {
-		int orderID = OrderUI.getTableIDUI(sc, TableStatus.OCCUPIED);
+	/**
+	 * Gets a table ID from the user and prints the corresponding bill invoice.
+	 * The table ID must correspond to a {@code Table} object that is set to {@code TableStatus.OCCUPIED}.
+	 */
+	private static void printInvoiceUI() {
+		int tableID = OrderUI.getTableIDUI(TableStatus.OCCUPIED);
 		
 		// get payment method
-		PaymentMethod payMthd = getPaymentMethodUI(sc);
+		PaymentMethod payMthd = getPaymentMethodUI();
 		
 		// create invoice
 		try {
-			System.out.println(invoiceCtrl.createInvoice(orderID, payMthd) + "\n");
+			System.out.println(invoiceCtrl.createInvoice(tableID, payMthd) + "\n");
 		} catch (Exception e) {
 			System.out.println("Error: unable to create invoice\n"
 					+ e.getMessage() + "\n");
 		}
 	}
 	
-	private static PaymentMethod getPaymentMethodUI(Scanner sc) {
+	/**
+	 * Gets a payment method.
+	 * @return the payment method retrieved from the user.
+	 */
+	private static PaymentMethod getPaymentMethodUI() {
 		boolean run = true;
 		int choice;
 		PaymentMethod payMthd = null;
