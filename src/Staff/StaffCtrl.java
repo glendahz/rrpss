@@ -14,7 +14,7 @@ public class StaffCtrl extends Controller {
 	
 	private static final String DELIMITER = ",";
 	
-	static int currEmpNum = 1;
+	static int currEmpNum;
 	static private ArrayList<Staff> staffList = new ArrayList<Staff>();
 	static Scanner sc = new Scanner(System.in);
 	
@@ -153,6 +153,9 @@ public class StaffCtrl extends Controller {
 	public void writeData(String fileName) {
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
+			Integer temp = (Integer) currEmpNum;
+			writer.write(temp.toString());
+			writer.write("\n");
 			for (int i = 0; i < staffList.size(); ++i) {
 				Staff currStaff = staffList.get(i);
 				Integer employeeID = currStaff.getEmployeeID();
@@ -174,6 +177,7 @@ public class StaffCtrl extends Controller {
 		staffList.clear(); // Empty tables arraylist
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			currEmpNum = Integer.parseInt(reader.readLine());
 			while ((line = reader.readLine()) != null) {
 				String[] items = line.split(DELIMITER);
 				int employeeID = Integer.parseInt(items[0]);

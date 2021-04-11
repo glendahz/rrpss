@@ -8,6 +8,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import Menu.MenuCtrl;
+import Menu.MenuItem;
+import Menu.SetPackage;
 import Staff.StaffCtrl;
 import Table.Table.TableStatus;
 import Table.TableCtrl;
@@ -17,6 +19,7 @@ public class OrderCtrl extends Controller {
 	private static final File ORDER_FILE = new File("data", "order.txt");
 	private static final String DELIMITER = ",";
 	private static final String SUB_DELIMITER = "-";
+	private static final String SET_PREFIX = "Set Package ";
 	private static TableCtrl tableCtrl;
 	private static StaffCtrl staffCtrl;
 	
@@ -108,7 +111,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	protected static void deleteOrderData(int tableID) throws Exception {
+	static void deleteOrderData(int tableID) throws Exception {
 		ArrayList<String> newLines = new ArrayList<String>();
 		String line;
 		String[] splitLine;
@@ -142,7 +145,7 @@ public class OrderCtrl extends Controller {
 		}
 	}
 	
-	protected static Order getOrderObject(int tableID) throws Exception {
+	static Order getOrderObject(int tableID) throws Exception {
 		Order order = null;
 		int currID;
 		String staffName;
@@ -179,6 +182,16 @@ public class OrderCtrl extends Controller {
 		return order;
 	}
 	
+	private static float getOrderItemPrice(String itemName) {
+		float itemPrice;
+		if (itemName.matches(SET_PREFIX + "\\d+")) {
+			itemName = itemName.replace(SET_PREFIX, "");
+			int itemIndex = Integer.parseInt(itemName);
+			itemPrice = (float) MenuCtrl.getSetItemPrice(itemIndex);			
+		} else itemPrice = (float) MenuCtrl.getItemPrice(itemName);
+		return itemPrice;
+	}
+	
 	public boolean validTableID(int tableID, TableStatus status){
 		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
 		if (currStatus == status) return true;
@@ -189,7 +202,8 @@ public class OrderCtrl extends Controller {
 		return staffCtrl.getStaffName(employeeID);
 	}
 	
-	public String validOrderItemName(String itemName) {
+	
+	/*public String validOrderItemName(String itemName) {
 		String newName = null;
 		int itemIndex;
 		
@@ -210,22 +224,30 @@ public class OrderCtrl extends Controller {
 		}
 		
 		return newName;
+	}*/
+	
+	public String[] getAllOrderItemNames() {
+		ArrayList<MenuItem> menuItems = MenuCtrl.getItemObject();
+		ArrayList<SetPackage> setItems = MenuCtrl.getSetItemObject();
+		int noOfMenuItems = menuItems.size();
+		int noOfSetItems = setItems.size();
+		String[] itemNames = new String[noOfMenuItems + noOfSetItems];
+		int i=0;
+		for (int j=0; j<noOfMenuItems; j++, i++)  {
+			itemNames[i] = menuItems.get(j).getName();
+		}
+		for (int j=0; j<noOfSetItems; j++, i++)  {
+			itemNames[i] = SET_PREFIX + setItems.get(j).getIndex();
+		}
+				
+		return itemNames;
 	}
 	
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
 		try {
 			// create order object
 			float[] itemPrices = new float[itemNames.length];
-			String itemName;
-			int itemIndex;
-			for (int i=0; i<itemNames.length; i++) {
-				itemName = itemNames[i];
-				if (itemName.matches("Set package \\d+")) {
-					itemName = itemName.replace("Set package ", "");
-					itemIndex = Integer.parseInt(itemName);
-					itemPrices[i] = (float) MenuCtrl.getSetItemPrice(itemIndex);			
-				} else itemPrices[i] = (float) MenuCtrl.getItemPrice(itemName);
-			}
+			for (int i=0; i<itemNames.length; i++) itemPrices[i] = getOrderItemPrice(itemNames[i]); 
 			Order order = new Order(tableID, staffName, itemNames, itemNums, itemPrices);
 			
 			// write data to file
@@ -256,12 +278,7 @@ public class OrderCtrl extends Controller {
 				newItemNum += order.getItemNum(newItemName);
 				order.updateItemNum(newItemName, newItemNum);
 			} else { // order item does not exist in order, add new order item
-				float newItemPrice;
-				if (newItemName.matches("Set package \\d+")) {
-					newItemName = newItemName.replace("Set package ", "");
-					int newItemIndex = Integer.parseInt(newItemName);
-					newItemPrice = (float) MenuCtrl.getSetItemPrice(newItemIndex);		
-				} else newItemPrice = (float) MenuCtrl.getItemPrice(newItemName);
+				float newItemPrice = getOrderItemPrice(newItemName);
 				order.addItem(newItemNum, newItemName, newItemPrice);
 			}
 			editOrderData(tableID, order);
