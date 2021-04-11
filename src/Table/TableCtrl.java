@@ -58,23 +58,23 @@ public class TableCtrl extends Controller {
 	}
 	
 	// Return table IDs for those with equal or greater size
-	public ArrayList<Integer> getTableIDsBySize(int size) {
+	public ArrayList<Integer> getAvaiTableIDsBySize(int size) {
 		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
 
 		for(Table t : tables) {
-			if(t.getSize() >= size)
+			if(t.getStatus() == TableStatus.VACANT && t.getSize() >= size)
 				sizedTables.add(t.getTableID());
 		}
 		
 		return sizedTables;
 	}
 	
-	public ArrayList<Integer> getTableIDsBySize() {
+	public ArrayList<Integer> getAvaiTableIDsBySize() {
 		int size = querySize();
 		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
 
 		for(Table t : tables) {
-			if(t.getSize() >= size)
+			if(t.getStatus() == TableStatus.VACANT && t.getSize() >= size)
 				sizedTables.add(t.getTableID());
 		}
 		
