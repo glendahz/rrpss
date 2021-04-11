@@ -227,24 +227,20 @@ public class OrderCtrl extends Controller {
 	}*/
 	
 	public String[] getAllOrderItemNames() {
-		MenuItem[] menuItems = MenuCtrl.getItemObject();
-		SetPackage[] setItems = MenuCtrl.getSetItemObject();
-		String itemName;
-		ArrayList<String> itemNamesArrList = new ArrayList<String>();
-		for (int i=0; i<MenuCtrl.counter; i++)  {
-			if(menuItems[i] != null) {
-				itemName = menuItems[i].getName();
-				if (itemName != null) itemNamesArrList.add(itemName);
-			}
+		ArrayList<MenuItem> menuItems = MenuCtrl.getItemObject();
+		ArrayList<SetPackage> setItems = MenuCtrl.getSetItemObject();
+		int noOfMenuItems = menuItems.size();
+		int noOfSetItems = setItems.size();
+		String[] itemNames = new String[noOfMenuItems + noOfSetItems];
+		int i=0;
+		for (int j=0; j<noOfMenuItems; j++, i++)  {
+			itemNames[i] = menuItems.get(j).getName();
 		}
-		for (int i=0; i<MenuCtrl.setIndexCounter; i++) 
-			if(setItems[i] != null) 
-				itemNamesArrList.add(SET_PREFIX + setItems[i].getIndex());
-		
-		String[] itemNamesArr = new String[itemNamesArrList.size()];
-		itemNamesArr = itemNamesArrList.toArray(itemNamesArr);
+		for (int j=0; j<noOfSetItems; j++, i++)  {
+			itemNames[i] = SET_PREFIX + setItems.get(j).getIndex();
+		}
 				
-		return itemNamesArr;
+		return itemNames;
 	}
 	
 	public void createOrder(int tableID, String staffName, String[] itemNames, int[] itemNums) throws Exception {
