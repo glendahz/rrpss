@@ -53,7 +53,7 @@ public class ReservationCtrl extends Controller {
 		System.out.println("Please enter number of people: ");
 		int pax = sc.nextInt();
 
-		ArrayList<Integer> tableIDs = tabCtrl.getTableIDsBySize(pax);
+		ArrayList<Integer> tableIDs = tabCtrl.getAvaiTableIDsBySize(pax);
 
 		LocalDateTime dt = LocalDateTime.of(date, arrTime);
 
