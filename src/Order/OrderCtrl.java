@@ -75,6 +75,7 @@ public class OrderCtrl extends Controller {
 		// retrieve data and edit it
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
+			newLines.add(fr.nextLine()); // skip first line
 			while (fr.hasNextLine()) {
 				line = fr.nextLine();
 				splitLine = line.split(DELIMITER);
@@ -120,6 +121,7 @@ public class OrderCtrl extends Controller {
 		// retrieve data and edit it
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
+			newLines.add(fr.nextLine()); // skip first line
 			while (fr.hasNextLine()) {
 				line = fr.nextLine();
 				splitLine = line.split(DELIMITER);
@@ -152,6 +154,7 @@ public class OrderCtrl extends Controller {
 		String[] line, itemData;
 		try {
 			Scanner fr = new Scanner(ORDER_FILE);
+			fr.nextLine(); // skip first line
 			while (fr.hasNextLine()) {
 				try {
 					line = fr.nextLine().split(DELIMITER);
@@ -202,30 +205,6 @@ public class OrderCtrl extends Controller {
 		return staffCtrl.getStaffName(employeeID);
 	}
 	
-	
-	/*public String validOrderItemName(String itemName) {
-		String newName = null;
-		int itemIndex;
-		
-		// check if item is a valid set package
-		// if yes, format the name properly
-		if (itemName.matches("[Ss]et( )?([Pp]ackage)?( )?\\d+")) {
-			itemName = itemName.replaceAll("\\D", ""); // strips non-digit characters from name
-			itemIndex = Integer.parseInt(itemName);
-			if (MenuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
-		} else if(itemName.matches("\\d+")) {
-			itemIndex = Integer.parseInt(itemName);
-			if (MenuCtrl.checkSetItemIndex(itemIndex)) newName = "Set package " + itemIndex;
-		}
-		// check if item is a valid menu item
-		else {
-			itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1).toLowerCase(); // capitalizes first letter and converts all other letters to lowercase
-			if (MenuCtrl.checkItemName(itemName)) newName = itemName;
-		}
-		
-		return newName;
-	}*/
-	
 	public String[] getAllOrderItemNames() {
 		ArrayList<MenuItem> menuItems = MenuCtrl.getItemObject();
 		ArrayList<SetPackage> setItems = MenuCtrl.getSetItemObject();
@@ -240,6 +219,18 @@ public class OrderCtrl extends Controller {
 			itemNames[i] = SET_PREFIX + setItems.get(j).getIndex();
 		}
 				
+		return itemNames;
+	}
+	
+	public String[] getOrderItemNames(int tableID) throws Exception {
+		String[] itemNames = null;
+		try {
+			Order order = getOrderObject(tableID);
+			itemNames = order.getAllItemNames();
+		} catch (Exception e) {
+			throw new Exception("OrderCtrl.getOrderItemNames() error:\n"
+					+ "\t" + e.getMessage());
+		}
 		return itemNames;
 	}
 	

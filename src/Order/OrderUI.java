@@ -132,7 +132,7 @@ public class OrderUI extends UI {
 		int itemNum = getOrderItemNumUI(sc, itemName);
 		try {
 			orderCtrl.addOrderItem(tableID, itemName, itemNum);
-			System.out.println(itemName + " (x" + itemNum + ") successfully added to order " + tableID + "!\n");
+			System.out.println(itemName + " (x" + itemNum + ") successfully added to table " + tableID + " order!\n");
 		} catch (Exception e) {
 			System.out.println("Error: unable to add order item\n"
 					+ e.getMessage() + "\n");
@@ -141,18 +141,18 @@ public class OrderUI extends UI {
 	
 	private static void removeOrderItemUI(Scanner sc) {
 		boolean run = true;
-		int orderID = getTableIDUI(sc, TableStatus.OCCUPIED);
+		int tableID = getTableIDUI(sc, TableStatus.OCCUPIED);
 		String itemName;
 		while(run) {
 			try {
-				itemName = getOrderItemNameUI(sc);
-				if (orderCtrl.removeOrderItem(orderID, itemName)) {
-					System.out.println(itemName + " successfully removed from order " + orderID + "!\n");
+				itemName = getOrderItemNameUI(sc, tableID);
+				if (orderCtrl.removeOrderItem(tableID, itemName)) {
+					System.out.println(itemName + " successfully removed from table " + tableID + "order!\n");
 					run = false;
 				}
 				else {
-					System.out.println("Error: " + itemName + " is not in order " + orderID + "\n" 
-							+ "Please enter an order item that is in order " + orderID + "!\n");
+					System.out.println("Error: " + itemName + " is not in table " + tableID + "order\n" 
+							+ "Please enter an order item that is in table " + tableID + "order!\n");
 				}
 			} catch (Exception e) {
 				System.out.println("Error: unable to remove order item\n"
@@ -183,10 +183,20 @@ public class OrderUI extends UI {
 		return tableID;
 	}
 
-	private static String getOrderItemNameUI(Scanner sc) {
+	private static String getOrderItemNameUI(Scanner sc, int tableID) {
 		boolean run = true;
 		int choice=0;
-		String[] itemNames = orderCtrl.getAllOrderItemNames();
+		String[] itemNames=null;
+		if (tableID == -1) itemNames = orderCtrl.getAllOrderItemNames();
+		else {
+			try {
+				itemNames = orderCtrl.getOrderItemNames(tableID);
+			} catch (Exception e) {
+				System.out.println("\nError: unable to get order item names"
+						+ "\t" + e.getMessage());
+			}
+		}
+		
 		String itemName = "";
 		while (run) {
 			try {
@@ -211,6 +221,10 @@ public class OrderUI extends UI {
 			}
 		}
 		return itemName;
+	}
+	
+	private static String getOrderItemNameUI(Scanner sc) {
+		return getOrderItemNameUI(sc, -1);
 	}
 	
 	private static int getOrderItemNumUI(Scanner sc, String itemName) {
