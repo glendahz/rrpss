@@ -69,7 +69,7 @@ public class Reservation {
                             +"\nTableID: "+tableID);
     }
 
-    public boolean TimeClash(LocalDateTime time){
+    public boolean timeClash(LocalDateTime time){
         boolean cl = false;
         if(time.toLocalDate().compareTo(date)==0){
             if(time.toLocalTime().compareTo(LocalTime.parse("14:00"))<0){
@@ -91,6 +91,7 @@ public class Reservation {
 
     //used for assigning rsvID correctly after read from file (new Reservation() has rsvID=0 otherwise)
     public static void setTotal(int n){
+        if(Reservation.n<n)
         Reservation.n = n;
     }
 

@@ -25,7 +25,7 @@ public class ReservationCtrl extends Controller {
 
 	private static final String DELIMITER = ",";
 
-	private TableCtrl tabCtrl;
+	private TableCtrl tabCtrl = new TableCtrl();
 	private ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 	private Scanner sc = new Scanner(System.in);
 
@@ -57,10 +57,15 @@ public class ReservationCtrl extends Controller {
 
 		LocalDateTime dt = LocalDateTime.of(date, arrTime);
 
+		ArrayList<Reservation>rsvUnavai = new ArrayList<>();
 		for (Reservation rsv : reservations) {
 			if (tableIDs.contains(rsv.getTableID()))
-				if (rsv.TimeClash(dt))
-					tableIDs.remove(rsv.getTableID());
+				if (rsv.timeClash(dt))
+					rsvUnavai.add(rsv);
+		}
+
+		for (Reservation rsv : rsvUnavai) {
+			tableIDs.remove(Integer.valueOf(rsv.getTableID()));
 		}
 		
 		if (tableIDs.isEmpty())
@@ -183,6 +188,7 @@ public class ReservationCtrl extends Controller {
 										Integer.valueOf(items[5]));//rsvID
 				reservations.add(rsv);
 				setReserved(rsv);
+				Reservation.setTotal(rsv.getRsvID());
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {

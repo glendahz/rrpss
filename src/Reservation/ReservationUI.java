@@ -10,9 +10,7 @@ public class ReservationUI extends UI {
 	static Scanner sc = new Scanner(System.in);
 	static int choice = 0;
 	ReservationCtrl ctrl;
-	static Scanner disSc;
 	static int disChoice = 0;
-	static Scanner rmvSc;
 	static int rmvChoice = 0;
 	
 	@Override
@@ -67,7 +65,6 @@ public class ReservationUI extends UI {
 				break;
 
 			case 2:
-				disSc = new Scanner(System.in);
 				while(disChoice!=4){
 					disOptions();
 					disUserInput();
@@ -76,7 +73,6 @@ public class ReservationUI extends UI {
 				break;
 
 			case 3:
-				rmvSc = new Scanner(System.in);
 				while(rmvChoice!=3){
 					rmvOptions();
 					rmvUserInput();
@@ -106,13 +102,13 @@ public class ReservationUI extends UI {
 		System.out.print("Please enter your choice from 1 to 4: ");
 		while (!validInput) {
 			try {
-				disChoice = disSc.nextInt();
+				disChoice = sc.nextInt();
 				if (1 <= disChoice && disChoice <= 4) {
 					validInput = true;
 				}
 			} catch(InputMismatchException e) {
 				System.out.print("Please enter a number from 1 to 4: ");
-				disChoice = disSc.nextInt();
+				disChoice = sc.nextInt();
 			}
 		}
 	}
@@ -150,13 +146,13 @@ public class ReservationUI extends UI {
 		System.out.print("Please enter your choice from 1 to 3: ");
 		while (!validInput) {
 			try {
-				rmvChoice = rmvSc.nextInt();
+				rmvChoice = sc.nextInt();
 				if (1 <= rmvChoice && rmvChoice <= 3) {
 					validInput = true;
 				}
 			} catch(InputMismatchException e) {
 				System.out.print("Please enter a number from 1 to 3: ");
-				rmvChoice = rmvSc.nextInt();
+				rmvChoice = sc.nextInt();
 			}
 		}
 	}
