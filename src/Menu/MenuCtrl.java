@@ -16,45 +16,46 @@ public class MenuCtrl {
 	public static int setcounter = 0;
 	public static int setIndexCounter = 0;
 	
-	static MenuItem[] menuitem = new MenuItem[100];
- 	static SetPackage[] setpackage = new SetPackage[100];
+	static private ArrayList<MenuItem> menuitem = new ArrayList<MenuItem>();
+	static private ArrayList<SetPackage> setpackage = new ArrayList<SetPackage>();
+//	static MenuItem[] menuitem = new MenuItem[100];
+// 	static SetPackage[] setpackage = new SetPackage[100];
 
  	private static Scanner scan = new Scanner(System.in);
  	///
  	
- 	public static SetPackage[] getSetItemObject() {
+ 	public static ArrayList<SetPackage> getSetItemObject() {
  		updateMenuItem();
 		return setpackage;
  	}
  	
- 	public static MenuItem[] getItemObject() {
+ 	public static ArrayList<MenuItem> getItemObject() {
  		updateMenuItem();
 		return menuitem;
  	}
  	
 	public static boolean checkItemName(String NameCheck) {
 		updateMenuItem();
-		for(int i = 0; i< counter; i++) {
+		for(int i = 0; i< menuitem.size(); i++) {
 //			System.out.print(menuitem[i].getName());
-			if(menuitem[i] != null) {
-				if(menuitem[i].getName().equals(NameCheck)) {
-					
+//			if(menuitem[i] != null) {
+				if(menuitem.get(i).getName().equals(NameCheck)) {
 					return true;
 				}
-			}
+//			}
 		}
 		return false;
 	}
 	
 	public static double getItemPrice(String NameOfItem) {
 		updateMenuItem();
-		for(int i = 0; i< counter; i++) {
-			if(menuitem[i] != null) {
-				if(menuitem[i].getName().equals(NameOfItem)) {
+		for(int i = 0; i< menuitem.size(); i++) {
+//			if(menuitem[i] != null) {
+				if(menuitem.get(i).getName().equals(NameOfItem)) {
 				
-					return menuitem[i].getPrice();
+					return menuitem.get(i).getPrice();
 				}
-			}
+//			}
 		}
 		System.out.print("price not found.. returned 0");
 		return 0;
@@ -64,11 +65,11 @@ public class MenuCtrl {
 		updateMenuItem();
 		for(int i = 0; i< setIndexCounter; i++) {
 //			System.out.print(menuitem[i].getName());
-			if(setpackage[i] != null) {
-				if(setpackage[i].getIndex() == IndexOfSet) {
+//			if(setpackage[i] != null) {
+				if(setpackage.get(i).getIndex() == IndexOfSet) {
 					return true;
 				}
-			}
+//			}
 		}
 		return false;
 	}
@@ -76,17 +77,17 @@ public class MenuCtrl {
 	public static double getSetItemPrice(int IndexOfSet) {
 		updateMenuItem();
 		for(int i = 0; i< setIndexCounter; i++) {
-			if(setpackage[i] != null) {
-				if(setpackage[i].getIndex() == IndexOfSet) {
-					return setpackage[i].getPrice();
+//			if(setpackage[i] != null) {
+				if(setpackage.get(i).getIndex() == IndexOfSet) {
+					return setpackage.get(i).getPrice();
 				}
-			}
+//			}
 		}
 		return 0;
 	}
  	///
 	
-	public MenuItem[] createMenuItem(){
+	public ArrayList<MenuItem> createMenuItem(){
 		// This function will Create item object
 //		updateMenuItem();
 		System.out.println("What item would you like to add to the menu?");
@@ -107,7 +108,7 @@ public class MenuCtrl {
 		    }
 		}
 		
-		menuitem[counter] = new MenuItem(ItemType, ItemName, ItemDesc, ItemPrice);
+		menuitem.add(new MenuItem(ItemType, ItemName, ItemDesc, ItemPrice));
 		counter += 1;
 		System.out.print("\nMenu item was created\n");
 		convertMenuData();
@@ -175,11 +176,11 @@ public class MenuCtrl {
 			setcounter += 1;
 	      
 //		      myWriter.close();
-	      System.out.println("\nSuccessfully wrote to the file.");
-		setpackage[setIndexCounter] = new SetPackage(setIndexCounter, setLists, SetPrice);
+	    System.out.println("\nSuccessfully wrote to the file.");
+		setpackage.add(new SetPackage(setpackage.size(), setLists, SetPrice));
         setIndexCounter += 1; /// here have a setpackages already
         convertSetMenuData();
-		
+        viewMenu();
 	}
 	
 	public static void removeMenuItem() {
@@ -188,30 +189,30 @@ public class MenuCtrl {
 		int index = 1;
 		System.out.println("\n --- Reference to current Menu --- ");
 		
-		for(int i = 0;i<counter;i++ ) {
-			if(menuitem[i] != null) {
+		for(int i = 0;i<menuitem.size();i++ ) {
+//			if(menuitem[i] != null) {
 				System.out.print(index);
 				System.out.print(")  ");
-				System.out.print(menuitem[i].getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
+				System.out.print(menuitem.get(i).getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
 				System.out.print(" ");
-				System.out.print(menuitem[i].getName());
+				System.out.print(menuitem.get(i).getName());
 				System.out.print(" ");
-				System.out.print(menuitem[i].getPrice());
+				System.out.print(menuitem.get(i).getPrice());
 				System.out.print(" ");
-				System.out.println(menuitem[i].getDescription());
+				System.out.println(menuitem.get(i).getDescription());
 				index++;
-			}
+//			}
 		}
 		
 		System.out.print("Please enter Item name to DELETE : ");
 		String toDelete = scan.nextLine();
 		
-		for(int j = 0;j<counter;j++ ) {
-			if(menuitem[j] != null) {
-				if(menuitem[j].getName().equals(toDelete)) {
-					menuitem[j] = null;
+		for(int j = 0;j<menuitem.size();j++ ) {
+//			if(menuitem[j] != null) {
+				if(menuitem.get(j).getName().equals(toDelete)) {
+					menuitem.remove(j);
 				}
-			}
+//			}
 			
 		}
 		convertMenuData();
@@ -222,12 +223,12 @@ public class MenuCtrl {
 		System.out.print("Please enter Item set Index to DELETE : ");
 		int toDelete = scan.nextInt();
 		
-		for(int j = 0;j<100;j++ ) {
-			if(setpackage[j] != null) {
-				if(setpackage[j].getIndex() == toDelete) {
-					setpackage[j] = null;
+		for(int j = 0;j<setpackage.size();j++ ) {
+//			if(setpackage[j] != null) {
+				if(setpackage.get(j).getIndex() == toDelete) {
+					setpackage.remove(j);
 					
-				}
+//				}
 			}
 			
 		}
@@ -245,11 +246,11 @@ public class MenuCtrl {
 		System.out.format("| ID  | Name                 | Description                             | Price($) |%n");
 		System.out.format("+-----+----------------------+-----------------------------------------+----------+%n");
 		
-		for(int i = 0;i<counter;i++ ) {
-			if(menuitem[i] != null) {
-				MenuItem item = menuitem[i];
+		for(int i = 0;i<menuitem.size();i++ ) {
+//			if(menuitem[i] != null) {
+				MenuItem item = menuitem.get(i);
 				System.out.printf(menuFormat, i + 1, item.getName(), item.getDescription(), item.getPrice());
-			}
+//			}
 		}
 		System.out.format("+-----+----------------------+-----------------------------------------+----------+%n");
 		
@@ -261,11 +262,11 @@ public class MenuCtrl {
 		System.out.format("| ID  | Set Package                                                  | Price($) |%n");
 		System.out.format("+-----+--------------------------------------------------------------+----------+%n");
 		
-		for(int j = 0; j<setIndexCounter; j++) {
-			if(setpackage[j] != null) {
-				SetPackage set = setpackage[j];
-				System.out.printf(setFormat, j + 1, String.join(" + ", set.getSetList()), set.getPrice());
-			}
+		for(int j = 0; j<setpackage.size(); j++) {
+//			if(setpackage[j] != null) {
+				SetPackage set = setpackage.get(j);
+				System.out.printf(setFormat, setpackage.get(j).getIndex(), String.join(" + ", set.getSetList()), set.getPrice());
+//			}
 		}
 		System.out.format("+-----+--------------------------------------------------------------+----------+%n");
 	}
@@ -273,9 +274,11 @@ public class MenuCtrl {
 	public static void updateMenuItem() {
 		// load menu from text file. read file
 		// clear all current menu items to load from file
-		for(int i = 0;i<counter;i++ ) {
-			menuitem[i] = null;
-		}
+//		for(int i = 0;i<counter;i++ ) {
+//			menuitem[i] = null;
+//		}
+		boolean itemloaded = false;
+		boolean setloaded = false;
 		
 		try {
 		      File myObj = new File("data", "Menu.txt");
@@ -283,9 +286,18 @@ public class MenuCtrl {
 		      myReader.nextLine(); 
 		      while (myReader.hasNextLine()) {
 		          String data = myReader.nextLine();
-		          String[] arrLinedata = data.split(",", 5);
-		          menuitem[counter] = new MenuItem(arrLinedata[1], arrLinedata[2], arrLinedata[3], Double.parseDouble(arrLinedata[4]));
-		          counter += 1;
+		          String[] arrLinedata = data.split(",", 7);
+
+		          for(int i=0; i< menuitem.size(); i++) {
+		        	  if(menuitem.get(i).getName().equals(arrLinedata[2]) ) {
+		        		  itemloaded = true;
+		        	  }
+		          }
+		          if(itemloaded == false) {
+			          menuitem.add(new MenuItem(arrLinedata[1], arrLinedata[2], arrLinedata[3], Double.parseDouble(arrLinedata[4])));
+			          counter += 1;
+		          }
+
 		      }
 		      myReader.close();
 		      System.out.print("\nMenu was loaded from Menu Item text file\n");
@@ -298,10 +310,10 @@ public class MenuCtrl {
 	 	
 
 		
-		for(int i = 0;i<100;i++ ) {
-			setpackage[i] = null;
-		}
-		
+//		for(int i = 0;i<100;i++ ) {
+//			setpackage[i] = null;
+//		}
+		setpackage.removeAll(setpackage);
 		try {
 		      File myObj = new File("data", "SetMenu.txt");
 		      Scanner myReader = new Scanner(myObj);
@@ -312,9 +324,15 @@ public class MenuCtrl {
 		          for(int i = 1 ; i < arrLinedata.length-1; i++) {        	  
 		        	  setList.add(arrLinedata[i]);
 		          }
-
-		          setpackage[setIndexCounter] = new SetPackage(Integer.parseInt(arrLinedata[0]), setList, Double.parseDouble(arrLinedata[arrLinedata.length-1]));
-		          setIndexCounter += 1; /// here have a setpackages already
+	        	  for(int i=0; i< setpackage.size(); i++) {
+	        		  if(setpackage.get(i).getIndex() == Integer.parseInt(arrLinedata[0])) {
+	        			  setloaded = true;					          
+	        		  }
+	        	  }
+	        	  if(setloaded == false) {
+		        	  setpackage.add(new SetPackage(Integer.parseInt(arrLinedata[0]), setList, Double.parseDouble(arrLinedata[arrLinedata.length-1])));
+			          setIndexCounter += 1; /// here have a setpackages already
+	        	  }
 		      }
 		      myReader.close();
 		      System.out.print("\nMenu was loaded from Set Menu Item text file\n");
@@ -322,7 +340,6 @@ public class MenuCtrl {
 	        System.out.println("An error occurred.");
 	        e.printStackTrace();
 	    }
-		
 	}
 	
 	public static void convertMenuData() {
@@ -330,23 +347,24 @@ public class MenuCtrl {
 		
 		int index = 1;
 		try {
-		      FileWriter myWriter = new FileWriter("../Data/Menu.txt");
+			  File myObj = new File("data", "Menu.txt");
+		      FileWriter myWriter = new FileWriter(myObj);
 		      myWriter.write("--- Saved Menu --- \n");
 		      
-				for(int i = 0;i<counter;i++ ) {
-					if(menuitem[i] != null) {
+				for(int i = 0;i<menuitem.size();i++ ) {
+//					if(menuitem[i] != null) {
 						myWriter.write(String.valueOf(index));
 						myWriter.write("),");
-						myWriter.write(menuitem[i].getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
+						myWriter.write(menuitem.get(i).getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
 						myWriter.write(",");
-						myWriter.write(menuitem[i].getName()); /// HERE TO GET METHODS TO PRINT SHIT.
+						myWriter.write(menuitem.get(i).getName()); /// HERE TO GET METHODS TO PRINT SHIT.
 						myWriter.write(",");
-						myWriter.write(menuitem[i].getDescription()); /// HERE TO GET METHODS TO PRINT SHIT.
+						myWriter.write(menuitem.get(i).getDescription()); /// HERE TO GET METHODS TO PRINT SHIT.
 						myWriter.write(",");
-						myWriter.write(String.valueOf(menuitem[i].getPrice())); /// HERE TO GET METHODS TO PRINT SHIT.
+						myWriter.write(String.valueOf(menuitem.get(i).getPrice())); /// HERE TO GET METHODS TO PRINT SHIT.
 						myWriter.write("\n");
 						index++;
-					}
+//					}
 				}
 		      
 		      myWriter.close();
@@ -363,22 +381,23 @@ public class MenuCtrl {
 		
 		int index = 1;
 		try {
-		      FileWriter myWriter = new FileWriter("../Data/SetMenu.txt");
+			  File myObj = new File("data", "SetMenu.txt");
+		      FileWriter myWriter = new FileWriter(myObj);
 		      
-				for(int i = 0;i<setIndexCounter;i++ ) {
-					if(setpackage[i] != null) {
+				for(int i = 0;i<setpackage.size();i++ ) {
+//					if(setpackage[i] != null) {
 						myWriter.write(String.valueOf(index));
 						myWriter.write(",");
-						myWriter.write(setpackage[i].getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
-						myWriter.write(",");
-						for(int l = 0; l < setpackage[i].getSetList().size();l++) {
-							myWriter.write(setpackage[i].getSetList().get(l));
+//						myWriter.write(setpackage.get(i).getItemType()); /// HERE TO GET METHODS TO PRINT SHIT.
+//						myWriter.write(",");
+						for(int l = 0; l < setpackage.get(i).getSetList().size();l++) {
+							myWriter.write(setpackage.get(i).getSetList().get(l));
 							myWriter.write(",");
 						}
-						myWriter.write(String.valueOf(setpackage[i].getPrice())); /// HERE TO GET METHODS TO PRINT SHIT.
+						myWriter.write(String.valueOf(setpackage.get(i).getPrice())); /// HERE TO GET METHODS TO PRINT SHIT.
 						myWriter.write("\n");
 						index++;
-					}
+//					}
 				}
 		      
 		      myWriter.close();
