@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainUI {
@@ -15,18 +16,32 @@ public class MainUI {
 		System.out.println("Welcome to RRPSS\n");
 
 		while (true) {
-			// print menu options
+			// Print main options
 			System.out.println(
 					"**************************************************************************************************");
-			System.out.println("1. Access Staff Menu\n" + "2. Access Table\n" + "3. Access Menu\n"
-					+ "4. Access Orders\n" + "5. Access Reservation\n" + "6. Access Invoices\n"
-					+ "7. Access SalesReport\n" + "8. Quit.");
+			System.out.println("1. Access Staff Menu");
+			System.out.println("2. Access Table");
+			System.out.println("3. Access Menu");
+			System.out.println("4. Access Orders");
+			System.out.println("5. Access Reservation");
+			System.out.println("6. Access Invoices");
+			System.out.println("7. Access SalesReport");
+			System.out.println("8. Quit.");
 			System.out.println(
 					"**************************************************************************************************");
-			System.out.print("\nPlease choose an option from the menu: ");
-			choice = sc.nextInt();
 
-			if (choice < 0 || choice > 9)
+			while (true) {
+				System.out.print("\nOption: ");
+				try {
+					choice = sc.nextInt();
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid choice. Please try again.");
+					sc.next();
+				}
+			}
+
+			if (choice < 1 || choice > 8)
 				System.out.println("Invalid Choice!");
 			else if (choice == 8) {
 				System.out.println("Thank you for using RRPSS! Have a great day ahead!");
@@ -60,7 +75,7 @@ public class MainUI {
 				case 7:
 					mainController.displaySalesReportUI();
 					break;
-					
+
 				default:
 					break;
 
