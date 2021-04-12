@@ -76,7 +76,7 @@ public class InvoiceUI extends UI {
 	 * The table ID must correspond to a {@code Table} object that is set to {@code TableStatus.OCCUPIED}.
 	 */
 	private static void printInvoiceUI() {
-		int tableID = OrderUI.getTableIDUI(TableStatus.OCCUPIED);
+		int tableID = getTableIDUI(TableStatus.OCCUPIED);
 		
 		// get payment method
 		PaymentMethod payMthd = getPaymentMethodUI();
@@ -146,5 +146,32 @@ public class InvoiceUI extends UI {
 			run = false;
 		}
 		return payMthd;
+	}
+	
+	/**
+	 * Gets the table ID of a specific {@code Table} object that is set to a specific {@code TableStatus}.
+	 * @param status	The {@code TableStatus} value that the target {@code Table} object should be set to.
+	 * @return the table ID retrieved from the user.
+	 */
+	private static int getTableIDUI(TableStatus status) {
+		boolean run = true;
+		int tableID = -1;
+		while(run) {
+			System.out.println("Enter table ID: ");
+			// check if entry is an integer
+			try {
+				tableID = sc.nextInt();
+				sc.nextLine(); // flush System.in
+				System.out.println();
+			} catch(NoSuchElementException e) {
+				System.out.println("\nError: entry was not a valid table ID\n"
+						+ "Please enter an integer!\n");
+				sc.nextLine(); // flush System.in
+				continue;
+			}
+			if (invoiceCtrl.validTableID(tableID, status)) run = false;
+			else System.out.println("Error: entry was not a valid table ID\n");
+		}
+		return tableID;
 	}
 }
