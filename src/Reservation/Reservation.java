@@ -97,6 +97,7 @@ public class Reservation {
         this.contactNumber = contactNumber;
         this.tableID = tableID;
         this.rsvID = rsvID;
+        this.timer = new Timer();
     }
 
     /**

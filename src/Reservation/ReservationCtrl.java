@@ -194,8 +194,9 @@ public class ReservationCtrl extends Controller {
 	/**Remove {@code Reservation} object by Reservation.contactNumber */
 	public void removeReservationByContact() {
 		Reservation rsv = reservationQueryByContact();
-		removeData("data/Reservations.txt", rsv);
+		removeData(RSV_FILE, rsv);
 		rsv.removeTimer();
+		removeData(RSV_FILE, rsv);
 		reservations.remove(rsv);
 	}
 
@@ -210,7 +211,7 @@ public class ReservationCtrl extends Controller {
 			}
 		}
 		for (Reservation rsv : rsvToRemove) {
-			removeData("data/Reservations.txt", rsv);
+			removeData(RSV_FILE, rsv);
 		}
 	}
 
@@ -252,6 +253,7 @@ public class ReservationCtrl extends Controller {
 	 */
 	public void readData(File file){
 		String line;
+		ArrayList<String> pending = new ArrayList<>();
 		Reservation rsv;
 		reservations.clear(); // Empty reservations ArrayList
 		try {
@@ -264,6 +266,7 @@ public class ReservationCtrl extends Controller {
 				 * Not add outdated {@code Reservation} object into the reservations ArrayList
 				 */
 				if(dt.compareTo(LocalDateTime.now())<0)continue;
+				pending.add(line);
 
 				rsv = new Reservation(Integer.valueOf(items[0]),//contact
 										items[1],//name
@@ -288,6 +291,18 @@ public class ReservationCtrl extends Controller {
 			System.out.println("Input mistmatch!");
 			e.printStackTrace();
 		}
+
+		try {
+			PrintWriter wr = new PrintWriter(file);
+			for (String string : pending) {
+				wr.write(string);
+				wr.write("\n");
+			}
+			wr.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -380,7 +395,7 @@ public class ReservationCtrl extends Controller {
 	 * @param File The {@code File} object the data is removed from.
 	 * @param rsv The {@code Reservation} object whose data need to be removed.
 	 */
-	private void removeData(String file, Reservation rsv){
+	private void removeData(File file, Reservation rsv){
 		String line;
 		ArrayList<String> newData = new ArrayList<>();
 		try {
