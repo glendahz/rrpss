@@ -147,27 +147,26 @@ public class TableCtrl extends Controller {
 //	}
 		
 	public void assignTable() {
-		System.out.println("Here");
 		int tableID = queryTableID();
-		System.out.println("Here2");
 		int tableIndex = getTableIndex(tableID);
-		System.out.println("Here3");
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		} else {
+		} /* else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} */ else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
-		System.out.println("Here4");
 		writeData("data/Tables.txt");
-		System.out.println("Here5");
 	}
 	
 	public void assignTable(int tableID) {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		} else {
+		} /* else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} */ else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
