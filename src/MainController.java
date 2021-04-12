@@ -17,7 +17,7 @@ public class MainController {
 	private InvoiceUI invoiceUI;
 	private MenuUI menuUI;
 	private OrderUI orderUI;
-	private ReservationUI reservationUI;
+//	private ReservationUI reservationUI;
 	private SalesReportUI salesReportUI;
 	private StaffUI staffUI;
 	private TableUI tableUI;
@@ -25,7 +25,7 @@ public class MainController {
 	private InvoiceCtrl invoiceCtrl;
 //	private MenuCtrl menuCtrl;
 	private OrderCtrl orderCtrl;
-	private ReservationCtrl reservationCtrl;
+//	private ReservationCtrl reservationCtrl;
 	private SalesReportController salesReportCtrl;
 	private StaffCtrl staffCtrl;
 	private TableCtrl tableCtrl;
@@ -34,7 +34,7 @@ public class MainController {
 		invoiceCtrl = new InvoiceCtrl();
 //		menuCtrl = new MenuCtrl();
 		orderCtrl = new OrderCtrl();
-		reservationCtrl = new ReservationCtrl();
+//		reservationCtrl = new ReservationCtrl();
 		salesReportCtrl = new SalesReportController();
 		staffCtrl = new StaffCtrl();
 		tableCtrl = new TableCtrl();
@@ -42,7 +42,7 @@ public class MainController {
 		orderCtrl.setStaffCtrl(staffCtrl);
 		orderCtrl.setTableCtrl(tableCtrl);
 		
-		reservationCtrl.setTableController(tableCtrl);
+//		reservationCtrl.setTableController(tableCtrl);
 		invoiceCtrl.setTableCtrl(tableCtrl);
 	}
 
@@ -69,11 +69,11 @@ public class MainController {
 		orderUI.displayOptions();
 	}
 
-	public void displayReservationUI() {
-		reservationUI = new ReservationUI();
-		reservationUI.setController(reservationCtrl);
-		reservationUI.displayOptions();
-	}
+//	public void displayReservationUI() {
+//		reservationUI = new ReservationUI();
+//		reservationUI.setController(reservationCtrl);
+//		reservationUI.displayOptions();
+//	}
 
 	public void displayInvoicesUI() {
 		// Invoice UI depends on OrderUI

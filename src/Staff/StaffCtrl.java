@@ -101,12 +101,11 @@ public class StaffCtrl extends Controller {
 			}
 		}
 		if (temp.equals("Manager")) {
-			jobTitle = JobTitle.MANAGER;
+			staffList.add(new Manager(name, gender, currEmpNum));
 		} else {
-			jobTitle = JobTitle.WAITER;
+			staffList.add(new Waiter(name, gender, currEmpNum));
 		}
-		
-		staffList.add(new Staff(name, gender, currEmpNum, jobTitle));
+	
 		currEmpNum++;
 		
 		writeData("data/Staff.txt");

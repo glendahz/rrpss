@@ -65,7 +65,7 @@ public class MainUI {
 					break;
 
 				case 5:
-					mainController.displayReservationUI();
+//					mainController.displayReservationUI();
 					break;
 
 				case 6:

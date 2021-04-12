@@ -16,6 +16,12 @@ public class Staff {
 		this.jobTitle = jobTitle;
 	}
 	
+	public Staff(String name, Gender gender, int employeeID) {
+		this.name = name;
+		this.gender = gender;
+		this.employeeID = employeeID;
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -32,9 +38,10 @@ public class Staff {
 		return this.jobTitle;
 	}
 	
-	// To implement with order
-	public void getOrder() {
-		System.out.println(this.name + " got order from customer"); // Maybe want include tableID?
+	public void setJobTitle(JobTitle jobTitle) {
+		this.jobTitle = jobTitle;
 	}
+	
+	public void checkWorkingHours() {}
 	
 }
