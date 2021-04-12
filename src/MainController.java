@@ -76,10 +76,6 @@ public class MainController {
 	}
 
 	public void displayInvoicesUI() {
-		// Invoice UI depends on OrderUI
-		orderUI = new OrderUI();
-		orderUI.setController(orderCtrl);
-		
 		invoiceUI = new InvoiceUI();
 		invoiceUI.setController(invoiceCtrl);
 		invoiceUI.displayOptions();

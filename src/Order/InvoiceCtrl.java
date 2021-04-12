@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import Table.TableCtrl;
+import Table.Table.TableStatus;
 import util.Controller;
 
 /**
@@ -296,8 +297,20 @@ public class InvoiceCtrl extends Controller {
 		return String.join("\n", lines);
 	}
 	
-	// TODO change table status
-	// TODO delete order from order file
+	/**
+	 * Checks whether a table ID is valid 
+	 * and whether the corresponding {@code Table} object is set to a specific {@code TableStatus}
+	 * @param tableID	The table ID to be checked.
+	 * @param status	The {@code TableStatus} value that the {@code Table} object should be set to.
+	 * @return {@code true} if the table ID is valid and the corresponding {@code Table} object is set to {@code status},
+	 * otherwise {@code false}.
+	 */
+	public boolean validTableID(int tableID, TableStatus status){
+		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
+		if (currStatus == status) return true;
+		else return false;
+	}
+
 	/**
 	 * Creates a new {@code OrderInvoice} object, 
 	 * writes its data into the sales data file,

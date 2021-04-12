@@ -204,7 +204,7 @@ public class OrderUI extends UI {
 	 * @param status	The {@code TableStatus} value that the target {@code Table} object should be set to.
 	 * @return the table ID retrieved from the user.
 	 */
-	static int getTableIDUI(TableStatus status) {
+	private static int getTableIDUI(TableStatus status) {
 		boolean run = true;
 		int tableID = -1;
 		while(run) {
