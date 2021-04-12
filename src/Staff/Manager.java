@@ -19,8 +19,9 @@ public class Manager extends Staff {
 		System.out.println("Revise the menu!");
 	}
 	
+	@Override
 	public void checkWorkingHours() {
-		System.out.println("10AM To 10PM");
+		System.out.println("Manager works from 10AM To 10PM");
 	}
 	
 }

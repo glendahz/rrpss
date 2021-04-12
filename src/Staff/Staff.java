@@ -42,6 +42,8 @@ public class Staff {
 		this.jobTitle = jobTitle;
 	}
 	
-	public void checkWorkingHours() {}
+	public void checkWorkingHours() {
+		System.out.println("123");
+	}
 	
 }

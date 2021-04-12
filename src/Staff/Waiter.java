@@ -15,8 +15,9 @@ public class Waiter extends Staff {
 		System.out.println("Rubbish removed!");
 	}
 	
+	@Override
 	public void checkWorkingHours() {
-		System.out.println("10 AM To 3 PM");
+		System.out.println("Waiter works from 10 AM To 3 PM");
 	}
 	
 }

@@ -87,7 +87,6 @@ public class StaffCtrl extends Controller {
 		}
 		
 		validInput = false;
-		JobTitle jobTitle;
 		System.out.print("Please enter staff role (Waiter/Manager): ");
 		while (!validInput) {
 			try {
@@ -101,9 +100,11 @@ public class StaffCtrl extends Controller {
 			}
 		}
 		if (temp.equals("Manager")) {
-			staffList.add(new Manager(name, gender, currEmpNum));
+			Manager manager = new Manager(name, gender, currEmpNum);
+			staffList.add((Staff) manager);
 		} else {
-			staffList.add(new Waiter(name, gender, currEmpNum));
+			Waiter waiter = new Waiter(name, gender, currEmpNum);
+			staffList.add((Staff) waiter);
 		}
 	
 		currEmpNum++;
