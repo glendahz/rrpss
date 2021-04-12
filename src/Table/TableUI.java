@@ -6,17 +6,39 @@ import java.util.Scanner;
 import util.Controller;
 import util.UI;
 
-public class TableUI extends UI {
+/**
+ * Boundary class to get user input to control system action for Tables
+ * @author david
+ * @version 1.0
+ * @since 2021-04-07
+ */
 
+public class TableUI extends UI {
+	
+	/**
+	 * Scanner for getting inputs from the user
+	 */
 	static Scanner sc = new Scanner(System.in);
+	/**
+	 * Variable used to store user input
+	 */
 	private int choice = 0;
+	/**
+	 * Table Ctrl that deals with retrieving and storing table information
+	 */
 	private TableCtrl ctrl;
 
+	/**
+	 * Assigns the table controller in the class
+	 */
 	@Override
 	public void setController(Controller ctrl) {
 		this.ctrl = (TableCtrl) ctrl;
 	}
 
+	/**
+	 * Loop that allows users to enter their choices
+	 */
 	@Override
 	public void displayOptions() {
 		while (choice != 8) {
@@ -26,6 +48,9 @@ public class TableUI extends UI {
 		}
 	}
 
+	/**
+	 * Prints the available options to the user at the current UI page
+	 */
 	public void Options() {
 
 		System.out.println("-----------Tables-----------");
@@ -41,6 +66,9 @@ public class TableUI extends UI {
 
 	}
 
+	/**
+	 * Get user input between 1 to 4
+	 */
 	public void UserInput() {
 
 		boolean validInput = false;
@@ -61,6 +89,10 @@ public class TableUI extends UI {
 		return;
 	}
 
+	/**
+	 * Get the tableCtrl to execute a method that corresponds to the user's input
+	 * @param methodIndex
+	 */
 	public void MethodSelection(int methodIndex) {
 
 		switch (methodIndex) {

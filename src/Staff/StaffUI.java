@@ -6,7 +6,7 @@ import java.util.InputMismatchException;
 import util.*;
 
 /**
- * Control class for Staff to retrieve and store staff data
+ * Boundary class to get user input to control system action for Staff
  * @author david
  * @version 1.0
  * @since 2021-04-07

@@ -11,14 +11,36 @@ import java.util.Scanner;
 import Table.Table.TableStatus;
 import util.Controller;
 
+/**
+ * Control class that controls the retrieval and storing of tables
+ * @author david
+ * @version 1.0
+ * @since 2021-04-07
+ */
+
 public class TableCtrl extends Controller {
 	
+	/**
+	 * Delimiter for file reading and writing - CSV
+	 */
 	private static final String DELIMITER = ",";
 	
+	/**
+	 * Scanner for getting inputs from the user
+	 */
 	static Scanner sc = new Scanner(System.in);
+	/**
+	 * Dynamic list to store all tables belonging to the restaurant
+	 */
 	private ArrayList<Table> tables = new ArrayList<Table>();
+	/**
+	 * Next table ID that has yet been assigned
+	 */
 	static int maxTableID = 1; // TODO: SET BY DATABASE		
 	
+	/**
+	 * Creates the TableCtrl that imports all tables from the text file storing the staff information
+	 */
 	public TableCtrl() {
 		readData("data/Tables.txt");
 	}
@@ -41,6 +63,9 @@ public class TableCtrl extends Controller {
 //		}
 //	}
 	
+	/**
+	 * Prints the tables that are VACANT of a certain user-inputted size
+	 */
 	public void getAvailableTables() {
 		int size = querySize();
 		ArrayList<Integer> availableTables = new ArrayList<Integer>();
@@ -57,6 +82,11 @@ public class TableCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Returns a list of table IDs of tables that are vacant and also of size that is of at least the parameter
+	 * @param size
+	 * @return list of table ID fulfilling the condition
+	 */
 	// Return table IDs for those with equal or greater size
 	public ArrayList<Integer> getAvaiTableIDsBySize(int size) {
 		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
@@ -69,6 +99,10 @@ public class TableCtrl extends Controller {
 		return sizedTables;
 	}
 	
+	/**
+	 * Returns a list of table IDs of tables that are vacant and also of size that is of at least of the user input
+	 * @return list of table ID fulfilling the condition
+	 */
 	public ArrayList<Integer> getAvaiTableIDsBySize() {
 		int size = querySize();
 		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
@@ -87,6 +121,9 @@ public class TableCtrl extends Controller {
 		return sizedTables;
 	}
 	
+	/**
+	 * Print all the table IDs of all the tables in the restaurant
+	 */
 	public void printAllTables() {
 		ArrayList<Integer> availableTables = new ArrayList<Integer>();
 		for (int i = 0; i < tables.size(); ++i) {
@@ -104,6 +141,12 @@ public class TableCtrl extends Controller {
 //		tables.add(new Table(size));
 //	}
 	
+	/**
+	 * Add a table with specified tableID, size and tableStatus
+	 * @param tableID
+	 * @param size
+	 * @param tableStatus
+	 */
 	private void addTable(int tableID, int size, TableStatus tableStatus) {
 		tables.add(new Table(tableID, size, tableStatus));
 	}
@@ -145,7 +188,10 @@ public class TableCtrl extends Controller {
 //			System.out.println("There is no table with ID " + tableID + "!");
 //		}
 //	}
-		
+	
+	/**
+	 * Get the controller to set the table status for the user input table ID to OCCUPIED
+	 */
 	public void assignTable() {
 		int tableID = queryTableID();
 		int tableIndex = getTableIndex(tableID);
@@ -160,6 +206,10 @@ public class TableCtrl extends Controller {
 		writeData("data/Tables.txt");
 	}
 	
+	/**
+	 * Get the controller to set the table status for the parameter table ID to OCCUPIED
+	 * @param tableID
+	 */
 	public void assignTable(int tableID) {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
@@ -173,6 +223,9 @@ public class TableCtrl extends Controller {
 		writeData("data/Tables.txt");
 	}
 	
+	/**
+	 * Get the controller to set the table status for the user input table ID to RESERVED
+	 */
 	public void reserveTable() {
 		int tableID = queryTableID();
 		int tableIndex = getTableIndex(tableID);
@@ -186,6 +239,10 @@ public class TableCtrl extends Controller {
 		writeData("data/Tables.txt");
 	}
 	
+	/**
+	 * Get the controller to set the table status for the parameter table ID to RESERVED
+	 * @param tableID
+	 */
 	public void reserveTable(int tableID) {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
@@ -198,6 +255,9 @@ public class TableCtrl extends Controller {
 		writeData("data/Tables.txt");
 	}
 	
+	/**
+	 * Get the controller to set the table status for the user input table ID to VACANT
+	 */
 	public void vacateTable() {
 		int tableID = queryTableID();
 		int tableIndex = getTableIndex(tableID);
@@ -210,6 +270,10 @@ public class TableCtrl extends Controller {
 		writeData("data/Tables.txt");
 	}
 	
+	/**
+	 * Get the controller to set the table status for the parameter table ID to VACANT
+	 * @param tableID
+	 */
 	public void vacateTable(int tableID) {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
@@ -221,6 +285,10 @@ public class TableCtrl extends Controller {
 		writeData("data/Tables.txt");
 	}
 	
+	/**
+	 * Get the controller to retrieve the table status for the user input table ID
+	 * @return this table's table status
+	 */
 	public TableStatus getTableStatus() {
 		int tableID = queryTableID();
 		for (int i = 0; i < tables.size(); ++i) {
@@ -234,6 +302,10 @@ public class TableCtrl extends Controller {
 		return null;
 	}
 	
+	/**
+	 * Get the controller to retrieve the table status for the parameter table ID
+	 * @return this table's table status
+	 */
 	public TableStatus getTableStatus(int tableID) {
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
@@ -244,6 +316,11 @@ public class TableCtrl extends Controller {
 		return null;
 	}
 	
+	/**
+	 * Find the table index for a given table ID
+	 * @param tableID
+	 * @return this tables' table index
+	 */
 	private int getTableIndex(int tableID) {
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
@@ -254,6 +331,10 @@ public class TableCtrl extends Controller {
 		return -1;
 	}
 	
+	/**
+	 * Get a valid table size from the user
+	 * @return a valid table size
+	 */
 	private int querySize() {
 		boolean validInput = false;
 		int size = -1;
@@ -273,6 +354,10 @@ public class TableCtrl extends Controller {
 		return size;		
 	}
 	
+	/**
+	 * Get a valid table ID from the user
+	 * @return a valid tableID
+	 */
 	public static int queryTableID() {
 		boolean validInput = false;
 		int tableID = -1;
@@ -292,6 +377,10 @@ public class TableCtrl extends Controller {
 		return tableID;
 	}
 	
+	/**
+	 * Store all the tables currently in the restaurant into the text file in CSV format
+	 * @param fileName
+	 */
 	public void writeData(String fileName) {
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
@@ -310,6 +399,10 @@ public class TableCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Retrieve all the tables from the given file and stores to tables list
+	 * @param fileName
+	 */
 	public void readData(String fileName) {
 		String line;
 		tables.clear(); // Empty tables arraylist
@@ -332,6 +425,11 @@ public class TableCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Get table status from string to TableStatus - RESERVED, OCCUPIED, VACANT
+	 * @param currStatus
+	 * @return enumeration TableStatus
+	 */
 	private TableStatus tableStatusFromString(String currStatus) {
 		if (currStatus.equals("RESERVED")) {
 			return TableStatus.RESERVED;
