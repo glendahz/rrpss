@@ -5,17 +5,39 @@ import java.util.InputMismatchException;
 
 import util.*;
 
+/**
+ * Control class for Staff to retrieve and store staff data
+ * @author david
+ * @version 1.0
+ * @since 2021-04-07
+ */
+
 public class StaffUI extends UI {
 	
+	/**
+	 * Scanner for getting inputs from the user
+	 */
 	static Scanner sc = new Scanner(System.in);
+	/**
+	 * Variable used to store user input
+	 */
 	private int choice = 0;
+	/**
+	 * Staff Ctrl that deals with retrieving and storing staff information
+	 */
 	private StaffCtrl ctrl;
 	
+	/**
+	 * Assigns the staff controller in the class
+	 */
 	@Override
 	public void setController(Controller ctrl) {
 		this.ctrl = (StaffCtrl) ctrl;
 	}
 	
+	/**
+	 * Loop that allows users to enter their choices
+	 */
 	public void displayOptions() {
 		while (choice != 4) {
 			Options();
@@ -24,6 +46,9 @@ public class StaffUI extends UI {
 		}
 	}
 	
+	/**
+	 * Prints the available options to the user at the current UI page
+	 */
 	public void Options() {
 		System.out.println("\n========Staff========");
 		System.out.println("1. View Current Staff");
@@ -33,6 +58,9 @@ public class StaffUI extends UI {
 		
 	}
 	
+	/**
+	 * Get user input between 1 to 4
+	 */
 	public void UserInput() {
 		
 		boolean validInput = false;
@@ -53,6 +81,10 @@ public class StaffUI extends UI {
 		return ;
 	}
 	
+	/**
+	 * Get the staffCtrl to execute a method that corresponds to the user's input
+	 * @param methodIndex
+	 */
 	public void MethodSelection(int methodIndex) {
 		
 		switch(methodIndex) {

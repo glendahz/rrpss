@@ -10,18 +10,43 @@ import java.util.Scanner;
 
 import util.Controller;
 
+/**
+ * Control class for Staff to retrieve and store staff data
+ * @author david
+ * @version 1.0
+ * @since 2021-04-07
+ */
+
 public class StaffCtrl extends Controller {
 	
+	/**
+	 * Delimiter for file reading and writing - CSV
+	 */
 	private static final String DELIMITER = ",";
 	
+	/**
+	 * Next employee number that is not yet assigned before
+	 */
 	static int currEmpNum;
+	/**
+	 * Dynamic list to store all staff belonging to the restaurant
+	 */
 	static private ArrayList<Staff> staffList = new ArrayList<Staff>();
+	/**
+	 * Scanner for getting inputs from the user
+	 */
 	static Scanner sc = new Scanner(System.in);
 	
+	/**
+	 * Creates the StaffCtrl that imports all staff from the text file storing the staff information
+	 */
 	public StaffCtrl() {
 		readData("data/Staff.txt");
 	}
 	
+	/**
+	 * Prints all the staff and their information - ID, Name, Gender, Title
+	 */
 	public void viewStaffList() {
 		System.out.println("\n========Staff List========");
 		if (staffList.size() == 0) {
@@ -43,11 +68,21 @@ public class StaffCtrl extends Controller {
 		}
 	}		
 	
+	/**
+	 * Adds a staff with their employee ID, name, gender and job title
+	 * @param employeeID
+	 * @param name
+	 * @param gender
+	 * @param jobTitle
+	 */
 	public void addStaff(int employeeID, String name, Gender gender, JobTitle jobTitle) {
 		staffList.add(new Staff(name, gender, employeeID, jobTitle));
 		writeData("data/Staff.txt");
 	}
 	
+	/**
+	 * Add a staff by having users input the staff information
+	 */
 	public void addStaff() {
 		
 		boolean validInput = false;
@@ -112,6 +147,9 @@ public class StaffCtrl extends Controller {
 		writeData("data/Staff.txt");
 	}
 	
+	/**
+	 * Remove a staff from the restaurant
+	 */
 	public void removeStaff() {
 		
 		boolean validInput = false;
@@ -140,6 +178,11 @@ public class StaffCtrl extends Controller {
 		writeData("data/Staff.txt");
 	}
 	
+	/**
+	 * Returns the staff name for an employee
+	 * @param employeeID
+	 * @return
+	 */
 	public String getStaffName(int employeeID) {
 		for (int i = 0; i < staffList.size(); ++i) {
 			Staff currStaff = staffList.get(i);
@@ -150,6 +193,10 @@ public class StaffCtrl extends Controller {
 		return null;
 	}
 	
+	/**
+	 * Store all the staff currently in the restaurant into the text file in CSV format
+	 * @param fileName
+	 */
 	public void writeData(String fileName) {
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
@@ -172,6 +219,10 @@ public class StaffCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Retrieve all the staff from the given file and stores to staff list
+	 * @param fileName
+	 */
 	public void readData(String fileName) {
 		String line;
 		staffList.clear(); // Empty tables arraylist
@@ -196,6 +247,11 @@ public class StaffCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Convert users' input for gender into the enumeration - Gender
+	 * @param currGender
+	 * @return
+	 */
 	private Gender genderFromString(String currGender) {
 		if (currGender.equals("MALE")) {
 			return Gender.MALE;
@@ -204,6 +260,11 @@ public class StaffCtrl extends Controller {
 		}
 	}
 	
+	/**
+	 * Covert users' input for job title into the enumeration - JobTitle
+	 * @param jobTitle
+	 * @return
+	 */
 	private JobTitle jobTitleFromString(String jobTitle) {
 		if (jobTitle.equals("WAITER")) {
 			return JobTitle.WAITER;
