@@ -9,31 +9,58 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
+/**
+ * 
+ * A control class that mediates between {@code SetPackage} and  {@code MenuItem} entity objects and the {@code MenuUI} boundary object.
+ * This controller class reads from and writes to a Menu and setMenu data file.
+ * @author Craigdon Lee
+ * @version 1.0
+ * 
+ *
+ */
 public class MenuCtrl {
-    public static int counter = 0;
-    double ItemPrice = 0;
-	boolean validInput = false;
-	public static int setcounter = 0;
-	public static int setIndexCounter = 0;
 	
+    /**
+     * Item price stores the price of menu item. Default is 0
+     */
+    double ItemPrice = 0;
+	/**
+	 * Check if input is valid. Default is false
+	 */
+	boolean validInput = false;
+	
+	/**
+	 * Array List of Menu items
+	 */
 	static private ArrayList<MenuItem> menuitem = new ArrayList<MenuItem>();
+	/**
+	 * Array List of Set Menu items
+	 */
 	static private ArrayList<SetPackage> setpackage = new ArrayList<SetPackage>();
-//	static MenuItem[] menuitem = new MenuItem[100];
-// 	static SetPackage[] setpackage = new SetPackage[100];
-
  	private static Scanner scan = new Scanner(System.in);
  	///
  	
+ 	/**
+ 	 * @return setpackages Array list
+ 	 */
  	public static ArrayList<SetPackage> getSetItemObject() {
  		updateMenuItem();
 		return setpackage;
  	}
  	
+ 	/**
+ 	 * @return menuitem Array list
+ 	 */
  	public static ArrayList<MenuItem> getItemObject() {
  		updateMenuItem();
 		return menuitem;
  	}
  	
+	/**
+	 * Checks if name of menu item exists.
+	 * @param NameCheck
+	 * @return Boolean
+	 */
 	public static boolean checkItemName(String NameCheck) {
 		updateMenuItem();
 		for(int i = 0; i< menuitem.size(); i++) {
@@ -47,6 +74,11 @@ public class MenuCtrl {
 		return false;
 	}
 	
+	/**
+	 * Gets price of specified item name.
+	 * @param NameOfItem
+	 * @return Price of specified item.
+	 */
 	public static double getItemPrice(String NameOfItem) {
 		updateMenuItem();
 		for(int i = 0; i< menuitem.size(); i++) {
@@ -61,9 +93,14 @@ public class MenuCtrl {
 		return 0;
 	}
 	
+	/**
+	 * Checks if set menu item index exists
+	 * @param IndexOfSet
+	 * @return Boolean
+	 */
 	public static boolean checkSetItemIndex(int IndexOfSet) {
 		updateMenuItem();
-		for(int i = 0; i< setIndexCounter; i++) {
+		for(int i = 0; i< setpackage.size(); i++) {
 //			System.out.print(menuitem[i].getName());
 //			if(setpackage[i] != null) {
 				if(setpackage.get(i).getIndex() == IndexOfSet) {
@@ -74,9 +111,14 @@ public class MenuCtrl {
 		return false;
 	}
 	
+	/**
+	 * Gets price of set menu item based on set menu's index
+	 * @param IndexOfSet
+	 * @return Price of specified set menu item
+	 */
 	public static double getSetItemPrice(int IndexOfSet) {
 		updateMenuItem();
-		for(int i = 0; i< setIndexCounter; i++) {
+		for(int i = 0; i< setpackage.size(); i++) {
 //			if(setpackage[i] != null) {
 				if(setpackage.get(i).getIndex() == IndexOfSet) {
 					return setpackage.get(i).getPrice();
@@ -87,6 +129,11 @@ public class MenuCtrl {
 	}
  	///
 	
+	/**
+	 * Creates a new menu item based on the attributes(type, name, description, price)
+	 * Adds created menu item into menuitem Array List
+	 * @return menuitem Array list
+	 */
 	public ArrayList<MenuItem> createMenuItem(){
 		// This function will Create item object
 //		updateMenuItem();
@@ -109,13 +156,16 @@ public class MenuCtrl {
 		}
 		
 		menuitem.add(new MenuItem(ItemType, ItemName, ItemDesc, ItemPrice));
-		counter += 1;
 		System.out.print("\nMenu item was created\n");
 		convertMenuData();
 		return menuitem;
 	}
 		
 	
+	/**
+	 * Creates a new set menu item based on the attributes(index, list of menuitems, price)
+	 * Adds created set menu item into setmenuitem Array List
+	 */
 	public static void createSetMenuItem() {
 		/// adds to setmenu text file
 		boolean validInput = false;
@@ -130,8 +180,6 @@ public class MenuCtrl {
 	      System.out.println("What item would you like to add to set menu?");
 	      System.out.print("Please enter number of items in set menu : ");
 	      int SetSize = scan.nextInt();   
-//		      myWriter.write(String.valueOf(setIndexCounter));
-	      setIndexCounter += 1;
 //		      myWriter.write(",");
 	      for(int i =0; i<SetSize ;i++ ) {
 	    	  if(i == 0) {
@@ -173,16 +221,19 @@ public class MenuCtrl {
 	      }
 //				myWriter.write(StringPrice);
 //				myWriter.write("\n");
-			setcounter += 1;
 	      
 //		      myWriter.close();
 	    System.out.println("\nSuccessfully wrote to the file.");
 		setpackage.add(new SetPackage(setpackage.size(), setLists, SetPrice));
-        setIndexCounter += 1; /// here have a setpackages already
         convertSetMenuData();
         viewMenu();
 	}
 	
+	/**
+	 * Removes specific menu item
+	 * method will ask for user input to specify the specific menu item to be removed
+	 * based on menu item name and saves the changes to a data file
+	 */
 	public static void removeMenuItem() {
 		// Delete which one? (4)
 	
@@ -219,6 +270,11 @@ public class MenuCtrl {
 		
 	}
 	
+	/**
+	 * Removes specific set menu item
+	 * method will ask for user input to specify the specific set menu item to be removed
+	 * based on set menu item index and saves the changes to a data file
+	 */
 	public static void removeSetItem() {
 		System.out.print("Please enter Item set Index to DELETE : ");
 		int toDelete = scan.nextInt();
@@ -235,6 +291,9 @@ public class MenuCtrl {
 		convertSetMenuData();
 	}
 	
+	/**
+	 * Loads full menu from data files, and shows the current menu
+	 */
 	public static void viewMenu() {
 		// just to show menu
 		updateMenuItem();
@@ -271,12 +330,13 @@ public class MenuCtrl {
 		System.out.format("+-----+--------------------------------------------------------------+----------+%n");
 	}
 	
+	/**
+	 * Manually load data from data file so as to keep menu current
+	 * updates for both set menu items and menu item
+	 */
 	public static void updateMenuItem() {
 		// load menu from text file. read file
 		// clear all current menu items to load from file
-//		for(int i = 0;i<counter;i++ ) {
-//			menuitem[i] = null;
-//		}
 		boolean itemloaded = false;
 		boolean setloaded = false;
 		
@@ -295,12 +355,11 @@ public class MenuCtrl {
 		          }
 		          if(itemloaded == false) {
 			          menuitem.add(new MenuItem(arrLinedata[1], arrLinedata[2], arrLinedata[3], Double.parseDouble(arrLinedata[4])));
-			          counter += 1;
 		          }
 
 		      }
 		      myReader.close();
-		      System.out.print("\nMenu was loaded from Menu Item text file\n");
+//		      System.out.print("\nMenu was loaded from Menu Item text file\n");
 	    } catch (FileNotFoundException e) {
 	        System.out.println("An error occurred.");
 	        e.printStackTrace();
@@ -331,17 +390,19 @@ public class MenuCtrl {
 	        	  }
 	        	  if(setloaded == false) {
 		        	  setpackage.add(new SetPackage(Integer.parseInt(arrLinedata[0]), setList, Double.parseDouble(arrLinedata[arrLinedata.length-1])));
-			          setIndexCounter += 1; /// here have a setpackages already
 	        	  }
 		      }
 		      myReader.close();
-		      System.out.print("\nMenu was loaded from Set Menu Item text file\n");
+//		      System.out.print("\nMenu was loaded from Set Menu Item text file\n");
 	    } catch (FileNotFoundException e) {
 	        System.out.println("An error occurred.");
 	        e.printStackTrace();
 	    }
 	}
 	
+	/**
+	 *  Converts Menu item array list to data file
+	 */
 	public static void convertMenuData() {
 		// Current menu to text file. 
 		
@@ -376,6 +437,9 @@ public class MenuCtrl {
 		
 	}
 	
+	/**
+	 * Converts Set menu item array list to data file
+	 */
 	public static void convertSetMenuData() {
 		// Current menu to text file. 
 		

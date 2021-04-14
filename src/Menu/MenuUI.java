@@ -6,6 +6,11 @@ import java.util.Scanner;
 import util.Controller;
 import util.UI;
 
+/**
+ * @author Craigdon Lee
+ * 
+ *
+ */
 public class MenuUI extends UI {
 
 	static int choice = 0;
@@ -63,7 +68,7 @@ public class MenuUI extends UI {
 	}
 
 	public static void MethodSelection(int methodIndex) {
-
+		MenuCtrl ctrl = new MenuCtrl();
 		switch (methodIndex) {
 
 		case 1:
@@ -73,6 +78,7 @@ public class MenuUI extends UI {
 		case 2:
 //			System.out.print("menu item = ");
 //			System.out.print(array[0].itemType);
+			ctrl.createMenuItem();
 			break;
 
 		case 3:
