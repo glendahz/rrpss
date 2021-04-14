@@ -1,8 +1,8 @@
 package Menu;
 
 /**
- * Represents 1 menu item.
- * Attributes
+ * Represents 1 menu item object.
+ * Attributes = String itemType, String name, String Description, Drouble price.
  * @author Craigdon Lee
  * @version 1.0
  *
@@ -71,6 +71,14 @@ public class MenuItem
 	 */
 	public double getPrice() {
 		return this.price;
+	}
+	
+	public void setPrice(double updatedPrice) {
+		this.price = updatedPrice;
+	}
+	
+	public void setDesc(String updatedDesc) {
+		this.desc = updatedDesc;
 	}
 
 

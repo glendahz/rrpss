@@ -473,6 +473,41 @@ public class MenuCtrl {
 		
 	}
 	
+	/**
+	 *  Method used to edit menu items description and price if needeed.
+	 */
+	public static void editMenuItem() {
+		boolean valid = false;
+		int editIndex = 0;
+		System.out.println("Which menu item would you like edit?");
+		System.out.print("Please enter Item name : ");
+		String ItemName = scan.nextLine();
+		for(int i = 0; i<menuitem.size();i++) {
+			if(menuitem.get(i).getName().equals(ItemName)) {
+				valid = true;
+				editIndex = i;
+			}
+		}
+		if(valid == true) {
+			System.out.print("Would you like to edit Desc? (Y=1/N=0) :");
+			int descChoice = scan.nextInt();
+			if(descChoice == 1) {
+				System.out.print("Enter new description :");
+				String descEdit  = scan.next();
+				menuitem.get(editIndex).setDesc(descEdit);
+			}
+			System.out.print("Would you like to edit Price? (Y=1/N=0) :");
+			int priceChoice = scan.nextInt();
+			if(priceChoice == 1) {
+				System.out.print("Enter new Price :");
+				double descPrice  = scan.nextDouble();
+				menuitem.get(editIndex).setPrice(descPrice);
+			}
+		}
+		
+		
+		convertMenuData();
+	}
 
 	
 }

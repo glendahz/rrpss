@@ -7,18 +7,27 @@ import util.Controller;
 import util.UI;
 
 /**
+ * A boundary class that interfaces with the application user for Menu related functions.
  * @author Craigdon Lee
- * 
+ * @version 1.0
  *
  */
 public class MenuUI extends UI {
 
+	/**
+	 * Choice of menu option
+	 */
 	static int choice = 0;
-	static int counter = 0;
+	/**
+	 * When exit = 8 it will breakout and go back to main menu
+	 */
 	static int exit = 0;
 
 	static Scanner scan = new Scanner(System.in);
 
+	/**
+	 *	Displays Menu's UI to choose each method
+	 */
 	@Override
 	public void displayOptions() {
 		scan = new Scanner(System.in);
@@ -30,11 +39,18 @@ public class MenuUI extends UI {
 		}
 	}
 
+	/**
+	 *	Sets the controller
+	 */
 	@Override
 	public void setController(Controller ctrl) {
 		// Do nothing
 	}
 
+	/**
+	 * Gets user input for menu choise and makes sure input corresponds to a valid option.
+	 * @return
+	 */
 	public static int menuChoice() {
 		int choice = 0;
 		boolean validInput = false;
@@ -53,6 +69,9 @@ public class MenuUI extends UI {
 		return choice;
 	}
 
+	/**
+	 * Displays main menu
+	 */
 	public static void MainMenu() {
 
 		System.out.println("\n========= Menu =========");
@@ -61,12 +80,16 @@ public class MenuUI extends UI {
 		System.out.println("3) Create Set Menu Item");
 		System.out.println("4) Remove Menu Item");
 		System.out.println("5) Remove Set Menu Item");
-		System.out.println("6) update Menu Item");
+		System.out.println("6) Edit Menu Data");
 		System.out.println("7) Convert Menu Data");
 		System.out.println("8) Exit\n");
 
 	}
 
+	/**
+	 * Switch case for each option/method available.
+	 * @param methodIndex input option by user
+	 */
 	public static void MethodSelection(int methodIndex) {
 		MenuCtrl ctrl = new MenuCtrl();
 		switch (methodIndex) {
@@ -94,13 +117,13 @@ public class MenuUI extends UI {
 			break;
 
 		case 6:
-			MenuCtrl.updateMenuItem();
+			MenuCtrl.editMenuItem(); // change here
 			break;
 
 		case 7:
 			MenuCtrl.convertMenuData();
 			break;
-
+			
 		case 8:
 			System.out.println("\nMenu Exited\n");
 			break;
