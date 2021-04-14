@@ -199,9 +199,9 @@ public class TableCtrl extends Controller {
 		System.out.println();
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		} /* else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+		} else if (tables.get(Math.max(1, tableIndex - 1)).getStatus() != TableStatus.VACANT || tables.get(Math.min(30, tableIndex + 1)).getStatus() != TableStatus.VACANT) {
 			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
-		} */ else {
+		} else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
@@ -216,9 +216,13 @@ public class TableCtrl extends Controller {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		} /* else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+		} else if (tableIndex == 1 && tables.get(2).getStatus() != TableStatus.VACANT) {
 			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
-		} */ else {
+		} else if (tableIndex == 30 && tables.get(29).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
@@ -233,8 +237,13 @@ public class TableCtrl extends Controller {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		}
-		else {
+		} else if (tableIndex == 1 && tables.get(2).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tableIndex == 30 && tables.get(29).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else {
 			System.out.println("Table with ID " + tableID + " set to reserved!");
 			tables.get(tableIndex).setToReserved();
 		}
@@ -249,8 +258,13 @@ public class TableCtrl extends Controller {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		}
-		else {
+		} else if (tableIndex == 1 && tables.get(2).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tableIndex == 30 && tables.get(29).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else {
 			System.out.println("Table with ID " + tableID + " set to reserved!");
 			tables.get(tableIndex).setToReserved();
 		}
