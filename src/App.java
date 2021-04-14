@@ -10,8 +10,8 @@ public class App {
 			MainUI ui = new MainUI();
 			MainController mainController = new MainController();
 
-			ui.setMainController(mainController);
-			ui.displayMenu(sc);
+			ui.setController(mainController);
+			ui.displayOptions();
 
 			sc.close();
 		} catch (Exception e) {

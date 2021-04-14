@@ -39,11 +39,11 @@ public class InvoiceUI extends UI {
 		boolean run=true;
 		int choice;
 		while(run) {
-			System.out.println("-----Invoice-----\n"
-					+ "Select option:\n" 
-					+ "1. Print invoice\n" 
-					+ "2. Return to main menu");
+			System.out.println("\n====== Invoice ======\n"
+					+ "1) Print invoice\n" 
+					+ "2) Return to main menu");
 			try {
+				System.out.print("Select Option: ");
 				choice = sc.nextInt();
 				sc.nextLine(); // flush System.in
 			}catch(NoSuchElementException e) {

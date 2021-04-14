@@ -68,18 +68,20 @@ public class TableCtrl extends Controller {
 	 */
 	public void getAvailableTables() {
 		int size = querySize();
-		ArrayList<Integer> availableTables = new ArrayList<Integer>();
+		ArrayList<Table> availableTables = new ArrayList<Table>();
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
 			if (currTable.getStatus() == TableStatus.VACANT && currTable.getSize() == size) {
-				availableTables.add((Integer) i + 1);
+				availableTables.add(currTable);
 			}
 		}
 		if (availableTables.isEmpty()) {
-			System.out.println("There are no available tables of size " + size + "!");
+			System.out.println("\nThere are no available tables of size " + size + "!");
 		} else {
-			System.out.println(availableTables);
+			System.out.printf("\n=== Size: %d, Status: %s ===%n", size, TableStatus.VACANT.name());
+			printTablesFormatted(availableTables);
 		}
+		
 	}
 	
 	/**
@@ -103,37 +105,36 @@ public class TableCtrl extends Controller {
 	 * Returns a list of table IDs of tables that are vacant and also of size that is of at least of the user input
 	 * @return list of table ID fulfilling the condition
 	 */
-	public ArrayList<Integer> getAvaiTableIDsBySize() {
+	public void getAvaiTableIDsBySize() {
 		int size = querySize();
-		ArrayList<Integer> sizedTables = new ArrayList<Integer>();
+		ArrayList<Table> sizedTables = new ArrayList<Table>();
 
 		for(Table t : tables) {
 			if(t.getStatus() == TableStatus.VACANT && t.getSize() >= size)
-				sizedTables.add(t.getTableID());
+				sizedTables.add(t);
 		}
 		
 		if (sizedTables.isEmpty()) {
-			System.out.println("There are no available tables of size " + size + "!");
+			System.out.println("\nThere are no available tables of size " + size + "!");
 		} else {
-			System.out.println(sizedTables);
+			System.out.printf("\n== Size: >=%d, Status: %s ==%n", size, TableStatus.VACANT.name());
+			printTablesFormatted(sizedTables);
 		}
-		
-		return sizedTables;
 	}
 	
 	/**
 	 * Print all the table IDs of all the tables in the restaurant
 	 */
 	public void printAllTables() {
-		ArrayList<Integer> availableTables = new ArrayList<Integer>();
-		for (int i = 0; i < tables.size(); ++i) {
-			availableTables.add((Integer) tables.get(i).getTableID());
+		
+		if(tables.size() == 0) {
+			System.out.println("\nThere are no tables!");
+			return;
 		}
-		if (availableTables.isEmpty()) {
-			System.out.println("There are no tables!");
-		} else {
-			System.out.println(availableTables);
-		}
+		
+		System.out.println("\n========== All Tables ==========");
+		
+		printTablesFormatted(tables);
 	}
 	
 //	public void addTable() {
@@ -195,11 +196,12 @@ public class TableCtrl extends Controller {
 	public void assignTable() {
 		int tableID = queryTableID();
 		int tableIndex = getTableIndex(tableID);
+		System.out.println();
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		} /* else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+		} else if (tables.get(Math.max(1, tableIndex - 1)).getStatus() != TableStatus.VACANT || tables.get(Math.min(30, tableIndex + 1)).getStatus() != TableStatus.VACANT) {
 			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
-		} */ else {
+		} else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
@@ -214,9 +216,13 @@ public class TableCtrl extends Controller {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		} /* else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+		} else if (tableIndex == 1 && tables.get(2).getStatus() != TableStatus.VACANT) {
 			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
-		} */ else {
+		} else if (tableIndex == 30 && tables.get(29).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else {
 			System.out.println("Table with ID " + tableID + " set to occupied!");
 			tables.get(tableIndex).setToOccupied();
 		}
@@ -231,8 +237,13 @@ public class TableCtrl extends Controller {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		}
-		else {
+		} else if (tableIndex == 1 && tables.get(2).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tableIndex == 30 && tables.get(29).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else {
 			System.out.println("Table with ID " + tableID + " set to reserved!");
 			tables.get(tableIndex).setToReserved();
 		}
@@ -247,8 +258,13 @@ public class TableCtrl extends Controller {
 		int tableIndex = getTableIndex(tableID);
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
-		}
-		else {
+		} else if (tableIndex == 1 && tables.get(2).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tableIndex == 30 && tables.get(29).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else if (tables.get(tableIndex - 1).getStatus() != TableStatus.VACANT || tables.get(tableIndex + 1).getStatus() != TableStatus.VACANT) {
+			System.out.println("This table is unavailable as an adjacent table is occupied / reserved!");
+		} else {
 			System.out.println("Table with ID " + tableID + " set to reserved!");
 			tables.get(tableIndex).setToReserved();
 		}
@@ -261,6 +277,8 @@ public class TableCtrl extends Controller {
 	public void vacateTable() {
 		int tableID = queryTableID();
 		int tableIndex = getTableIndex(tableID);
+
+		System.out.println();
 		if (tableIndex == -1) {
 			System.out.println("No such table!");
 		} else {
@@ -294,7 +312,7 @@ public class TableCtrl extends Controller {
 		for (int i = 0; i < tables.size(); ++i) {
 			Table currTable = tables.get(i);
 			if (currTable.getTableID() == tableID) {
-				System.out.println("Table " + tableID + " is " + currTable.getStatus());
+				System.out.println("\nTable " + tableID + " is " + currTable.getStatus());
 				return currTable.getStatus();
 			}
 		}
@@ -438,6 +456,23 @@ public class TableCtrl extends Controller {
 		} else {
 			return TableStatus.VACANT;
 		}
+	}
+	
+	/**
+	 * Utility function to print out tables in a nice format.
+	 * @param tables List of tables to be printed.
+	 */
+	private void printTablesFormatted(ArrayList<Table> tables) {
+		String format = "| %-3d | %-8d | %-10s |%n";
+
+		System.out.format("+-----+----------+------------+%n");
+		System.out.format("| ID  | Size     | Status     |%n");
+		System.out.format("+-----+----------+------------+%n");
+		
+		for(Table t : tables) {
+			System.out.format(format, t.getTableID(), t.getSize(), t.getStatus().name());
+		}
+		System.out.format("+-----+----------+------------+%n");
 	}
 	
 }

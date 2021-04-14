@@ -16,6 +16,8 @@ import util.UI;
 
 /**
  * To display data related to Sales Report.
+ * First, it will display the possible options for a sales report
+ * which is the either "daily" or "monthly".
  * @author Wai Yar Aung
  *
  */
@@ -44,7 +46,7 @@ public class SalesReportUI extends UI {
 
 	@Override
 	public void displayOptions() {
-		System.out.println("=================SalesReport=================");
+		System.out.println("\n======== SalesReport ========");
 		System.out.println("1) Print sales by day");
 		System.out.println("2) Print sales by month");
 		System.out.println("0) Exit\n");

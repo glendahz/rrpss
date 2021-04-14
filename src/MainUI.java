@@ -1,24 +1,42 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MainUI {
+import util.Controller;
+import util.UI;
 
+/**
+ * Displays the options for the features of the application.
+ * This is the landing/home page of the application.
+ * @author Wai Yar Aung
+ *
+ */
+public class MainUI extends UI {
+
+	/**
+	 * The {@code Controller} to handle inputs for the home page.
+	 */
 	private MainController mainController;
+	
+	/**
+	 * A System.in scanner to take in user inputs.
+	 * Static since reused and not closed as other parts of the program uses it.
+	 */
+	private static Scanner sc = new Scanner(System.in);
 
-	// take in MainController
-	public void setMainController(MainController mainCtrl) {
-		this.mainController = mainCtrl;
+	@Override
+	public void setController(Controller mainCtrl) {
+		this.mainController = (MainController) mainCtrl;
 	}
-
-	// display menu
-	public void displayMenu(Scanner sc) {
+	
+	@Override
+	public void displayOptions() {
 		int choice;
 		System.out.println("Welcome to RRPSS\n");
 
 		while (true) {
 			// Print main options
-			System.out.println(
-					"**************************************************************************************************");
+			System.out.println();
+			System.out.println("************************************");
 			System.out.println("1. Access Staff Menu");
 			System.out.println("2. Access Table");
 			System.out.println("3. Access Menu");
@@ -27,8 +45,7 @@ public class MainUI {
 			System.out.println("6. Access Invoices");
 			System.out.println("7. Access SalesReport");
 			System.out.println("8. Quit.");
-			System.out.println(
-					"**************************************************************************************************");
+			System.out.println("*************************************");
 
 			while (true) {
 				System.out.print("\nOption: ");

@@ -53,17 +53,17 @@ public class TableUI extends UI {
 	 */
 	public void Options() {
 
-		System.out.println("-----------Tables-----------");
-		System.out.println("Get All Available Tables : 1");
-		System.out.println("Get All Available Tables Bigger Than Size : 2");
-		System.out.println("Get All Tables : 3");
-		System.out.println("Assign Table : 4");
-		System.out.println("Reserve Table : 5");
-		System.out.println("Vacate Table : 6");
-		System.out.println("Get Table Status : 7");
-		System.out.println("Exit : 8");
+		System.out.println("\n================== Tables ==================");
+		System.out.println("1) Get All Available Tables");
+		System.out.println("2) Get All Available Tables Bigger Than Size");
+		System.out.println("3) Get All Tables");
+		System.out.println("4) Assign Table");
+		System.out.println("5) Reserve Table");
+		System.out.println("6) Vacate Table");
+		System.out.println("7) Get Table Status");
+		System.out.println("8) Exit");
 
-
+		
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class TableUI extends UI {
 
 		boolean validInput = false;
 
-		System.out.print("Please enter your choice from 1 to 8: ");
+		System.out.print("\nPlease enter your choice from 1 to 8: ");
 		while (!validInput) {
 			try {
 				choice = sc.nextInt();
@@ -126,7 +126,7 @@ public class TableUI extends UI {
 			break;
 
 		case 8:
-			System.out.println("Menu Exited");
+//			System.out.println("Menu Exited");
 			break;
 
 		default:

@@ -217,6 +217,11 @@ public class ReservationCtrl extends Controller {
 
 	/**Display all pending {@code Reservation} objects */
 	public void displayAllReservation() {
+		if(reservations.isEmpty()) {
+			System.out.println("\nNo reservations.");
+			return;
+		}
+			
 		for (Reservation rsv : reservations) {
 			rsv.display();
 		}

@@ -6,6 +6,11 @@ import java.util.Scanner;
 import util.Controller;
 import util.UI;
 
+/**
+ * @author Craigdon Lee
+ * 
+ *
+ */
 public class MenuUI extends UI {
 
 	static int choice = 0;
@@ -50,20 +55,20 @@ public class MenuUI extends UI {
 
 	public static void MainMenu() {
 
-		System.out.println("\n-----Menu-----");
-		System.out.println("View Current Menu : 1");
-		System.out.println("Create Menu Item : 2");
-		System.out.println("Create Set Menu Item : 3");
-		System.out.println("Remove Menu Item : 4");
-		System.out.println("Remove Set Menu Item : 5");
-		System.out.println("update Menu Item : 6");
-		System.out.println("Convert Menu Data : 7");
-		System.out.println("Exit : 8\n");
+		System.out.println("\n========= Menu =========");
+		System.out.println("1) View Current Menu");
+		System.out.println("2) Create Menu Item");
+		System.out.println("3) Create Set Menu Item");
+		System.out.println("4) Remove Menu Item");
+		System.out.println("5) Remove Set Menu Item");
+		System.out.println("6) update Menu Item");
+		System.out.println("7) Convert Menu Data");
+		System.out.println("8) Exit\n");
 
 	}
 
 	public static void MethodSelection(int methodIndex) {
-
+		MenuCtrl ctrl = new MenuCtrl();
 		switch (methodIndex) {
 
 		case 1:
@@ -73,6 +78,7 @@ public class MenuUI extends UI {
 		case 2:
 //			System.out.print("menu item = ");
 //			System.out.print(array[0].itemType);
+			ctrl.createMenuItem();
 			break;
 
 		case 3:
