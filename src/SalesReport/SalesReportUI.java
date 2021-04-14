@@ -16,6 +16,8 @@ import util.UI;
 
 /**
  * To display data related to Sales Report.
+ * First, it will display the possible options for a sales report
+ * which is the either "daily" or "monthly".
  * @author Wai Yar Aung
  *
  */
