@@ -39,14 +39,14 @@ public class OrderUI extends UI {
 		boolean run=true;
 		int choice;
 		while(run) {
-			System.out.println("-----Order-----\n"
-					+ "Select option:\n" 
-					+ "1. Create order\n" 
-					+ "2. View order\n"
-					+ "3. Add to order\n"
-					+ "4. Remove from order\n"
-					+ "5. Return to main menu");
+			System.out.println("\n======== Order ========\n"
+					+ "1) Create order\n" 
+					+ "2) View order\n"
+					+ "3) Add to order\n"
+					+ "4) Remove from order\n"
+					+ "5) Return to main menu");
 			try {
+				System.out.print("\nSelect Option: ");
 				choice = sc.nextInt();
 				sc.nextLine(); // flush System.in
 			}catch(NoSuchElementException e) {

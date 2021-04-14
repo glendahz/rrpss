@@ -17,8 +17,8 @@ public class MainUI {
 
 		while (true) {
 			// Print main options
-			System.out.println(
-					"**************************************************************************************************");
+			System.out.println();
+			System.out.println("************************************");
 			System.out.println("1. Access Staff Menu");
 			System.out.println("2. Access Table");
 			System.out.println("3. Access Menu");
@@ -27,8 +27,7 @@ public class MainUI {
 			System.out.println("6. Access Invoices");
 			System.out.println("7. Access SalesReport");
 			System.out.println("8. Quit.");
-			System.out.println(
-					"**************************************************************************************************");
+			System.out.println("*************************************");
 
 			while (true) {
 				System.out.print("\nOption: ");

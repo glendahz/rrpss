@@ -50,7 +50,7 @@ public class StaffUI extends UI {
 	 * Prints the available options to the user at the current UI page
 	 */
 	public void Options() {
-		System.out.println("\n========Staff========");
+		System.out.println("\n======= Staff =======");
 		System.out.println("1. View Current Staff");
 		System.out.println("2. Add Staff");
 		System.out.println("3. Remove Staff");

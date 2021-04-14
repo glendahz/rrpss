@@ -80,6 +80,11 @@ public class OrderCtrl extends Controller {
 		lines.add("Order Items:");
 		String[][] items = order.getAllItemsArr();
 		
+		String format = "| %-4s | %-20s | %8s |";
+
+		lines.add("+------+----------------------+----------+");
+		lines.add("| No.  | Name                 | Price($) |");
+		lines.add("+------+----------------------+----------+");
 		
 		for (int i=0; i<items.length; i++) {
 			/*
@@ -87,8 +92,11 @@ public class OrderCtrl extends Controller {
 			 * item[i][1] is the item name
 			 * item[i][2] is the item price
 			 */
-			lines.add("  " + items[i][0] + "  " + items[i][1] + " ($" + items[i][2] + ")");
+//			lines.add("  " + items[i][0] + "  " + items[i][1] + " ($" + items[i][2] + ")");
+			lines.add(String.format(format, items[i][0], items[i][1], items[i][2]));
 		}
+		lines.add("+------+----------------------+----------+");
+
 		return String.join("\n", lines);
 	}
 	

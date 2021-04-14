@@ -238,7 +238,7 @@ public class MenuCtrl {
 	public static void viewMenu() {
 		// just to show menu
 		updateMenuItem();
-		System.out.println("\n=========== Menu ===========");
+		System.out.println("\n====================================== Menu ======================================");
 		
 		String menuFormat = "| %-3d | %-20s | %-39s | %8.2f |%n";
 
@@ -254,7 +254,7 @@ public class MenuCtrl {
 		}
 		System.out.format("+-----+----------------------+-----------------------------------------+----------+%n");
 		
-		System.out.println("\n=========== Set Menu ===========");
+		System.out.println("\n==================================== Set Menu ====================================");
 		
 		String setFormat = "| %-3d | %-60s | %8.2f |%n";
 

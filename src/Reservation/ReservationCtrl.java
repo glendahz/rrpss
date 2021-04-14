@@ -147,6 +147,11 @@ public class ReservationCtrl extends Controller {
 	}
 
 	public void displayAllReservation() {
+		if(reservations.isEmpty()) {
+			System.out.println("\nNo reservations.");
+			return;
+		}
+			
 		for (Reservation rsv : reservations) {
 			rsv.display();
 		}
