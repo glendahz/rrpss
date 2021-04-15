@@ -140,7 +140,7 @@ public class MenuCtrl {
 		System.out.println("What item would you like to add to the menu?");
 		System.out.print("Please enter Item type : ");
 		String ItemType = scan.nextLine();   
-		System.out.print("\nPlease enter name if Item : ");
+		System.out.print("\nPlease enter name of Item : ");
 		String ItemName = scan.nextLine();   
 		System.out.print("\nPlease enter Item description : ");
 		String ItemDesc = scan.nextLine();   
