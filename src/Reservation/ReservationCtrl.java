@@ -80,6 +80,7 @@ public class ReservationCtrl extends Controller {
 		 * Return void if there is another pending reservation registered with the same contact number.
 		 */
 		int contactNumber;
+		outloop:
 		while(true){
 			try{
 				System.out.println("Please enter contact number (number only): ");
@@ -87,7 +88,7 @@ public class ReservationCtrl extends Controller {
 				for (Reservation rsv : reservations) {
 					if (rsv.getContactNumber() == contactNumber) {
 						System.out.println("Alreaady make reservation!");
-						break;
+						continue outloop;
 					}
 				}
 				break;
