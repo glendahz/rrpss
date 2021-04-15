@@ -31,7 +31,7 @@ public class MainUI extends UI {
 	@Override
 	public void displayOptions() {
 		int choice;
-		System.out.println("Welcome to RRPSS\n");
+		System.out.println("Welcome to RRPSS");
 
 		while (true) {
 			// Print main options

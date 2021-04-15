@@ -54,7 +54,7 @@ public class TableUI extends UI {
 	public void Options() {
 
 		System.out.println("\n================== Tables ==================");
-		System.out.println("1) Get All Available Tables");
+		System.out.println("1) Get All Available Tables By Size");
 		System.out.println("2) Get All Available Tables Bigger Than Size");
 		System.out.println("3) Get All Tables");
 		System.out.println("4) Assign Table");
