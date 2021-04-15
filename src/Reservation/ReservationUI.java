@@ -64,11 +64,11 @@ public class ReservationUI extends UI {
 	 */
 	public static void Options() {
 		
-		System.out.println("\n====== Reservation ======");
-		System.out.println("1) Make Reservation");
-		System.out.println("2) Display Reservation");
-		System.out.println("3) Remove Reservation");
-		System.out.println("4) Exit");
+		System.out.println("\n-----Reservation-----");
+		System.out.println("Make Reservation : 1");
+		System.out.println("Display Reservation : 2");
+		System.out.println("Remove Reservation : 3");
+		System.out.println("Exit : 4");
 		
 	}
 	
@@ -79,7 +79,7 @@ public class ReservationUI extends UI {
 		
 		boolean validInput = false;
 		
-		System.out.print("\nPlease enter your choice from 1 to 4: ");
+		System.out.print("Please enter your choice from 1 to 4: ");
 		while (!validInput) {
 			try {
 				choice = sc.nextInt();
@@ -133,11 +133,11 @@ public class ReservationUI extends UI {
 	 * Prints the available Display Options to the user at the current UI page
 	 */
 	public static void disOptions() {
-		System.out.println("\n--- Display Reservation Options ---");
-		System.out.println("1) By Contact Number");
-		System.out.println("2) By Table ID");
-		System.out.println("3) Display All");
-		System.out.println("4) Exit");
+		System.out.println("\n-----Display Reservation Options-----");
+		System.out.println("By Contact Number : 1");
+		System.out.println("By Table ID : 2");
+		System.out.println("Display All : 3");
+		System.out.println("Exit : 4");
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class ReservationUI extends UI {
 	public static void disUserInput(){
 		boolean validInput = false;
 		
-		System.out.print("\nPlease enter your choice from 1 to 4: ");
+		System.out.print("Please enter your choice from 1 to 4: ");
 		while (!validInput) {
 			try {
 				disChoice = sc.nextInt();
@@ -188,10 +188,10 @@ public class ReservationUI extends UI {
 	 * Prints the available Remove Options to the user at the current UI page
 	 */
 	public static void rmvOptions(){
-		System.out.println("\n--- Remove Reservation Options ---");
-		System.out.println("1) By Contact Number");
-		System.out.println("2) By Table ID");
-		System.out.println("3 )Exit");
+		System.out.println("\n-----Remove Reservation Options-----");
+		System.out.println("By Contact Number : 1");
+		System.out.println("By Table ID : 2");
+		System.out.println("Exit : 3");
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class ReservationUI extends UI {
 	public static void rmvUserInput(){
 		boolean validInput = false;
 		
-		System.out.print("\nPlease enter your choice from 1 to 3: ");
+		System.out.print("Please enter your choice from 1 to 3: ");
 		while (!validInput) {
 			try {
 				rmvChoice = sc.nextInt();
