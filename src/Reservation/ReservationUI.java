@@ -106,6 +106,7 @@ public class ReservationUI extends UI {
 				break;
 
 			case 2:
+				disChoice = 0;			//reset
 				while(disChoice!=4){
 					disOptions();
 					disUserInput();
@@ -114,6 +115,7 @@ public class ReservationUI extends UI {
 				break;
 
 			case 3:
+				rmvChoice = 0;			//reset
 				while(rmvChoice!=3){
 					rmvOptions();
 					rmvUserInput();
