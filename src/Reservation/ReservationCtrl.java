@@ -394,7 +394,7 @@ public class ReservationCtrl extends Controller {
 		while(!validInput){
 				try{System.out.println("Please enter date (dd-MM-yyyy): ");
 				date = LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-				if(date.compareTo(LocalDate.now().plusDays(30))<0) validInput = true;
+				if((date.compareTo(LocalDate.now().plusDays(30))<0)&&(date.compareTo(LocalDate.now())>0)) validInput = true;
 				else System.out.println("Only accept reservation for the next 30 days");}
 				catch(DateTimeParseException e){
 					System.out.println("Please enter valid date.");
