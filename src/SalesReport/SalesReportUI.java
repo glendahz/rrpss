@@ -8,6 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import Order.OrderInvoice;
@@ -116,7 +117,8 @@ public class SalesReportUI extends UI {
 
 	/**
 	 * Called when the model's type == "MONTH".
-	 * Prints a daily total for the entire month selected.
+	 * Prints a table that shows the daily total for the entire month selected
+	 * as well as a bar chart to visualize the same data.
 	 * @param dailyTotals This HashMap has the date for key and total for value.
 	 * @param total The session's total
 	 */
@@ -127,15 +129,37 @@ public class SalesReportUI extends UI {
 		System.out.format("| Day     | Amount($) |%n");
 		System.out.format("+---------+-----------+%n");
 
-		dailyTotals.forEach((day, amount) -> {
+		Float maxVal = (float) 0.0;
+		
+		for(Map.Entry<Integer, Float> e : dailyTotals.entrySet()) {
+			int day = e.getKey();
+			float amount = e.getValue();
+			
+			if(amount > maxVal) maxVal = amount;
+			
 			System.out.format(tableFormat, day, amount);
-		});
+		}
 
 		System.out.format("+---------------------+%n");
 		System.out.format("| Total   | %9.2f |%n", total);
 		System.out.format("+---------+-----------+%n");
 
 		System.out.println();
+		
+		// Print a simple bar chart
+		String chartFormat = "%-2d | %-50s%n";
+		int maxBarLength = 70;
+		String c = "*"; // Character for bar
+		
+		for(Map.Entry<Integer, Float> e : dailyTotals.entrySet()) {
+			int day = e.getKey();
+			float amount = e.getValue();
+			
+			int barLength = (int) (amount / maxVal * maxBarLength);
+			
+			System.out.format(chartFormat, day, c.repeat(barLength));
+		}
+				
 	}
 
 	/**
