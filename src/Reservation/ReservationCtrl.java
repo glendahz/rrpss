@@ -12,8 +12,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.TimerTask;
 
@@ -77,12 +79,21 @@ public class ReservationCtrl extends Controller {
 		 * Contact number query.
 		 * Return void if there is another pending reservation registered with the same contact number.
 		 */
-		System.out.println("Please enter contact number: ");
-		int contactNumber = sc.nextInt();
-		for (Reservation rsv : reservations) {
-			if (rsv.getContactNumber() == contactNumber) {
-				System.out.println("Alreaady make reservation!");
-				return;
+		int contactNumber;
+		while(true){
+			try{
+				System.out.println("Please enter contact number (number only): ");
+				contactNumber = sc.nextInt();
+				for (Reservation rsv : reservations) {
+					if (rsv.getContactNumber() == contactNumber) {
+						System.out.println("Alreaady make reservation!");
+						break;
+					}
+				}
+				break;
+			}catch(InputMismatchException e){
+				System.out.println("Please enter valid number.");
+				sc.nextLine();
 			}
 		}
 
@@ -101,8 +112,17 @@ public class ReservationCtrl extends Controller {
 		/**
 		 * Number of person query
 		 */
-		System.out.println("Please enter number of people: ");
-		int pax = sc.nextInt();
+		int pax;
+		while(true){
+			try {
+				System.out.println("Please enter number of people: ");
+				pax = sc.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Please enter valid input.");
+				sc.nextLine();
+			}
+		}
 
 		ArrayList<Integer> tableIDs = tabCtrl.getAvaiTableIDsBySize(pax);
 
@@ -122,7 +142,7 @@ public class ReservationCtrl extends Controller {
 			tableIDs.remove(Integer.valueOf(rsv.getTableID()));
 		}
 
-		if (tableIDs.isEmpty()) System.out.println("Unavailable");
+		if (tableIDs.isEmpty()) System.out.println("No available table to reserve.");
 		else {
 			/**
 			 * If (validInput) creat new {@code Reservation},
@@ -146,9 +166,8 @@ public class ReservationCtrl extends Controller {
 	 */
 	public Reservation reservationQueryByContact() {
 		int input;
-		boolean validInput = false;
 		Reservation temp = null;
-		while (!validInput) {
+		while (true) {
 			System.out.print("Enter contact number: ");
 			try {
 				input = sc.nextInt();
@@ -156,13 +175,13 @@ public class ReservationCtrl extends Controller {
 				for (Reservation rsv : reservations) {
 					if (rsv.getContactNumber() == input) {
 						temp = rsv;
-						validInput = true;
 						break;
 					}
 				}
+				break;
 			} catch (Exception e) {
 				sc.nextLine();
-				System.out.println("Invalid input! Try again.");
+				System.out.println("Please enter valid number");
 				continue;
 			}
 		}
@@ -174,6 +193,7 @@ public class ReservationCtrl extends Controller {
 		Reservation rsv = reservationQueryByContact();
 		if (rsv != null)
 			rsv.display();
+		else System.out.println("No reservation registered.");
 	}
 
 	/**Display {@code Reservation} by Reservation.tableID */
@@ -184,7 +204,7 @@ public class ReservationCtrl extends Controller {
 			if (rsv.getTableID() == tableID)
 				rsvList.add(rsv);
 		if (rsvList.isEmpty())
-			System.out.println("No reservation made for table ID" + tableID);
+			System.out.println("No reservation made for table ID " + tableID);
 		else
 			for (Reservation rsv : rsvList)
 				rsv.display();
@@ -194,10 +214,13 @@ public class ReservationCtrl extends Controller {
 	/**Remove {@code Reservation} object by Reservation.contactNumber */
 	public void removeReservationByContact() {
 		Reservation rsv = reservationQueryByContact();
-		removeData(RSV_FILE, rsv);
-		rsv.removeTimer();
-		removeData(RSV_FILE, rsv);
-		reservations.remove(rsv);
+		if(rsv==null)System.out.println("No reservation found.");
+		else{
+			removeData(RSV_FILE, rsv);
+			rsv.removeTimer();
+			reservations.remove(rsv);
+			System.out.println("Remove successfully.");
+		}
 	}
 
 	/**Remove {@code Reservation} object by Reservation.tableID */
@@ -207,16 +230,26 @@ public class ReservationCtrl extends Controller {
 		for (Reservation rsv : reservations){
 			if (rsv.getTableID() == tableID){
 				rsvToRemove.add(rsv);
-				rsv.removeTimer();
 			}
+		}
+		if(rsvToRemove.isEmpty()){
+			System.out.println("No reservation found");
+			return;
 		}
 		for (Reservation rsv : rsvToRemove) {
 			removeData(RSV_FILE, rsv);
+			rsv.removeTimer();
+			reservations.remove(rsv);
 		}
+		System.out.println("Remove successfully.");
 	}
 
 	/**Display all pending {@code Reservation} objects */
 	public void displayAllReservation() {
+		if(reservations.isEmpty()){
+			System.out.println("No reservation to display");
+			return;
+		}
 		for (Reservation rsv : reservations) {
 			rsv.display();
 		}
@@ -358,10 +391,13 @@ public class ReservationCtrl extends Controller {
 		boolean validInput = false;
 		LocalDate date = LocalDate.now();
 		while(!validInput){
-				System.out.println("Please enter date (dd-MM-yyyy): ");
+				try{System.out.println("Please enter date (dd-MM-yyyy): ");
 				date = LocalDate.parse(sc.nextLine(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 				if(date.compareTo(LocalDate.now().plusDays(30))<0) validInput = true;
-				else System.out.println("Only accept reservation for the next 30 days");
+				else System.out.println("Only accept reservation for the next 30 days");}
+				catch(DateTimeParseException e){
+					System.out.println("Please enter valid date.");
+				}
 		}
 		return date;
 	}
@@ -382,8 +418,8 @@ public class ReservationCtrl extends Controller {
 				||((time.compareTo(LocalTime.parse("13:59"))>0)&&(time.compareTo(LocalTime.parse("19:31"))<0)))
 					validInput = true;
 				else System.out.println("Only accept reservation between 07:00-12:30 or 14:00-19:30");
-			}catch(Exception e){
-				System.out.println("Invalid input!");
+			}catch(DateTimeParseException e){
+				System.out.println("Please enter valid time.");
 			}
 		}
 		return time;
