@@ -376,7 +376,7 @@ public class TableCtrl extends Controller {
 				}
 			} catch(InputMismatchException e) {
 				System.out.print("Please enter a valid tableID: ");
-				tableID = sc.nextInt();
+				sc.next();
 			}
 		}
 		
