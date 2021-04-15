@@ -436,14 +436,15 @@ public class ReservationCtrl extends Controller {
 		String line;
 		ArrayList<String> newData = new ArrayList<>();
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			while ((line = reader.readLine()) != null) {
+			Scanner reader = new Scanner(file);
+			while (reader.hasNextLine()) {
+				line = reader.nextLine();
 				String[] items = line.split(DELIMITER);
-				if(Integer.valueOf(items[-1])==rsv.getRsvID())continue;
+				if(Integer.valueOf(items[5])==rsv.getRsvID())continue;
 				else newData.add(line);
 			}
 			reader.close();
-		}catch(Exception e){
+		}catch(FileNotFoundException e){
 			System.out.println("ReservationCtrl.removeData() error: cannot find file");
 		}
 
@@ -454,8 +455,8 @@ public class ReservationCtrl extends Controller {
 			PrintWriter wr = new PrintWriter(file);
 			for (String newLine : newData) {
 				wr.write(newLine); wr.write("\n");
-				wr.close();
 			}
+			wr.close();
 		}catch(Exception e){
 			System.out.println("ReservationCtrl.removeData() error: cannot find file");
 		}
