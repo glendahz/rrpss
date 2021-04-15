@@ -93,7 +93,9 @@ public class StaffCtrl extends Controller {
 				name = sc.next();
 				if (name instanceof String) {
 					validInput = true;
+					break;
 				}
+				System.out.print("Please enter a proper name: ");
 			} catch(InputMismatchException e) {
 				System.out.print("Please enter a proper name: ");
 				name = sc.next();
@@ -109,7 +111,9 @@ public class StaffCtrl extends Controller {
 				temp = sc.next();
 				if (temp.equals("M") | temp.equals("F")) {
 					validInput = true;
+					break;
 				}
+				System.out.print("Please enter M for Male and F for Female: ");
 			} catch(InputMismatchException e) {
 				System.out.print("Please enter M for Male and F for Female: ");
 				temp = sc.next();
@@ -128,7 +132,9 @@ public class StaffCtrl extends Controller {
 				temp = sc.next();
 				if (temp.equals("Manager") | temp.equals("Waiter")) {
 					validInput = true;
+					break;
 				}
+				System.out.print("Please enter a proper role: ");
 			} catch(InputMismatchException e) {
 				System.out.print("Please enter a proper role: ");
 				temp = sc.next();
@@ -158,11 +164,21 @@ public class StaffCtrl extends Controller {
 		while (!validInput) {
 			try {
 				employeeID = sc.nextInt();
-				if (employeeID > 0 && employeeID < currEmpNum) {
-					validInput = true;
+				if (employeeID == -1) {
+					break;
 				}
+				if (employeeID > 0 && employeeID < currEmpNum) {
+					for (int i = 0; i < staffList.size(); ++i) {
+						Staff currStaff = staffList.get(i);
+						if (currStaff.getEmployeeID() == employeeID) {
+							validInput = true;
+							break;
+						}
+					}
+				}
+				System.out.print("Please enter a valid employee ID or -1 to return to previous menu: ");
 			} catch(InputMismatchException e) {
-				System.out.print("Please enter a valid employee ID: ");
+				System.out.print("Please enter a valid employee ID or -1 to return to previous menu: ");
 				employeeID = sc.nextInt();
 			}
 		}
