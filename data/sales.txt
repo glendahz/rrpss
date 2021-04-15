@@ -1,8 +1,22 @@
 datetime,price,items
-2021-03-31T08:00:00,64,1-chicken,2-coffee,1-pasta
-2021-03-31T10:00:00,25,1-steak
-2021-03-31T12:30:00,52.30,3-sandwich
-2021-04-01T11:20:00,12.70,6-sushi
-2021-04-02T13:53:00,5.50,1-fried chicken
-2021-04-07T11:15:13.5977026,24.0,2-tea,1-coffee,3-miz
-2021-04-15T20:48:25.0108282,100.0,4-Grilled Chicken Chop,2-Fish & Chip
+2021-04-01T11:52:44.4100704,260,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-02T11:52:44.4100704,320,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-03T11:52:44.4100704,760,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-04T11:52:44.4100704,430,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-05T11:52:44.4100704,664,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-06T11:52:44.4100704,789,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-07T11:52:44.4100704,672,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-08T11:52:44.4100704,566,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-09T11:52:44.4100704,798,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-10T11:52:44.4100704,812,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-11T11:52:44.4100704,834,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-12T11:52:44.4100704,740,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-13T11:52:44.4100704,670,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-14T11:52:44.4100704,720,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-15T11:52:44.4100704,92.0,4-Grilled Chicken Chop,2-Chicken Cutlet
+2021-04-15T12:23:44.4100704,44.0,2-Fish & Chip,2-Coke
+2021-04-15T12:34:44.4100704,50.0,1-Grilled Salmon,1-Prawn & Scallops
+2021-04-15T13:02:44.4100704,63.0,3-Chicken Culet,3-Ice Lemon Tea
+2021-04-15T13:36:57.9333561,31.0,1-Grilled Chicken Chop,1-Chicken Cutlet
+2021-04-15T14:10:22.1337056,46.0,1-Griled Salmon,1-Fish & Chip
+2021-04-15T14:30:15.6067486,35.0,1-Grilled Chicken Chop,1-Fish & Chip
