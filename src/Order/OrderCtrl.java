@@ -291,8 +291,16 @@ public class OrderCtrl extends Controller {
 	 */
 	public boolean validTableID(int tableID, TableStatus status){
 		TableStatus currStatus = tableCtrl.getTableStatus(tableID);
-		if (currStatus == status) return true;
-		else return false;
+		
+		// just check if table ID is valid if status is null
+		if (status == null) {
+			if (currStatus != null) return true;
+			else return false;
+		} else {
+			if (currStatus == status) return true;
+			else return false;
+		}
+		
 	}
 	
 	/**

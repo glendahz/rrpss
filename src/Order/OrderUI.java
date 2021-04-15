@@ -91,7 +91,7 @@ public class OrderUI extends UI {
 	 */
 	private static void createOrderUI() {
 		// get table ID & employee ID
-		int tableID = getTableIDUI(TableStatus.RESERVED);
+		int tableID = getTableIDUI(null);
 		String staffName = getEmployeeIDUI();
 		
 		// get order items
