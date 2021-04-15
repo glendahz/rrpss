@@ -5,3 +5,4 @@ datetime,price,items
 2021-04-01T11:20:00,12.70,6-sushi
 2021-04-02T13:53:00,5.50,1-fried chicken
 2021-04-07T11:15:13.5977026,24.0,2-tea,1-coffee,3-miz
+2021-04-15T11:52:44.4100704,92.0,4-Grilled Chicken Chop,2-Chicken Cutlet

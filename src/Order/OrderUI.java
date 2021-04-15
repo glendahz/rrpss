@@ -185,12 +185,12 @@ public class OrderUI extends UI {
 			try {
 				itemName = getOrderItemNameUI(tableID);
 				if (orderCtrl.removeOrderItem(tableID, itemName)) {
-					System.out.println(itemName + " successfully removed from table " + tableID + "order!\n");
+					System.out.println(itemName + " successfully removed from table " + tableID + " order!\n");
 					run = false;
 				}
 				else {
-					System.out.println("Error: " + itemName + " is not in table " + tableID + "order\n" 
-							+ "Please enter an order item that is in table " + tableID + "order!\n");
+					System.out.println("Error: " + itemName + " is not in table " + tableID + " order\n" 
+							+ "Please enter an order item that is in table " + tableID + " order!\n");
 				}
 			} catch (Exception e) {
 				System.out.println("Error: unable to remove order item\n"
